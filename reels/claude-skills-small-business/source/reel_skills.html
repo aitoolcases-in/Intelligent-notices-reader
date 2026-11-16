@@ -1,0 +1,258 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+@font-face{font-family:SS4;src:url(node_modules/@fontsource/source-serif-4/files/source-serif-4-latin-400-normal.woff2);font-weight:400}
+@font-face{font-family:SS4;src:url(node_modules/@fontsource/source-serif-4/files/source-serif-4-latin-600-normal.woff2);font-weight:600}
+@font-face{font-family:SS4;src:url(node_modules/@fontsource/source-serif-4/files/source-serif-4-latin-400-italic.woff2);font-weight:400;font-style:italic}
+@font-face{font-family:SS4;src:url(node_modules/@fontsource/source-serif-4/files/source-serif-4-latin-600-italic.woff2);font-weight:600;font-style:italic}
+@font-face{font-family:SS4X;src:url(node_modules/@fontsource/source-serif-4/files/source-serif-4-latin-ext-400-normal.woff2);font-weight:400}
+@font-face{font-family:SS4X;src:url(node_modules/@fontsource/source-serif-4/files/source-serif-4-latin-ext-600-normal.woff2);font-weight:600}
+@font-face{font-family:SS4X;src:url(node_modules/@fontsource/source-serif-4/files/source-serif-4-latin-ext-600-italic.woff2);font-weight:600;font-style:italic}
+@font-face{font-family:MS;src:url(node_modules/@fontsource/montserrat/files/montserrat-latin-700-normal.woff2);font-weight:700}
+@font-face{font-family:MS;src:url(node_modules/@fontsource/montserrat/files/montserrat-latin-800-normal.woff2);font-weight:800}
+@font-face{font-family:MSX;src:url(node_modules/@fontsource/montserrat/files/montserrat-latin-ext-700-normal.woff2);font-weight:700}
+@font-face{font-family:MSX;src:url(node_modules/@fontsource/montserrat/files/montserrat-latin-ext-800-normal.woff2);font-weight:800}
+@font-face{font-family:CV;src:url(node_modules/@fontsource/caveat/files/caveat-latin-600-normal.woff2);font-weight:600}
+@font-face{font-family:CVX;src:url(node_modules/@fontsource/caveat/files/caveat-latin-ext-600-normal.woff2);font-weight:600}
+html,body{margin:0;padding:0;background:#f7f5ef}
+#stage{position:relative;width:1080px;height:1920px;overflow:hidden;background:#f7f5ef;font-family:SS4,SS4X,Georgia,serif;color:#034620}
+.layer{background:#f7f5ef}
+.layer.green{background:#034620;color:#f7f5ef}
+.ring{position:absolute;border:4px solid #9fbfab;border-radius:9999px;pointer-events:none}
+.green .ring{border-color:#2d7049}
+.logo{position:absolute;left:72px;top:74px;height:118px}
+.kick{position:absolute;left:80px;top:232px;font-family:MS,MSX,sans-serif;font-weight:700;font-size:26px;letter-spacing:.14em;color:#3f5e4b}
+.mark{background:#e2b04a;color:#034620;border-radius:8px;padding:0 12px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.mark.loss{background:#a8452a;color:#f7f5ef}
+.layer{position:absolute;inset:0}
+.ab{position:absolute}
+.hl{position:absolute;left:80px;top:280px;width:900px;font-family:MS,MSX,sans-serif;font-size:72px;line-height:1.12;font-weight:800;letter-spacing:-.01em;color:#034620}
+.green .hl{color:#f7f5ef}
+.lab{font-family:MS,MSX,sans-serif;font-weight:700;letter-spacing:.06em}
+.hand{font-family:MS,MSX,sans-serif;font-weight:700;letter-spacing:-.01em}
+.foot{font-family:MS,MSX,sans-serif;font-weight:700;font-size:22px;line-height:1.4;color:#3f5e4b}
+</style></head>
+<body>
+<div id="stage"></div>
+<svg width="0" height="0" style="position:absolute">
+<defs>
+<filter id="pencil" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence id="turb" type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="1"/><feDisplacementMap in="SourceGraphic" scale="5"/></filter>
+<pattern id="hG" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="14" height="14" fill="#f7f5ef"/><line x1="0" y1="0" x2="0" y2="14" stroke="#9fbfab" stroke-width="2.6"/></pattern>
+<pattern id="hD" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(40)"><rect width="9" height="9" fill="#2d7049"/><line x1="0" y1="0" x2="0" y2="9" stroke="#034620" stroke-width="3"/></pattern>
+<pattern id="hA" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="14" height="14" fill="#f1cf86"/><line x1="0" y1="0" x2="0" y2="14" stroke="#c98f1c" stroke-width="3"/></pattern>
+<pattern id="hR" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="14" height="14" fill="#f3d7cc"/><line x1="0" y1="0" x2="0" y2="14" stroke="#a8452a" stroke-width="3.4"/></pattern>
+<pattern id="hN" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="14" height="14" fill="#dfe9e2"/><line x1="0" y1="0" x2="0" y2="14" stroke="#2d7049" stroke-width="3.4"/></pattern>
+</defs>
+</svg>
+<script src="vo_skills.js"></script>
+<script>
+const INK='#034620', GREEN='#034620', LOSS='#a8452a', G6='#2d7049', AMB='#e2b04a';
+const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const ease=x=>{x=clamp(x);return x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2};
+const P=(u,a,d=.5)=>ease((u-a)/d);
+// appear: fade + rise
+const ap=(u,a,d=.45)=>{const p=P(u,a,d);return `opacity:${p};transform:translateY(${(1-p)*24}px);`};
+let GT=0;
+const draw=(p)=>`pathLength="1" stroke-dasharray="1" stroke-dashoffset="${1-clamp(p)}"`;
+const EVENTS=[]; // build-step times for audio
+function hl(u,a,em,b,cls=''){return `<div class="hl" style="${ap(u,0.15,.5)}">${a}<span class="mark ${cls}">${em}</span>${b||''}</div>`}
+const kick=(u,txt)=>`<div class="kick" style="${ap(u,0,.4)}">${txt}</div>`;
+const ring=(x,y,d)=>`<div class="ring" style="left:${x}px;top:${y}px;width:${d}px;height:${d}px"></div>`;
+
+// ---------- the hero: Rohan ----------
+function rohan(x,y,s,o={}){
+  const mood=o.mood||'happy', prop=o.prop||'none', ph=x*0.0131+y*0.007;
+  const look=(o.look||0)+Math.sin(GT*0.8+ph*3)*4;
+  const bob=Math.sin(GT*2.4+ph)*4, tilt=Math.sin(GT*1.3+ph)*3 + (mood==='worried'?-4:0);
+  const jump=o.jump?-Math.abs(Math.sin(GT*5.5))*40:0;
+  const blink=((GT+ph*5)%3.3)<0.14;
+  const mouth = mood==='cheer' ? 'M172,312 Q200,356 230,312 Z' : mood==='happy' ? 'M178,318 Q200,338 224,316' : mood==='worried' ? 'M180,326 Q200,314 222,326' : 'M182,322 L220,320';
+  const eyes = blink ? `<path d="M158,270 H178 M224,270 H244" stroke-width="5"/>` : `<circle cx="168" cy="270" r="5" fill="${INK}"/><circle cx="234" cy="270" r="5" fill="${INK}"/>`;
+  const sw=Math.sin(GT*7+ph)*10;
+  let arm='';
+  if(o.scratch) arm=`<path d="M300,470 C340,420 330,330 ${300+sw*0.4},${262+sw*0.3}" stroke-width="5" fill="none"/><circle cx="${300+sw*0.4}" cy="${258+sw*0.3}" r="18" fill="#f7f5ef"/>`;
+  if(mood==='cheer') arm=`<path d="M300,470 C340,400 360,320 ${370+sw},${220}" stroke-width="5" fill="none"/><circle cx="${370+sw}" cy="210" r="20" fill="#f7f5ef"/><path d="M100,470 C60,400 40,320 ${30-sw},${220}" stroke-width="5" fill="none"/><circle cx="${30-sw}" cy="210" r="20" fill="#f7f5ef"/>`;
+  const brows = mood==='worried' ? '<path d="M146,236 L190,244 M212,244 L256,234" />' : '<path d="M146,238 Q168,228 190,236 M212,236 Q234,228 256,238" />';
+  let propS='';
+  if(prop==='phone') propS=`<g transform="translate(250,440) rotate(${-12+Math.sin(GT*1.7+ph)*5} 30 120)"><rect x="0" y="0" width="70" height="128" rx="12" fill="url(#hA)" stroke="${INK}" stroke-width="4"/><rect x="9" y="14" width="52" height="92" rx="4" fill="#fbe7b9" stroke="${INK}" stroke-width="2.5"/></g><path d="M300,600 C300,540 280,500 262,486 C250,478 246,500 258,508" fill="#f7f5ef" stroke="${INK}" stroke-width="4"/>`;
+  if(prop==='bill') propS=`<g transform="translate(230,430) rotate(8)"><path d="M0,0 L120,0 L120,150 L110,140 L100,150 L90,140 L80,150 L70,140 L60,150 L50,140 L40,150 L30,140 L20,150 L10,140 L0,150 Z" fill="#fff" stroke="${INK}" stroke-width="4"/><path d="M16,30 H100 M16,56 H90 M16,82 H70" stroke="#8a8a84" stroke-width="5"/><path d="M16,112 H100" stroke="${LOSS}" stroke-width="7"/></g>`;
+  if(prop==='calendar') propS=`<g transform="translate(240,420) rotate(6)"><rect x="0" y="0" width="140" height="130" fill="#fff" stroke="${INK}" stroke-width="4"/><rect x="0" y="0" width="140" height="34" fill="url(#hN)" stroke="${INK}" stroke-width="4"/><path d="M20,62 l12,12 l22,-24 M64,62 l12,12 l22,-24 M20,100 l12,12 l22,-24 M64,100 l12,12 l22,-24" stroke="${GREEN}" stroke-width="5" fill="none"/></g>`;
+  if(prop==='laptop') propS=`<g transform="translate(60,450) rotate(${Math.sin(GT*1.2+ph)*1.5} 140 100)"><rect x="0" y="0" width="280" height="180" rx="12" fill="#fff" stroke="${INK}" stroke-width="5"/><rect x="70" y="62" width="140" height="52" rx="26" fill="#f3d7cc" stroke="${INK}" stroke-width="3"/><text x="140" y="98" text-anchor="middle" font-family="MS,MSX,sans-serif" font-weight="800" font-size="28" fill="${INK}" stroke="none">Claude</text><path d="M-30,180 L310,180 L330,212 L-50,212 Z" fill="url(#hG)" stroke="${INK}" stroke-width="5"/></g>`;
+  const sweat = o.sweat ? `<path d="M296,200 C292,214 288,222 296,228 C304,222 300,214 296,200Z" fill="#cfe3ee" stroke="${INK}" stroke-width="3"/>` : '';
+  return `<g transform="translate(${x},${y+jump}) scale(${s})" filter="url(#pencil)" stroke="${INK}" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+   <path d="M40,640 C46,500 100,420 200,408 C300,420 354,500 360,640 Z" fill="url(#hG)"/>
+   <path d="M200,408 C186,440 176,470 170,520 M200,408 C214,440 224,470 230,520" />
+   <path d="M150,412 L200,470 L250,412" fill="#f7f5ef"/>
+   <path d="M120,440 C118,500 112,560 110,640 M282,440 C286,500 292,560 292,640" stroke-width="3.5"/>
+   <path d="M178,348 L178,412 M222,348 L222,412" />
+   <g transform="translate(0,${bob}) rotate(${tilt} 200 380)">
+   ${o.hair==='long'?`<path d="M108,250 C98,160 160,122 204,124 C252,122 312,160 298,252 C300,320 312,380 318,430 C300,446 284,440 270,452 C262,420 262,380 262,340 L146,340 C144,380 142,420 132,452 C118,440 102,446 86,430 C94,380 106,320 108,250 Z" fill="url(#hD)"/>`:`<ellipse cx="114" cy="272" rx="16" ry="26" fill="#f7f5ef"/><ellipse cx="288" cy="272" rx="16" ry="26" fill="#f7f5ef"/>`}
+   <path d="M118,250 C116,330 150,372 200,374 C252,372 286,330 284,250 C284,200 250,170 200,170 C150,170 118,200 118,250Z" fill="#f7f5ef"/>
+   ${o.hair==='long'?`<path d="M204,162 C168,164 124,196 116,262 C136,226 168,206 204,196 Z" fill="url(#hD)"/><path d="M204,162 C240,164 282,196 288,262 C268,226 238,206 204,196 Z" fill="url(#hD)"/><circle cx="112" cy="318" r="7" fill="url(#hA)"/><circle cx="290" cy="318" r="7" fill="url(#hA)"/>`:`<path d="M112,262 C96,170 160,120 214,130 C268,124 312,170 292,256 C290,222 272,200 250,196 C236,214 196,212 176,200 C160,214 136,212 124,206 C118,224 116,244 112,262Z" fill="url(#hD)"/>`}
+   ${o.glasses===false?`<g transform="translate(${look},0)">${eyes}<path d="M154,256 L160,261 M248,256 L242,261" stroke-width="3.5"/></g>`:`<g transform="translate(${look},0)"><rect x="140" y="248" width="54" height="42" rx="12" fill="#fbfbf8"/><rect x="208" y="248" width="54" height="42" rx="12" fill="#fbfbf8"/><path d="M194,266 Q201,258 208,266 M140,264 L120,258 M262,264 L284,258"/>
+   ${eyes}</g>`}
+   ${brows}
+   <path d="M200,284 C196,298 192,304 202,306" />
+   <path d="${mouth}" ${mood==='cheer'?'fill="#fff"':''}/>
+   ${sweat}
+   </g>
+   ${arm}
+   ${propS}
+  </g>`;
+}
+function sv(inner,x=0,y=0,w=1080,h=1920){return `<svg class="ab" style="left:${x}px;top:${y}px" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}">${inner}</svg>`}
+const T=(x,y,html,style='')=>`<div class="ab" style="left:${x}px;top:${y}px;${style}">${html}</div>`;
+function tick(u,a,x,y,text,col=INK){
+  const p=P(u,a,.4);
+  return sv(`<g filter="url(#pencil)"><rect x="4" y="4" width="54" height="54" fill="none" stroke="${INK}" stroke-width="4"/><path d="M14,30 L28,46 L56,10" fill="none" stroke="${GREEN}" stroke-width="7" stroke-linecap="round" ${draw(P(u,a+.1,.35))}/></g>`,x,y,64,64)
+   + T(x+90,y+2,`<span style="font-size:46px;color:${col}">${text}</span>`,`opacity:${p}`);
+}
+
+// ---------- scenes ----------
+const SC=[];
+// ---------- extra drawings ----------
+function stack(n,x,y,s=1){ // a pile of invoices
+  let g='';
+  for(let i=0;i<n;i++){const dx=(i%2?6:-6)+Math.sin(i*1.7)*8, dy=-i*14;
+    g+=`<g transform="translate(${dx},${dy}) rotate(${Math.sin(i*2.3)*4} 110 70)"><rect x="0" y="0" width="220" height="140" fill="#fff" stroke="${INK}" stroke-width="4"/><path d="M18,30 H150 M18,56 H120 M18,82 H100" stroke="#9fbfab" stroke-width="6"/><path d="M140,112 H200" stroke="${LOSS}" stroke-width="7"/></g>`;}
+  return `<g filter="url(#pencil)" transform="translate(${x},${y}) scale(${s})">${g}</g>`;
+}
+function card(x,y,w,h,title,lines,u,a){
+  const p=P(u,a,.45);
+  return sv(`<g filter="url(#pencil)" style="opacity:${p}"><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="20" fill="#fff" stroke="${INK}" stroke-width="5"/></g>`)+
+   T(x+28,y+24,`<div style="width:${w-56}px"><div class="lab" style="font-size:30px;color:#034620">${title}</div>${lines?`<div style="font-size:32px;color:#3f5e4b;margin-top:8px;line-height:1.25">${lines}</div>`:''}</div>`,`opacity:${p}`);
+}
+const C=(y,html,st='')=>T(80,y,`<div style="width:920px;text-align:center">${html}</div>`,st);
+
+// 1 hook + promise
+SC.push({kick:'ACCREVISE EXPLAINS',ring:[520,700,1100],d:4.5,ev:[.2,1.2,2.2],f:u=>
+  `<div class="hl" style="${ap(u,.2)}">Claude Skills,</div>` +
+  `<div class="hl" style="top:372px;${ap(u,1.2)}"><span class="mark">explained.</span></div>` +
+  T(80,500,`<span class="lab" style="font-size:30px;color:#3f5e4b">FOR A SMALL BUSINESS · 30 INVOICES A WEEK</span>`,ap(u,2.2)) +
+  sv(rohan(160,380,1.68,{hair:'long',glasses:false,prop:'laptop',mood:'happy'}),0,0)
+});
+// 2 meet the hero
+SC.push({kick:'MEET PRIYA',ring:[-500,1100,1000],d:6,ev:[.2,.6,2.2,3.6],f:u=>{
+  const n=Math.round(clamp((u-.8)/2.6)*12);
+  return hl(u,'Priya runs a ','sweet shop') +
+   `<div style="opacity:${P(u,.4,.5)}">`+sv(rohan(-10,470,1.0,{hair:'long',glasses:false,prop:'bill',mood:u>3.6?'worried':'neutral',scratch:u>4.2}),0,0)+`</div>` +
+   sv(stack(n,620,900,1.15)) +
+   T(600,520,`<div style="width:420px"><div class="hand" style="font-size:96px;color:${LOSS};line-height:1">${Math.round(clamp((u-.8)/2.6)*30)}</div><div class="lab" style="font-size:30px;color:#034620">INVOICES EVERY WEEK</div></div>`,`opacity:${P(u,.8,.3)}`) +
+   T(80,1170,`<span class="hand" style="font-size:48px;color:${LOSS}">typed by hand, one by one</span>`,ap(u,3.6));
+}});
+// 3 define it
+SC.push({kick:'WHAT IT IS',ring:[600,1250,900],d:7,ev:[.2,.6,1.8,3.2,4.6],f:u=>{
+  const bx=P(u,.6,.6);
+  return hl(u,'A Claude ','Skill') +
+   sv(`<g filter="url(#pencil)" style="opacity:${bx}"><rect x="80" y="440" width="880" height="560" fill="#fff" stroke="${INK}" stroke-width="6"/><rect x="80" y="440" width="880" height="80" fill="url(#hG)" stroke="${INK}" stroke-width="6"/></g>`) +
+   T(110,456,`<span class="lab" style="font-size:30px;color:#034620;background:#fff;padding:4px 10px">ONE SKILL = ONE FOLDER</span>`,`opacity:${bx}`) +
+   tick(u,1.8,130,580,'your instructions, saved once') +
+   tick(u,3.2,130,700,'your template, your rules') +
+   tick(u,4.6,130,820,'used whenever that job comes up');
+}});
+// 4 her week
+SC.push({kick:'HER WEEK',ring:[500,-350,800],d:5.5,ev:[.2,1,2.2,3.4],f:u=>{
+  const box=(a,x,lab,val,col)=>{const p=P(u,a,.45);return sv(`<g filter="url(#pencil)" style="opacity:${p}"><rect x="6" y="6" width="268" height="190" fill="#fff" stroke="${INK}" stroke-width="5"/></g>`,x,520,280,200)+T(x,540,`<div style="width:280px;text-align:center"><div class="lab" style="font-size:24px;color:#3f5e4b">${lab}</div><div style="font-size:60px;margin-top:28px;color:${col||'#034620'}">${val}</div></div>`,`opacity:${p}`)};
+  return hl(u,'Priya’s ','week') + box(1,70,'INVOICES','30') + box(2.2,400,'EACH','12 min') + box(3.4,730,'EVERY WEEK','6 hrs',LOSS) +
+   `<div style="opacity:${P(u,3.8,.5)}">`+sv(rohan(340,860,.95,{hair:'long',glasses:false,prop:'bill',mood:'worried',sweat:u>4.4}),0,0)+`</div>`;
+}});
+// 5 the real cost
+SC.push({kick:'THE REAL COST',ring:[-400,1300,900],d:7,ev:[.2,.5,3.4,4.8],f:u=>{
+  let dots='';
+  for(let i=0;i<52;i++){const a=.5+i*.05, p=P(u,a,.15), cx=120+(i%13)*68, cy=480+Math.floor(i/13)*68;
+    dots+=`<circle cx="${cx}" cy="${cy}" r="26" fill="${p>.5?'url(#hR)':'#fff'}" stroke="${INK}" stroke-width="4"/>`;}
+  return hl(u,'One year ','later') + sv(`<g filter="url(#pencil)">${dots}</g>`) +
+   T(80,770,`<span style="font-size:52px;color:#034620"><span class="lab" style="font-size:34px">52 WEEKS × 6 HRS =</span> 312 hours</span>`,ap(u,3.4)) +
+   T(80,860,`<span style="font-size:52px;color:#034620">≈ <b style="color:${LOSS};font-weight:600">39 working days</b> of typing</span>`,ap(u,4.8)) +
+   `<div style="opacity:${P(u,4.8,.5)}">`+sv(rohan(340,1000,.85,{hair:'long',glasses:false,mood:'worried',scratch:true,sweat:true}),0,0)+`</div>`;
+}});
+// 6 the twin
+SC.push({kick:'WHAT IF',ring:[640,-300,800],d:6,ev:[.2,.8,2.6],f:u=>{
+  const sp=P(u,.8,.6);
+  return hl(u,'A ','second',' Priya') +
+   sv(`<g filter="url(#pencil)"><path d="M540,470 L540,${470+1000*sp}" stroke="${INK}" stroke-width="5"/></g>`) +
+   `<div style="opacity:${sp}">`+sv(rohan(40,620,1.15,{hair:'long',glasses:false,prop:'bill',mood:'neutral'}),0,0)+sv(rohan(590,620,1.15,{hair:'long',glasses:false,prop:'laptop',mood:'happy'}),0,0)+`</div>`+
+   T(80,1380,`<span class="lab" style="font-size:30px;color:#3f5e4b">TYPES EVERY INVOICE</span>`,ap(u,1.2)) +
+   T(600,1380,`<span class="lab" style="font-size:30px;color:${G6}">TEACHES CLAUDE ONCE</span>`,ap(u,1.2)) +
+   T(80,470,`<span class="lab" style="font-size:36px;color:${G6}">SAME SHOP. SAME 30 INVOICES.</span>`,ap(u,2.6));
+}});
+// 7 ask the viewer
+SC.push({kick:'YOUR GUESS',ring:[-300,400,1300],green:true,d:3.5,ev:[.2,1.2],f:u=>
+  `<div class="hl" style="top:760px;text-align:center;${ap(u,.2)}">How long does her</div><div class="hl" style="top:850px;text-align:center;${ap(u,1.2)}">week take <span class="mark">now?</span></div>`
+});
+// 8 the reveal
+SC.push({kick:'THE ANSWER',ring:[600,1300,1000],d:6,ev:[.2,.6,3.2,4.4],f:u=>{
+  const p=P(u,.6,2.4), h=720, full=h, lvl=full*(1-p*5/6);
+  return hl(u,'Claude drafts. She ','checks.') +
+   sv(`<g filter="url(#pencil)"><rect x="140" y="480" width="230" height="${h}" fill="#fff" stroke="${INK}" stroke-width="6"/><rect x="140" y="${480+h-lvl}" width="230" height="${lvl}" fill="url(#hN)" stroke="${INK}" stroke-width="5"/></g>`) +
+   T(390,480+h-lvl-24,`<span class="hand" style="font-size:44px;color:${G6}">${(6-5*p).toFixed(0)} ${(6-5*p).toFixed(0)==='1'?'hr':'hrs'}</span>`) +
+   T(140,1220,`<span class="lab" style="font-size:24px;color:#3f5e4b">HOURS A WEEK</span>`) +
+   T(560,600,`<div style="width:420px"><div style="font-size:60px;color:#034620;line-height:1.1">From 6 hours<br>to <b style="font-weight:600;color:${G6}">about 1.</b></div></div>`,ap(u,3.2)) +
+   `<div style="opacity:${P(u,3.4,.5)}">`+sv(rohan(600,880,.72,{hair:'long',glasses:false,mood:'cheer',jump:u>3.4&&u<5.5}),0,0)+`</div>`;
+}});
+// 9 reframe
+SC.push({kick:'THE TWIST',ring:[350,500,1300],green:true,d:3.5,ev:[.2,1.2],f:u=>
+  `<div class="hl" style="top:780px;text-align:center;${ap(u,.2)}">Same Claude.</div><div class="hl" style="top:880px;text-align:center;${ap(u,1.2)}"><span class="mark">Her rules.</span></div>`
+});
+// 10 the insight
+SC.push({kick:'WHY IT WORKS',ring:[-450,-300,900],d:8,ev:[.2,.6,1.6,2.6,3.6,5.6],f:u=>{
+  const fold=`<g filter="url(#pencil)" style="opacity:${P(u,.6,.5)}"><path d="M80,470 H330 L370,520 H960 V1000 H80 Z" fill="url(#hA)" stroke="${INK}" stroke-width="6"/><rect x="80" y="540" width="880" height="460" fill="#fff" stroke="${INK}" stroke-width="5"/></g>`;
+  const file=(a,y,name,what)=>T(130,y,`<div style="display:flex;gap:24px;align-items:baseline"><span class="lab" style="font-size:30px;color:#034620;background:#dfe9e2;padding:6px 14px;border-radius:8px">${name}</span><span style="font-size:36px;color:#3f5e4b">${what}</span></div>`,ap(u,a));
+  return hl(u,'Inside her ','Skill') + sv(fold) +
+   T(100,486,`<span class="lab" style="font-size:28px;color:#034620">PRIYA-INVOICES</span>`,`opacity:${P(u,.6,.5)}`) +
+   file(1.6,590,'SKILL.md','how she likes it done') +
+   file(2.6,720,'TEMPLATE','her invoice layout') +
+   file(3.6,850,'RATES + CUSTOMERS','tax rates, customer details') +
+   T(80,1070,`<div style="font-size:46px;color:#034620;line-height:1.3">Set up once: <b style="font-weight:600">~1 hour</b><br>Saves: <b style="font-weight:600;color:${G6}">~5 hours a week</b></div>`,ap(u,4.8)) +
+   T(80,1240,`<span class="hand" style="font-size:52px;color:${G6}">→ pays back in week one</span>`,ap(u,5.6));
+}});
+// 11 be fair
+SC.push({kick:'TO BE FAIR',ring:[560,1250,1000],d:6,ev:[.2,.6,2.2,3.6],f:u=>
+  hl(u,'Always ','check it') +
+  `<div style="opacity:${P(u,.6,.5)}">`+sv(rohan(80,480,1.05,{hair:'long',glasses:false,prop:'bill',mood:u>3.6?'happy':'neutral',look:-6}),0,0)+`</div>` +
+  T(560,560,`<div style="font-size:46px;color:#034620;width:420px;line-height:1.25">AI can make mistakes.</div>`,ap(u,2.2)) +
+  T(560,740,`<div class="hand" style="font-size:42px;color:${G6};width:420px;line-height:1.15">She checks every total and GST number before it goes out.</div>`,ap(u,3.6)) +
+  T(80,1220,`<div style="font-size:52px;color:#034620">Her name is on the <span class="mark">invoice.</span></div>`,ap(u,4.6))
+});
+// 12 generalise
+SC.push({kick:'THE RULE',ring:[-500,1350,900],d:6.5,ev:[.2,1,2.2,3.4],f:u=>
+  hl(u,'Teach it ','more jobs') +
+  card(80,470,880,170,'PAYMENT REMINDERS','polite nudges for unpaid bills',u,1) +
+  card(80,670,880,170,'SUPPLIER ORDERS','the weekly order, in her format',u,2.2) +
+  card(80,870,880,170,'MONTHLY SALES SUMMARY','what sold, what didn’t',u,3.4) +
+  `<div style="opacity:${P(u,4,.5)}">`+sv(rohan(340,1080,.8,{hair:'long',glasses:false,prop:'laptop',mood:'happy'}),0,0)+`</div>`
+});
+// 13 the truth
+SC.push({kick:null,ring:[-300,150,1700],green:true,logo:false,d:6,ev:[.2,.6,1.6,2.6],f:u=>
+  T(0,330,`<div style="width:1080px;text-align:center"><img src="logo-paper.png" style="height:330px"></div>`,ap(u,.2)) +
+  `<div class="hl" style="left:0;width:1080px;top:820px;text-align:center;${ap(u,.6)}">Teach it once.</div>` +
+  `<div class="hl" style="left:0;width:1080px;top:920px;text-align:center;${ap(u,1.6)}">Save <span class="mark">every week.</span></div>` +
+  T(110,1170,`<div class="foot" style="width:860px;text-align:center;color:#b9d0c1">Illustrative times for one small shop. Claude Skills are available on Claude’s paid plans (Pro, Max, Team, Enterprise); check claude.ai for your plan. Always review AI output before sending.</div>`,ap(u,2.6))
+});
+
+const VO=window.VO||[]; SC.forEach((s,i)=>{s.d0=s.d; s.d=Math.max(s.d,(VO[i]||0)+0.95); s.k=s.d0/s.d; s.ev=(s.ev||[]).map(t=>t/s.k);});
+let START=[],acc=0; SC.forEach(s=>{START.push(acc);acc+=s.d}); const TOTAL=acc; window.STARTS=START;
+window.TOTAL=TOTAL;
+window.EVENTS=(()=>{const e=[];SC.forEach((s,i)=>{(s.ev||[]).forEach(t=>e.push({t:START[i]+t,k:'pencil'}));if(i>0)e.push({t:START[i],k:'turn'})});return e})();
+function sceneAt(t){let i=SC.length-1;for(let k=0;k<SC.length;k++){if(t<START[k]+SC[k].d){i=k;break}}return i}
+window.render=function(t){
+  GT=t;
+  document.getElementById('turb').setAttribute('seed',String(1+Math.floor(t*6)%3));
+  const i=sceneAt(t), u=t-START[i];
+  const TR=.5;
+  let html='', k=i, uu=u, wipe='';
+  if(i>0 && u<TR){ // Accrevise green wipe: covers the old frame right-to-left, then uncovers the new one
+    const p=u/TR;
+    if(p<.5){k=i-1;uu=SC[i-1].d;const w=ease(p*2)*1080;wipe=`<div class="ab" style="right:0;top:0;width:${w}px;height:1920px;background:#034620;z-index:5"></div>`;}
+    else{const w=(1-ease((p-.5)*2))*1080;wipe=`<div class="ab" style="left:0;top:0;width:${w}px;height:1920px;background:#034620;z-index:5"></div>`;}
+  }
+  const s=SC[k], g=!!s.green;
+  html+=`<div class="layer ${g?'green':''}">${s.ring?ring(...s.ring):''}`+
+    (s.logo===false?'':`<img class="logo" src="${g?'logo-paper.png':'logo-green.png'}">`)+
+    (s.kick?`<div class="kick" style="${g?'color:#b9d0c1':''}">${s.kick}</div>`:'')+
+    `${s.f(uu*s.k)}</div>`+wipe;
+  document.getElementById('stage').innerHTML=html;
+};
+render(0);
+</script>
+</body></html>
