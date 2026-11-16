@@ -21,7 +21,7 @@ Weekdays 7–9 PM IST or Sunday 10 AM–12 PM, then adjust from your Insights.
 ## Assumptions (also on the last frame)
 ₹50,000 balance, 3.5% a month interest + 18% GST on interest (≈ 4.13% a month), minimum due 5% of the balance with a ₹200 floor, no new spends, interest only on the unpaid balance. Rates, minimums and floors differ by card.
 
-## Voiceover script (Kokoro af_heart, speed 1.1, one line per beat)
+## Voiceover script (Kokoro hf_alpha, Indian female voice, speed 1.05, one line per beat)
 1. Minimum due on your credit card, explained.
 2. Rohan buys a new phone for fifty thousand rupees. When the bill comes, he pays only the minimum. Two thousand five hundred.
 3. The minimum due is about five percent of your bill. Pay it, and there's no late fee. But the rest keeps costing you three and a half percent a month, plus G S T.

@@ -57,7 +57,7 @@ We borrow only the STORY STRUCTURE from the reference reel we studied. Never use
 - Use the Accrevise design system's reel cover: white ground, logo centred at the top, a 2-3 word UPPERCASE title in the centre.
 
 ## Audio
-- Default: voiceover. Kokoro TTS (pip kokoro-onnx; model files from the thewh1teagle/kokoro-onnx GitHub releases, model-files-v1.0), voice af_heart, speed 1.1, one calm explainer line per beat, numbers written out as words. Each beat lasts at least its line + ~1 s; the beat's animations stretch to fit. No sound effects under the voice.
+- Default: voiceover. Kokoro TTS (pip kokoro-onnx; model files from the thewh1teagle/kokoro-onnx GitHub releases, model-files-v1.0), Indian English voice hf_alpha (Kokoro Indian female; alternatives hf_beta, hm_omega, hm_psi) with lang en-us, speed 1.05, one calm explainer line per beat, numbers written out as words. Each beat lasts at least its line + ~1 s; the beat's animations stretch to fit. No sound effects under the voice.
 - Also deliver a silent version so they can add a trending track.
 
 ## Facts
