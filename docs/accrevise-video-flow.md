@@ -41,10 +41,22 @@ Visual guide: https://claude.ai/artifact/HUxSZxUgjKEeMTmHwpUQ8V
 - Every number has a unit, and loss figures use the loss colour.
 
 ## Fitting it to Accrevise
-- Start with the white reel cover. Beat 1 then opens on a negative hook over the hero, for example "This loan quietly costs Rohan ₹1.3 lakh."
-- The hero should be an Indian everyday person: a salaried 28-year-old, a parent or a small-shop owner. Use ₹ figures and check every rate.
-- Colours: paper ground with green-900 ink for story and maths. The twist and the closing truth go on ledger green. Loss figures use the loss red and the fix uses amber.
-- Close with the closing line, a share CTA ("send this to someone taking a loan") and then the kite → envelope → logo outro.
+Where this flow clashes with an older Accrevise rule, **the video's pattern wins**:
+
+| Older rule | Now (from the video) |
+|---|---|
+| Open with a negative hook | Open with the topic and a promise ("…, *explained.*"), the series tag and the example's numbers over the hero |
+| About 2 s per slide, 7-8 slides, ~20 s | About 6-7 s per beat, 13 beats, 60-90 s, each beat built in 2-3 steps |
+| Dark green ground, switch to cream for the fix | One light ground (white or paper) for the whole reel |
+| Glowing particles, holographic coins, neon lines | Pencil-sketch hero plus hand-drawn diagrams |
+| Montserrat 900 for all text, one size per slide | Serif headline at the top left with one italic key word; Montserrat only for small labels |
+| Section labels (SCAM ALERT, THE FIX…) | A 2-5 word headline per scene; the series tag only on the first and last frames |
+| Every slide a complete thought | Sentences may build across steps |
+| CTA slide before the outro | The closing line and footnote end the story; the CTA goes in the caption |
+
+Kept, because they don't clash: the Accrevise colours (green-900 ink, amber colour pop, loss red), ₹ figures checked against sources, no logos of other companies, the reel cover layout, the kite → envelope → logo outro after beat 13, and the audio, caption and posting-time deliverables.
+
+The updated reels skill is in `skills/accrevise-reels/SKILL.md`.
 
 ## Checklist
 - [ ] A named character appears in the first 3 seconds
@@ -52,4 +64,4 @@ Visual guide: https://claude.ai/artifact/HUxSZxUgjKEeMTmHwpUQ8V
 - [ ] A twin or "what if" scene
 - [ ] One question to the viewer before the reveal
 - [ ] A fair "sometimes it's worth it" beat
-- [ ] Ends with a closing line, footnote, CTA and outro
+- [ ] Ends with a closing line and footnote, then the kite outro
