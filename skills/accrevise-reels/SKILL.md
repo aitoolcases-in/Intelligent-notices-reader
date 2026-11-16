@@ -10,7 +10,14 @@ Every reel follows a character-and-story flow (13 beats). The full beat sheet is
 We borrow only the STORY STRUCTURE from the reference reel we studied. Never use its creator's name or handle, its series tag ("in 90 seconds"), its character, its wording, or its exact look (ruled paper, serif headlines with an italic word, greyscale sketch with a yellow pop). Every frame is unmistakably Accrevise.
 
 ## The flow (13 beats, about 60-90 s)
-1. **Hook + promise:** kicker "ACCREVISE EXPLAINS", the topic as the headline with one word in the amber marker ("Minimum due, ==explained.=="), the example's key numbers, over a sketch of the hero and the thing they want.
+1. **Hook (our copy pattern), centred on the notebook page:**
+   - Line 1: a short question with a coral wavy underline ("Only paying the minimum?").
+   - Line 2: the setup ("Your card debt could last").
+   - The scary word or number, huge, UPPERCASE, coral, circled by hand ("23 YEARS?").
+   - The promise in green ("One switch clears it 7× faster").
+   - A grey-green subtitle ("just keep paying ₹2,500 a month").
+   - Two small doodles at the bottom (e.g. an amber ₹ coin with an orbit, a coral line chart with an arrow).
+   - Spoken hook says the same thing in one breath. Every claim in it must be literally true for the example.
 2. **Meet the hero:** "Rohan buys a ==phone==": the object, its ₹ price tag, and the decision ("he pays only the minimum: ₹2,500").
 3. **Define it:** three plain features on a receipt, ticked one at a time.
 4. **The numbers:** amount, rate and payment boxes pop in, with an assumptions footnote.
