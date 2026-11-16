@@ -1,0 +1,257 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+@font-face{font-family:SS4;src:url(node_modules/@fontsource/source-serif-4/files/source-serif-4-latin-400-normal.woff2);font-weight:400}
+@font-face{font-family:SS4;src:url(node_modules/@fontsource/source-serif-4/files/source-serif-4-latin-600-normal.woff2);font-weight:600}
+@font-face{font-family:SS4;src:url(node_modules/@fontsource/source-serif-4/files/source-serif-4-latin-400-italic.woff2);font-weight:400;font-style:italic}
+@font-face{font-family:SS4;src:url(node_modules/@fontsource/source-serif-4/files/source-serif-4-latin-600-italic.woff2);font-weight:600;font-style:italic}
+@font-face{font-family:SS4X;src:url(node_modules/@fontsource/source-serif-4/files/source-serif-4-latin-ext-400-normal.woff2);font-weight:400}
+@font-face{font-family:SS4X;src:url(node_modules/@fontsource/source-serif-4/files/source-serif-4-latin-ext-600-normal.woff2);font-weight:600}
+@font-face{font-family:SS4X;src:url(node_modules/@fontsource/source-serif-4/files/source-serif-4-latin-ext-600-italic.woff2);font-weight:600;font-style:italic}
+@font-face{font-family:MS;src:url(node_modules/@fontsource/montserrat/files/montserrat-latin-700-normal.woff2);font-weight:700}
+@font-face{font-family:MS;src:url(node_modules/@fontsource/montserrat/files/montserrat-latin-800-normal.woff2);font-weight:800}
+@font-face{font-family:MSX;src:url(node_modules/@fontsource/montserrat/files/montserrat-latin-ext-700-normal.woff2);font-weight:700}
+@font-face{font-family:MSX;src:url(node_modules/@fontsource/montserrat/files/montserrat-latin-ext-800-normal.woff2);font-weight:800}
+@font-face{font-family:CV;src:url(node_modules/@fontsource/caveat/files/caveat-latin-600-normal.woff2);font-weight:600}
+@font-face{font-family:CVX;src:url(node_modules/@fontsource/caveat/files/caveat-latin-ext-600-normal.woff2);font-weight:600}
+@font-face{font-family:KL;src:url(node_modules/@fontsource/kalam/files/kalam-latin-400-normal.woff2);font-weight:400}
+@font-face{font-family:KL;src:url(node_modules/@fontsource/kalam/files/kalam-latin-700-normal.woff2);font-weight:700 900}
+@font-face{font-family:KLX;src:url(node_modules/@fontsource/kalam/files/kalam-latin-ext-400-normal.woff2);font-weight:400}
+@font-face{font-family:KLX;src:url(node_modules/@fontsource/kalam/files/kalam-latin-ext-700-normal.woff2);font-weight:700 900}
+html,body{margin:0;padding:0;background:#f6f4e8}
+#stage{position:relative;width:1080px;height:1920px;overflow:hidden;background:#f6f4e8;font-family:KL,KLX,cursive;color:#034620}
+.layer{background:#f6f4e8;background-image:repeating-linear-gradient(to bottom, transparent 0 298px, transparent 298px 300px),repeating-linear-gradient(to bottom, transparent 0 88px, #d3e2d6 88px 90px);background-position:0 30px}
+.nb-margin{position:absolute;left:119px;top:0;width:3px;height:1920px;background:#e08a78}
+.nb-hole{position:absolute;left:40px;width:44px;height:44px;border-radius:50%;background:#e4dfd3}
+.content{position:absolute;inset:0;transform-origin:0 0;transform:translate(86px,30px) scale(.94)}
+.layer.green{background:#034620;color:#f7f5ef}
+.ring{position:absolute;border:4px solid #9fbfab;border-radius:9999px;pointer-events:none}
+.green .ring{border-color:#2d7049}
+.logo{position:absolute;right:56px;top:60px;height:120px}
+.kick{display:none;position:absolute;left:80px;top:232px;font-family:KL,KLX,cursive;font-weight:700;font-size:26px;letter-spacing:.14em;color:#7f8f80}
+.mark{text-decoration:underline wavy #e4553a;text-decoration-thickness:5px;text-underline-offset:16px;text-decoration-skip-ink:none}
+.mark.loss{text-decoration:none;color:#e4553a;display:inline-block;border:5px solid #e4553a;border-radius:50%;padding:6px 26px;transform:rotate(-2deg)}
+.layer{position:absolute;inset:0}
+.ab{position:absolute}
+.hl{position:absolute;left:80px;top:280px;width:900px;font-family:KL,KLX,cursive;font-size:84px;line-height:1.12;font-weight:700;letter-spacing:0;color:#034620}
+.green .hl{color:#f7f5ef}
+.lab{font-family:KL,KLX,cursive;font-weight:700;letter-spacing:.02em}
+.hand{font-family:KL,KLX,cursive;font-weight:700;letter-spacing:-.01em}
+.foot{font-family:KL,KLX,cursive;font-weight:700;font-size:24px;line-height:1.35;color:#7f8f80}
+</style></head>
+<body>
+<div id="stage"></div>
+<svg width="0" height="0" style="position:absolute">
+<defs>
+<filter id="pencil" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence id="turb" type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="1"/><feDisplacementMap in="SourceGraphic" scale="5"/></filter>
+<pattern id="hG" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="14" height="14" fill="#f6f4e8"/><line x1="0" y1="0" x2="0" y2="14" stroke="#9fbfab" stroke-width="2.6"/></pattern>
+<pattern id="hD" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(40)"><rect width="9" height="9" fill="#2d7049"/><line x1="0" y1="0" x2="0" y2="9" stroke="#034620" stroke-width="3"/></pattern>
+<pattern id="hA" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="14" height="14" fill="#f1cf86"/><line x1="0" y1="0" x2="0" y2="14" stroke="#c98f1c" stroke-width="3"/></pattern>
+<pattern id="hR" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="14" height="14" fill="#f3d7cc"/><line x1="0" y1="0" x2="0" y2="14" stroke="#e4553a" stroke-width="3.4"/></pattern>
+<pattern id="hN" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="14" height="14" fill="#dfe9e2"/><line x1="0" y1="0" x2="0" y2="14" stroke="#2d7049" stroke-width="3.4"/></pattern>
+</defs>
+</svg>
+<script src="vo.js"></script>
+<script>
+const INK='#034620', GREEN='#034620', LOSS='#e4553a', G6='#2d7049', AMB='#e2b04a';
+const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const ease=x=>{x=clamp(x);return x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2};
+const P=(u,a,d=.5)=>ease((u-a)/d);
+// appear: fade + rise
+const ap=(u,a,d=.45)=>{const p=P(u,a,d);return `opacity:${p};transform:translateY(${(1-p)*24}px);`};
+const draw=(p)=>`pathLength="1" stroke-dasharray="1" stroke-dashoffset="${1-clamp(p)}"`;
+const EVENTS=[]; // build-step times for audio
+function hl(u,a,em,b,cls=''){return `<div class="hl" style="${ap(u,0.15,.5)}">${a}<span class="mark ${cls}">${em}</span>${b||''}</div>`}
+const kick=(u,txt)=>`<div class="kick" style="${ap(u,0,.4)}">${txt}</div>`;
+const ring=(x,y,d)=>`<div class="ring" style="left:${x}px;top:${y}px;width:${d}px;height:${d}px"></div>`;
+
+// ---------- the hero: Rohan ----------
+function rohan(x,y,s,o={}){
+  const mood=o.mood||'happy', prop=o.prop||'none', look=o.look||0;
+  const mouth = mood==='happy' ? 'M178,318 Q200,338 224,316' : mood==='worried' ? 'M180,326 Q200,314 222,326' : 'M182,322 L220,320';
+  const brows = mood==='worried' ? '<path d="M146,236 L190,244 M212,244 L256,234" />' : '<path d="M146,238 Q168,228 190,236 M212,236 Q234,228 256,238" />';
+  let propS='';
+  if(prop==='phone') propS=`<g transform="translate(250,440) rotate(-12)"><rect x="0" y="0" width="70" height="128" rx="12" fill="url(#hA)" stroke="${INK}" stroke-width="4"/><rect x="9" y="14" width="52" height="92" rx="4" fill="#fbe7b9" stroke="${INK}" stroke-width="2.5"/></g><path d="M300,600 C300,540 280,500 262,486 C250,478 246,500 258,508" fill="#f6f4e8" stroke="${INK}" stroke-width="4"/>`;
+  if(prop==='bill') propS=`<g transform="translate(230,430) rotate(8)"><path d="M0,0 L120,0 L120,150 L110,140 L100,150 L90,140 L80,150 L70,140 L60,150 L50,140 L40,150 L30,140 L20,150 L10,140 L0,150 Z" fill="#fff" stroke="${INK}" stroke-width="4"/><path d="M16,30 H100 M16,56 H90 M16,82 H70" stroke="#8a8a84" stroke-width="5"/><path d="M16,112 H100" stroke="${LOSS}" stroke-width="7"/></g>`;
+  if(prop==='calendar') propS=`<g transform="translate(240,420) rotate(6)"><rect x="0" y="0" width="140" height="130" fill="#fff" stroke="${INK}" stroke-width="4"/><rect x="0" y="0" width="140" height="34" fill="url(#hN)" stroke="${INK}" stroke-width="4"/><path d="M20,62 l12,12 l22,-24 M64,62 l12,12 l22,-24 M20,100 l12,12 l22,-24 M64,100 l12,12 l22,-24" stroke="${GREEN}" stroke-width="5" fill="none"/></g>`;
+  const sweat = o.sweat ? `<path d="M296,200 C292,214 288,222 296,228 C304,222 300,214 296,200Z" fill="#cfe3ee" stroke="${INK}" stroke-width="3"/>` : '';
+  return `<g transform="translate(${x},${y}) scale(${s})" filter="url(#pencil)" stroke="${INK}" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+   <path d="M40,640 C46,500 100,420 200,408 C300,420 354,500 360,640 Z" fill="url(#hG)"/>
+   <path d="M200,408 C186,440 176,470 170,520 M200,408 C214,440 224,470 230,520" />
+   <path d="M150,412 L200,470 L250,412" fill="#f6f4e8"/>
+   <path d="M120,440 C118,500 112,560 110,640 M282,440 C286,500 292,560 292,640" stroke-width="3.5"/>
+   <path d="M178,348 L178,412 M222,348 L222,412" />
+   <ellipse cx="114" cy="272" rx="16" ry="26" fill="#f6f4e8"/><ellipse cx="288" cy="272" rx="16" ry="26" fill="#f6f4e8"/>
+   <path d="M118,250 C116,330 150,372 200,374 C252,372 286,330 284,250 C284,200 250,170 200,170 C150,170 118,200 118,250Z" fill="#f6f4e8"/>
+   <path d="M112,262 C96,170 160,120 214,130 C268,124 312,170 292,256 C290,222 272,200 250,196 C236,214 196,212 176,200 C160,214 136,212 124,206 C118,224 116,244 112,262Z" fill="url(#hD)"/>
+   <g transform="translate(${look},0)"><rect x="140" y="248" width="54" height="42" rx="12" fill="#fbfbf8"/><rect x="208" y="248" width="54" height="42" rx="12" fill="#fbfbf8"/><path d="M194,266 Q201,258 208,266 M140,264 L120,258 M262,264 L284,258"/>
+   <circle cx="168" cy="270" r="5" fill="${INK}"/><circle cx="234" cy="270" r="5" fill="${INK}"/></g>
+   ${brows}
+   <path d="M200,284 C196,298 192,304 202,306" />
+   <path d="${mouth}"/>
+   ${sweat}
+   ${propS}
+  </g>`;
+}
+function sv(inner,x=0,y=0,w=1080,h=1920){return `<svg class="ab" style="left:${x}px;top:${y}px" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}">${inner}</svg>`}
+const T=(x,y,html,style='')=>`<div class="ab" style="left:${x}px;top:${y}px;${style}">${html}</div>`;
+function tick(u,a,x,y,text,col=INK){
+  const p=P(u,a,.4);
+  return sv(`<g filter="url(#pencil)"><rect x="4" y="4" width="54" height="54" fill="none" stroke="${INK}" stroke-width="4"/><path d="M14,30 L28,46 L56,10" fill="none" stroke="${GREEN}" stroke-width="7" stroke-linecap="round" ${draw(P(u,a+.1,.35))}/></g>`,x,y,64,64)
+   + T(x+90,y+2,`<span style="font-size:46px;color:${col}">${text}</span>`,`opacity:${p}`);
+}
+
+// ---------- scenes ----------
+const SC=[];
+// 1 hook + promise
+SC.push({kick:'ACCREVISE EXPLAINS',ring:[520, 700, 1100],green:false,d:5.5,ev:[.2,1.2,2.2],f:u=>{
+  return `<div class="hl" style="${ap(u,.2)}">Minimum due,</div>` +
+   `<div class="hl" style="top:372px;${ap(u,1.2)}"><span class="mark">explained.</span></div>` +
+   T(80,500,`<span class="lab" style="font-size:30px;color:#7f8f80">₹50,000 · 3.5% A MONTH · 5% MINIMUM</span>`,ap(u,2.2)) +
+   sv(rohan(140,620,1.75,{prop:'phone',mood:'happy',look:Math.sin(u*1.4)*3}),0,0) ;
+}});
+// 2 meet the hero
+SC.push({kick:'MEET ROHAN',ring:[-500, 1100, 1000],green:false,d:6.5,ev:[.2,1,2.6,4.2],f:u=>{
+  const tg=P(u,1,.6);
+  return hl(u,'Rohan buys a ','phone') +
+   sv(`<g filter="url(#pencil)" transform="translate(330,520) rotate(-6)"><rect x="0" y="0" width="230" height="420" rx="34" fill="url(#hA)" stroke="${INK}" stroke-width="6"/><rect x="24" y="44" width="182" height="320" rx="8" fill="#fbe7b9" stroke="${INK}" stroke-width="4"/><circle cx="115" cy="392" r="12" fill="none" stroke="${INK}" stroke-width="4"/></g>
+      <g filter="url(#pencil)" style="opacity:${tg}"><path d="M560,560 L640,520" stroke="${INK}" stroke-width="4"/><g transform="translate(630,450) rotate(-10)"><rect x="0" y="0" width="300" height="110" fill="#fff" stroke="${INK}" stroke-width="5"/><circle cx="22" cy="55" r="9" fill="none" stroke="${INK}" stroke-width="4"/></g></g>`) +
+   T(690,470,`<span class="hand" style="font-size:58px;color:#034620;display:inline-block;transform:rotate(-10deg)">₹50,000</span>`,`opacity:${tg}`) +
+   T(80,1050,`<span class="lab" style="font-size:36px;color:#034620">HIS BILL: ₹50,000 DUE</span>`,ap(u,2.6)) +
+   T(80,1120,`<span class="hand" style="font-size:48px;color:${LOSS}">→ he pays only the minimum: ₹2,500</span>`,ap(u,4.2));
+}});
+// 3 define it
+SC.push({kick:'WHAT IT IS',ring:[600, 1250, 900],green:false,d:7,ev:[.2,.6,1.8,3.2,4.6],f:u=>{
+  const bx=P(u,.6,.6);
+  return hl(u,'The minimum ','due') +
+   sv(`<g filter="url(#pencil)" style="opacity:${bx}"><rect x="80" y="440" width="880" height="620" fill="#fff" stroke="${INK}" stroke-width="6"/><rect x="80" y="440" width="880" height="80" fill="url(#hG)" stroke="${INK}" stroke-width="6"/></g>`) +
+   T(110,456,`<span class="lab" style="font-size:30px;color:#034620;background:#fff;padding:4px 10px">CARD STATEMENT</span>`,`opacity:${bx}`) +
+   tick(u,1.8,130,580,'about 5% of your bill') +
+   tick(u,3.2,130,700,'pay it and there’s no late fee') +
+   tick(u,4.6,130,820,'the rest costs 3.5% a month',LOSS) +
+   T(220,885,`<span style="font-size:40px;color:${LOSS}">+ 18% GST on that interest</span>`,`opacity:${P(u,5.2,.4)}`);
+}});
+// 4 the offer / his bill
+SC.push({kick:'THE NUMBERS',ring:[500, -350, 800],green:false,d:6.5,ev:[.2,1,2.2,3.4],f:u=>{
+  const box=(a,x,lab,val)=>{const p=P(u,a,.45);return sv(`<g filter="url(#pencil)"><rect x="6" y="6" width="268" height="190" fill="#fff" stroke="${INK}" stroke-width="5"/></g>`,x,520,280,200)+T(x,540,`<div style="width:280px;text-align:center"><div class="lab" style="font-size:24px;color:#7f8f80">${lab}</div><div style="font-size:60px;margin-top:28px;color:#034620">${val}</div></div>`,`opacity:${p}`).replace('<svg',`<svg style="opacity:${p}"`)};
+  return hl(u,'Rohan’s ','bill') + box(1,70,'HE OWES','₹50,000') + box(2.2,400,'INTEREST','3.5%/mo') + box(3.4,730,'HE PAYS','5% min') +
+   T(80,800,`<div class="foot" style="width:880px">3.5% a month ≈ 42% a year, plus 18% GST on interest ≈ 4.13% a month. Typical Indian card rates; check your card’s key fact statement.</div>`,ap(u,4.2)) +
+   `<div style="opacity:${P(u,4.8,.5)}">`+sv(rohan(340,1000,.95,{prop:'bill',mood:'worried'}),0,0)+`</div>`;
+}});
+// 5 the real cost
+SC.push({kick:'THE REAL COST',ring:[-400, 1300, 900],green:false,d:8.5,ev:[.2,.5,3.4,4.8,6.2],f:u=>{
+  let dots='';
+  for(let i=0;i<12;i++){const a=.5+i*.22, p=P(u,a,.2), cx=110+(i%6)*150, cy=500+Math.floor(i/6)*150;
+    dots+=`<circle cx="${cx}" cy="${cy}" r="52" fill="${p>.5?'url(#hN)':'#fff'}" stroke="${INK}" stroke-width="5"/>`;}
+  const b=P(u,6.2,.9), w=820, wp=w*6090/28286;
+  return hl(u,'One year ','later') + sv(`<g filter="url(#pencil)">${dots}</g>`) +
+   T(80,750,`<span style="font-size:52px;color:#034620"><span class="lab" style="font-size:36px">12 × MINIMUM =</span> ₹28,286 paid</span>`,ap(u,3.4)) +
+   T(80,850,`<span style="font-size:52px;color:#034620">still owes: <b style="color:${LOSS};font-weight:600">₹43,910</b></span>`,ap(u,4.8)) +
+   sv(`<g filter="url(#pencil)" style="opacity:${P(u,6.2,.3)}"><rect x="80" y="980" width="${w*b}" height="110" fill="url(#hR)" stroke="${INK}" stroke-width="5"/><rect x="80" y="980" width="${wp*b}" height="110" fill="url(#hN)" stroke="${INK}" stroke-width="5"/></g>`) +
+   T(84,1110,`<span class="hand" style="font-size:37px;color:${G6}">↑ cut the debt: ₹6,090</span>`,ap(u,7)) +
+   T(470,1170,`<span class="hand" style="font-size:37px;color:${LOSS}">interest + GST: ₹22,196</span>`,ap(u,7.4));
+}});
+// 6 the twin
+SC.push({kick:'WHAT IF',ring:[640, -300, 800],green:false,d:6.5,ev:[.2,.8,2.6,4.2],f:u=>{
+  const sp=P(u,.8,.6);
+  return hl(u,'A ','second',' Rohan') +
+   sv(`<g filter="url(#pencil)"><path d="M540,${470} L540,${470+1000*sp}" stroke="${INK}" stroke-width="5"/></g>`) +
+   `<div style="opacity:${sp}">`+sv(rohan(40,620,1.15,{prop:'bill',mood:'neutral'}),0,0)+sv(rohan(590,620,1.15,{prop:'calendar',mood:'happy'}),0,0)+`</div>`+
+   T(80,1380,`<span class="lab" style="font-size:30px;color:#7f8f80">PAYS THE MINIMUM</span>`,ap(u,1.2)) +
+   T(600,1380,`<span class="lab" style="font-size:30px;color:${G6}">PAYS ₹2,500 FLAT</span>`,ap(u,1.2)) +
+   T(80,470,`<span class="lab" style="font-size:36px;color:${G6}">SAME ₹2,500 TO START. HE NEVER LETS IT SHRINK.</span>`,ap(u,2.6)) ;
+}});
+// 7 ask the viewer
+SC.push({kick:'YOUR GUESS',ring:[-300, 400, 1300],green:true,d:3.5,ev:[.2,1.2],f:u=>
+  `<div class="hl" style="top:760px;text-align:center;${ap(u,.2)}">How long until</div><div class="hl" style="top:870px;text-align:center;${ap(u,1.2)}">he’s <span class="mark">debt-free?</span></div>`
+});
+// 8 the reveal
+SC.push({kick:'THE ANSWER',ring:[600, 1300, 1000],green:false,d:8.5,ev:[.2,.6,3.6,5,6.4],f:u=>{
+  const p=P(u,.6,2.8), h=780, lvl=h*(1-p);
+  let ticks='';[0,12,24,36].forEach((m,i)=>{const yy=480+h-(h*m/39);ticks+=`<path d="M370,${yy} H392" stroke="${INK}" stroke-width="4"/>`;});
+  return hl(u,'He keeps it ','fixed') +
+   sv(`<g filter="url(#pencil)"><rect x="140" y="480" width="230" height="${h}" fill="#fff" stroke="${INK}" stroke-width="6"/><rect x="140" y="${480+h-lvl}" width="230" height="${lvl}" fill="url(#hR)" stroke="${INK}" stroke-width="5"/>${ticks}</g>`) +
+   [['start',0],['1 yr',12],['2 yrs',24],['3 yrs',36]].map(([l,m])=>T(404,480+h*(m/39)-16,`<span class="lab" style="font-size:24px;color:#7f8f80">${l}</span>`)).join('') +
+   T(140,1280,`<span class="lab" style="font-size:24px;color:#7f8f80">DEBT LEFT</span>`) +
+   T(165,1170,`<span class="hand" style="font-size:46px;color:${G6}">₹0 ✓</span>`,`opacity:${P(u,3.4,.4)}`) +
+   T(160,500,`<span class="hand" style="font-size:37px;color:#034620">₹50,000</span>`,`opacity:${1-P(u,1,.5)}`) +
+   T(560,620,`<div style="width:420px"><div style="font-size:60px;color:#034620;line-height:1.1">Debt-free in<br><b style="font-weight:600;color:${G6}">39 months.</b></div></div>`,ap(u,3.6)) +
+   T(560,820,`<div style="font-size:44px;color:#034620;width:420px">Total paid: ₹97,371</div>`,ap(u,5)) +
+   T(560,960,`<div class="hand" style="font-size:39px;color:${LOSS};width:420px;line-height:1.05">Rohan 1, on the minimum? Still paying.</div>`,ap(u,6.4));
+}});
+// 9 reframe
+SC.push({kick:'THE TWIST',ring:[350, 500, 1300],green:true,d:4.5,ev:[.2,1.5],f:u=>
+  `<div class="hl" style="top:780px;text-align:center;${ap(u,.2)}">Minimum due ≠</div><div class="hl" style="top:890px;text-align:center;${ap(u,1.5)}"><span class="mark loss">minimum cost.</span></div>`
+});
+// 10 the insight
+SC.push({kick:'WHY IT HAPPENS',ring:[-450, -300, 900],green:false,d:8.5,ev:[.2,.6,3.4,4.6,6.4],f:u=>{
+  const pts=[[0,2500],[12,2196],[48,1440],[96,900],[150,500],[210,250],[273,200]];
+  const X=m=>120+m*2.9, Y=v=>1000-v*0.17;
+  const d='M'+pts.map(([m,v])=>`${X(m)},${Y(v)}`).join(' L');
+  const L=P(u,3.4,1), L2=P(u,4.6,1);
+  return hl(u,'It shrinks ','with you') +
+   sv(`<g filter="url(#pencil)"><path d="M120,560 V1000 H930" fill="none" stroke="${INK}" stroke-width="4"/><path d="${d}" fill="none" stroke="${LOSS}" stroke-width="7" ${draw(P(u,.6,2.2))}/></g>`) +
+   T(140,520,`<span class="hand" style="font-size:35px;color:${LOSS}">₹2,500</span>`,ap(u,.6)) +
+   T(820,930,`<span class="hand" style="font-size:35px;color:${LOSS}">₹200</span>`,ap(u,2.6)) +
+   T(120,1010,`<span class="lab" style="font-size:22px;color:#7f8f80">HIS MINIMUM DUE, MONTH BY MONTH →</span>`,ap(u,.8)) +
+   T(80,1110,`<span class="lab" style="font-size:26px;color:#034620">ROHAN 1 · MINIMUM</span>`,ap(u,3.4)) +
+   sv(`<g filter="url(#pencil)"><rect x="80" y="1160" width="${880*L}" height="70" fill="url(#hR)" stroke="${INK}" stroke-width="5"/><rect x="80" y="1310" width="${(880*39/273)*L2}" height="70" fill="url(#hN)" stroke="${INK}" stroke-width="5"/></g>`) +
+   T(640,1240,`<span style="font-size:36px;color:${LOSS}">~23 yrs · ₹2.21 lakh</span>`,ap(u,4.2)) +
+   T(80,1260,`<span class="lab" style="font-size:26px;color:#034620">ROHAN 2 · ₹2,500 FLAT</span>`,ap(u,4.6)) +
+   T(240,1318,`<span style="font-size:36px;color:${G6}">3¼ yrs · ₹97,371</span>`,ap(u,5.4)) +
+   T(80,1440,`<span style="font-size:58px;color:#034620">≈ <b style="color:${LOSS};font-weight:600">₹1.24 lakh extra</b></span>`,ap(u,6.4)) +
+   T(80,1520,`<span style="font-size:36px;color:#7f8f80">for letting the payment shrink</span>`,ap(u,6.8));
+}});
+// 11 be fair
+SC.push({kick:'TO BE FAIR',ring:[560, 1250, 1000],green:false,d:6,ev:[.2,.6,2.4,3.8],f:u=>
+  hl(u,'Sometimes ','worth it') +
+  `<div style="opacity:${P(u,.6,.5)}">`+sv(rohan(80,480,1.05,{prop:'bill',mood:'worried',sweat:true}),0,0)+`</div>` +
+  T(560,560,`<div style="font-size:46px;color:#034620;width:420px;line-height:1.25">A one-off tight month? Paying the minimum beats missing it.</div>`,ap(u,2.4)) +
+  T(560,880,`<div class="hand" style="font-size:39px;color:${G6};width:420px;line-height:1.05">No late fee. No hit to your credit score.</div>`,ap(u,3.8)) +
+  T(80,1220,`<div style="font-size:56px;color:#034620">Just not <span class="mark loss">every</span> month.</div>`,ap(u,4.8))
+});
+// 12 generalise
+SC.push({kick:'THE RULE',ring:[-500, 1350, 900],green:false,d:8.5,ev:[.2,1,2.4,3.8,5.2,6.6],f:u=>{
+  const rows=[['5% minimum','~23 yrs',171445,'hR'],['₹2,500 a month','39 mo',47371,'hR'],['₹5,000 a month','13 mo',12443,'hR'],['₹10,000 a month','6 mo',4667,'hN']];
+  let out=hl(u,'Pay more, ','pay less') + T(80,385,`<span class="lab" style="font-size:26px;color:#7f8f80">₹50,000 BILL: TOTAL INTEREST + GST</span>`,ap(u,.4));
+  rows.forEach(([l,t,v,pat],i)=>{const a=1+i*1.4, p=P(u,a,.8), y=480+i*210, w=Math.max(18,860*v/171445);
+    out+=T(80,y,`<span class="lab" style="font-size:28px;color:#034620">${l.toUpperCase()} · ${t}</span>`,ap(u,a));
+    out+=sv(`<g filter="url(#pencil)"><rect x="80" y="${y+50}" width="${w*p}" height="80" fill="url(#${pat})" stroke="${INK}" stroke-width="5"/></g>`);
+    out+=T(Math.min(80+w+20,700),y+60,`<span style="font-size:46px;color:${i==3?G6:LOSS};font-weight:600;${w>600?'background:#f7f5ef;padding:0 10px':''}">₹${v.toLocaleString('en-IN')}</span>`,`opacity:${P(u,a+.6,.4)};${w>600?'left:'+(80+w-330)+'px':''}`);
+  });
+  out+=T(80,1330,`<span class="hand" style="font-size:43px;color:${G6}">Pay the full bill: ₹0.</span>`,ap(u,6.6));
+  return out;
+}});
+// 13 the truth
+SC.push({kick:null,ring:[-300, 150, 1700],green:true,logo:false,d:7,ev:[.2,.6,1.9,3],f:u=>
+  T(0,330,`<div style="width:1080px;text-align:center"><img src="logo-green.png" style="height:330px"></div>`,ap(u,.2)) +
+  `<div class="hl" style="left:0;width:1080px;top:820px;text-align:center;${ap(u,.6)}">Minimum due.</div>` +
+  `<div class="hl" style="left:0;width:1080px;top:920px;text-align:center;${ap(u,1.9)}">Maximum <span class="mark">interest.</span></div>` +
+  T(110,1170,`<div class="foot" style="width:860px;text-align:center;color:#7f8f80">Illustrative: ₹50,000 at 3.5% a month + 18% GST on interest, minimum due 5% (₹200 floor), no new spends. Rates, minimums and floors differ by card: check your key fact statement. Not financial advice.</div>`,ap(u,3))
+});
+
+const VO=window.VO||[]; SC.forEach((s,i)=>{s.d0=s.d; s.d=Math.max(s.d,(VO[i]||0)+0.95); s.k=s.d0/s.d; s.ev=(s.ev||[]).map(t=>t/s.k);});
+let START=[],acc=0; SC.forEach(s=>{START.push(acc);acc+=s.d}); const TOTAL=acc; window.STARTS=START;
+window.TOTAL=TOTAL;
+window.EVENTS=(()=>{const e=[];SC.forEach((s,i)=>{(s.ev||[]).forEach(t=>e.push({t:START[i]+t,k:'pencil'}));if(i>0)e.push({t:START[i],k:'turn'})});return e})();
+function sceneAt(t){let i=SC.length-1;for(let k=0;k<SC.length;k++){if(t<START[k]+SC[k].d){i=k;break}}return i}
+window.render=function(t){
+  document.getElementById('turb').setAttribute('seed',String(1+Math.floor(t*6)%3));
+  const i=sceneAt(t), u=t-START[i];
+  const TR=.5;
+  let html='', k=i, uu=u, wipe='';
+  if(i>0 && u<TR){ // Accrevise green wipe: covers the old frame right-to-left, then uncovers the new one
+    const p=u/TR;
+    if(p<.5){k=i-1;uu=SC[i-1].d;const w=ease(p*2)*1080;wipe=`<div class="ab" style="right:0;top:0;width:${w}px;height:1920px;background:#034620;z-index:5"></div>`;}
+    else{const w=(1-ease((p-.5)*2))*1080;wipe=`<div class="ab" style="left:0;top:0;width:${w}px;height:1920px;background:#034620;z-index:5"></div>`;}
+  }
+  const s=SC[k], g=false;
+  html+=`<div class="layer"><div class="nb-margin"></div><div class="nb-hole" style="top:400px"></div><div class="nb-hole" style="top:940px"></div><div class="nb-hole" style="top:1480px"></div>`+
+    (s.logo===false?'':`<img class="logo" src="${g?'logo-paper.png':'logo-green.png'}">`)+
+    (s.kick?`<div class="kick" style="${g?'color:#b9d0c1':''}">${s.kick}</div>`:'')+
+    `<div class="content">${s.f(uu*s.k)}</div></div>`+wipe;
+  document.getElementById('stage').innerHTML=html;
+};
+render(0);
+</script>
+</body></html>
