@@ -29,15 +29,14 @@ We borrow only the STORY STRUCTURE from the reference reel we studied. Never use
 - Line art in Accrevise green (#034620) with green-300 hatching; ONE amber (#E2B04A) colour pop on the thing the hero wants.
 - The hero appears on the story beats (1, 2, 6, 11). Maths beats use clean hand-drawn diagrams: dot grids, filling jars, hatched bars and timelines.
 
-## Look (Accrevise design system)
-- Accrevise logo on every frame: `accrevise-logo-green.png` top-left (~118 px tall) on paper, `accrevise-logo-paper.png` on green. The last frame carries it large and centred.
-- Paper ground #F7F5EF (no ruled lines). Ledger green #034620 ground for the question (beat 7), the twist (beat 9) and the closing truth (beat 13).
-- An UPPERCASE kicker above each headline (Montserrat 700, letter-spaced, ink-muted): ACCREVISE EXPLAINS, MEET ROHAN, WHAT IT IS, THE NUMBERS, THE REAL COST, WHAT IF, YOUR GUESS, THE ANSWER, THE TWIST, WHY IT HAPPENS, TO BE FAIR, THE RULE.
-- Headline: Montserrat 800, sentence case, ~72 px, green-900, with ONE key word in the amber marker highlight (loss red marker for a loss word).
-- Body: Source Serif 4. Labels and annotations: Montserrat 700.
-- The brand ring (thin green-300 circle, partly off-canvas) behind each frame; receipts for bills; loss red only for losses; green-600 for the "better" side.
-- Transition: the Accrevise green wipe between beats.
-- Every number has a unit (₹, months, years).
+## Look: Accrevise notebook writing style (our own pattern)
+- Notebook page: cream paper #F6F4E8, pale green ruled lines every 90 px, a coral margin line at x≈120, three grey punch holes on the left.
+- ALL text handwritten in Kalam (latin + latin-ext for ₹): headlines bold ~84 px in Accrevise green #034620; subtitles and notes in grey-green #7F8F80.
+- Key word: a coral (#E4553A) wavy underline. A loss or the punchline word: coral text circled with a hand-drawn coral ellipse.
+- Accrevise logo (green) on every frame, top-right; large and centred on the last frame.
+- Line-art hero and diagrams in Accrevise green with green hatching; one amber pop on the thing the hero wants; coral for losses.
+- Green wipe between beats. Every number has a unit (₹, months, years).
+- Never use another creator's name, tag, character, wording or look; only the story structure is shared.
 
 ## Pace
 - About 6-7 s per beat. Each beat builds in 2-3 steps (empty box → ticks → number). A sentence may build across steps ("A loan doesn't buy you money." → "It buys *time.*").
@@ -52,9 +51,8 @@ We borrow only the STORY STRUCTURE from the reference reel we studied. Never use
 - Use the Accrevise design system's reel cover: white ground, logo centred at the top, a 2-3 word UPPERCASE title in the centre.
 
 ## Audio
-- Default: a soft pencil sound on each build step and a light whoosh with each green wipe, generated in code.
-- If the user wants narration: Kokoro TTS (pip kokoro-onnx; model files from the thewh1teagle/kokoro-onnx GitHub releases), voice af_heart, speed ~1.1, one line per beat, and re-time the beats to fit the speech. No sound effects under a voiceover.
-- Also offer a silent version so they can add a trending track.
+- Default: voiceover. Kokoro TTS (pip kokoro-onnx; model files from the thewh1teagle/kokoro-onnx GitHub releases, model-files-v1.0), voice af_heart, speed 1.1, one calm explainer line per beat, numbers written out as words. Each beat lasts at least its line + ~1 s; the beat's animations stretch to fit. No sound effects under the voice.
+- Also deliver a silent version so they can add a trending track.
 
 ## Facts
 Look up every price, rate or app setting before it goes on screen. Show approximate figures with a footnote where sources disagree, and list the sources in the reply.
