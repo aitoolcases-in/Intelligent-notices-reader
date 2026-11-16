@@ -9,15 +9,8 @@ Vertical reels (1080x1920, 30 fps) about money, tax, scams and AI tools for an I
 Every reel follows a character-and-story flow (13 beats). The full beat sheet is in `docs/accrevise-video-flow.md`.
 We borrow only the STORY STRUCTURE from the reference reel we studied. Never use its creator's name or handle, its series tag ("in 90 seconds"), its character, its wording, or its exact look (ruled paper, serif headlines with an italic word, greyscale sketch with a yellow pop). Every frame is unmistakably Accrevise.
 
-## The flow (13 beats, about 60-90 s)
-1. **Hook (our copy pattern), centred on the notebook page:**
-   - Line 1: a short question with a coral wavy underline ("Only paying the minimum?").
-   - Line 2: the setup ("Your card debt could last").
-   - The scary word or number, huge, UPPERCASE, coral, circled by hand ("23 YEARS?").
-   - The promise in green ("One switch clears it 7× faster").
-   - A grey-green subtitle ("just keep paying ₹2,500 a month").
-   - Two small doodles at the bottom (e.g. an amber ₹ coin with an orbit, a coral line chart with an arrow).
-   - Spoken hook says the same thing in one breath. Every claim in it must be literally true for the example.
+## The flow (13 beats, about 80-100 s with voiceover)
+1. **Hook + promise:** kicker "ACCREVISE EXPLAINS", a short headline with one word in the amber marker ("Minimum due, ==explained.=="), one line of the example's key numbers, and a big animated Rohan with the thing he wants. Keep text minimal: the story and the man carry it.
 2. **Meet the hero:** "Rohan buys a ==phone==": the object, its ₹ price tag, and the decision ("he pays only the minimum: ₹2,500").
 3. **Define it:** three plain features on a receipt, ticked one at a time.
 4. **The numbers:** amount, rate and payment boxes pop in, with an assumptions footnote.
@@ -36,14 +29,20 @@ We borrow only the STORY STRUCTURE from the reference reel we studied. Never use
 - Line art in Accrevise green (#034620) with green-300 hatching; ONE amber (#E2B04A) colour pop on the thing the hero wants.
 - The hero appears on the story beats (1, 2, 6, 11). Maths beats use clean hand-drawn diagrams: dot grids, filling jars, hatched bars and timelines.
 
-## Look: Accrevise notebook writing style (our own pattern)
-- Notebook page: cream paper #F6F4E8, pale green ruled lines every 90 px, a coral margin line at x≈120, three grey punch holes on the left.
-- ALL text handwritten in Kalam (latin + latin-ext for ₹): headlines bold ~84 px in Accrevise green #034620; subtitles and notes in grey-green #7F8F80.
-- Key word: a coral (#E4553A) wavy underline. A loss or the punchline word: coral text circled with a hand-drawn coral ellipse.
-- Accrevise logo (green) on every frame, top-right; large and centred on the last frame.
-- Line-art hero and diagrams in Accrevise green with green hatching; one amber pop on the thing the hero wants; coral for losses.
-- Green wipe between beats. Every number has a unit (₹, months, years).
+## Look (Accrevise design system)
+- Accrevise logo on every frame: `accrevise-logo-green.png` top-left (~118 px tall) on paper, `accrevise-logo-paper.png` on green. The last frame carries it large and centred.
+- Paper ground #F7F5EF. Ledger green #034620 ground for the question (beat 7), the twist (beat 9) and the closing truth (beat 13).
+- An UPPERCASE kicker above each headline (Montserrat 700, letter-spaced, ink-muted).
+- Headline: Montserrat 800, sentence case, ~72 px, green-900, ONE key word in the amber marker (loss red marker for a loss word). Body: Source Serif 4.
+- The brand ring behind each frame; receipts for bills; loss red only for losses; green-600 for the "better" side; green wipe between beats.
+- Keep on-screen text short: one headline plus 1-3 short lines per beat. The man and the drawings tell the story.
 - Never use another creator's name, tag, character, wording or look; only the story structure is shared.
+
+## The man (Rohan) is animated
+- Line art in Accrevise green, green hatching, one amber pop (his phone).
+- Always alive: blinks every ~3 s, gentle breathing bob and head tilt, eyes glance around, the phone sways in his hand.
+- Acts out the story: happy with his new phone (beats 1-2), worried and scratching his head as the debt grows (beats 4-5, 11), cheering with both arms up and jumping when the debt hits ₹0 (beat 8).
+- He appears in most beats, small beside the diagram when the maths leads.
 
 ## Pace
 - About 6-7 s per beat. Each beat builds in 2-3 steps (empty box → ticks → number). A sentence may build across steps ("A loan doesn't buy you money." → "It buys *time.*").
