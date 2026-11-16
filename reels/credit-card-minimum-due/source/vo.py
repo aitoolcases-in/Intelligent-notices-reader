@@ -22,7 +22,7 @@ LINES = [
 k = Kokoro(f"{d}/../tts/kokoro-v1.0.onnx", f"{d}/../tts/voices-v1.0.bin")
 durs = []
 for i, line in enumerate(LINES):
-    samples, sr = k.create(line, voice="af_heart", speed=1.1, lang="en-us")
+    samples, sr = k.create(line, voice=(sys.argv[2] if len(sys.argv)>2 else "af_heart"), speed=float(sys.argv[3]) if len(sys.argv)>3 else 1.1, lang="en-us")
     sf.write(f"{d}/vo_{i:02d}.wav", samples, sr)
     durs.append(round(len(samples) / sr, 3))
     print(i, durs[-1])
