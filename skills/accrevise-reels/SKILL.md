@@ -9,7 +9,7 @@ Vertical reels (1080x1920, 30 fps) about money, tax, scams and AI tools for an I
 Every reel follows a character-and-story flow (13 beats). The full beat sheet is in `docs/accrevise-video-flow.md`.
 We borrow only the STORY STRUCTURE from the reference reel we studied. Never use its creator's name or handle, its series tag ("in 90 seconds"), its character, its wording, or its exact look (ruled paper, serif headlines with an italic word, greyscale sketch with a yellow pop). Every frame is unmistakably Accrevise.
 
-## The flow (13 beats, about 80-100 s with voiceover)
+## The flow (13 beats, 80-90 s total, never over 90 s)
 1. **Hook + promise:** kicker "ACCREVISE EXPLAINS", a short headline with one word in the amber marker ("Minimum due, ==explained.=="), one line of the example's key numbers, and a big animated Rohan with the thing he wants. Keep text minimal: the story and the man carry it.
 2. **Meet the hero:** "Rohan buys a ==phone==": the object, its ₹ price tag, and the decision ("he pays only the minimum: ₹2,500").
 3. **Define it:** three plain features on a receipt, ticked one at a time.
@@ -45,8 +45,9 @@ We borrow only the STORY STRUCTURE from the reference reel we studied. Never use
 - He appears in most beats, small beside the diagram when the maths leads.
 
 ## Pace
-- About 6-7 s per beat. Each beat builds in 2-3 steps (empty box → ticks → number). A sentence may build across steps ("A loan doesn't buy you money." → "It buys *time.*").
-- 60-90 s total. The headline stays put while the visual builds below it.
+- Whole reel 80-90 s, never over 90 s. Plan the voiceover first: about 170-190 spoken words in total at speed 0.95 (~2.2 words a second), with short lines of 6-16 words per beat and 0.8-1 s of silence after each line.
+- If the script runs long, cut words, not speed. Merge or drop a beat (e.g. fold beat 4 into beat 3) before speeding the voice up.
+- Each beat builds in 2-3 steps timed to the spoken line; the headline stays put while the visual builds below it.
 
 ## Ending
 - Beat 13 is the last story frame. After it, cut to the original Accrevise kite -> envelope -> logo outro (from Accrevise_Chatbot_Privacy_Reel_9x16.mp4, from 24.6 s to the end; ask the user to attach it if it isn't available).
@@ -57,7 +58,7 @@ We borrow only the STORY STRUCTURE from the reference reel we studied. Never use
 - Use the Accrevise design system's reel cover: white ground, logo centred at the top, a 2-3 word UPPERCASE title in the centre.
 
 ## Audio
-- Default: voiceover. Kokoro TTS (pip kokoro-onnx; model files from the thewh1teagle/kokoro-onnx GitHub releases, model-files-v1.0), voice af_heart, speed 1.1 (Kokoro's Indian voices were tried and rejected), one calm explainer line per beat, numbers written out as words. Each beat lasts at least its line + ~1 s; the beat's animations stretch to fit. No sound effects under the voice.
+- Default: voiceover. Kokoro TTS (pip kokoro-onnx; model files from the thewh1teagle/kokoro-onnx GitHub releases, model-files-v1.0), voice af_heart at a normal, unhurried pace: speed 0.95 (1.1 was too fast; Kokoro's Indian voices were tried and rejected), one calm explainer line per beat, numbers written out as words. Each beat lasts at least its line + ~1 s; the beat's animations stretch to fit. No sound effects under the voice.
 - Also deliver a silent version so they can add a trending track.
 
 ## Facts
