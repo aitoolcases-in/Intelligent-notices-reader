@@ -1,0 +1,61 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+html,body{margin:0;background:#034620}
+#stage{position:relative;width:1080px;height:1920px;overflow:hidden;background:#034620}
+.ab{position:absolute}
+</style></head>
+<body>
+<div id="stage"></div>
+<svg width="0" height="0" style="position:absolute"><defs>
+<filter id="pencil" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence id="turb" type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="1"/><feDisplacementMap in="SourceGraphic" scale="4"/></filter>
+<pattern id="hA" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="14" height="14" fill="#f1cf86"/><line x1="0" y1="0" x2="0" y2="14" stroke="#c98f1c" stroke-width="3"/></pattern>
+</defs></svg>
+<script>
+const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const ease=x=>{x=clamp(x);return x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2};
+const lerp=(a,b,t)=>a+(b-a)*t;
+const PAPER='#f7f5ef', AMB='#e2b04a', INK='#034620';
+window.TOTAL=4.6;
+window.EVENTS=[{t:0.05,k:'turn'},{t:1.7,k:'pencil'},{t:2.5,k:'pencil'},{t:3.1,k:'chime'}];
+window.render=function(t){
+  document.getElementById('turb').setAttribute('seed',String(1+Math.floor(t*6)%3));
+  // 1) kite flies in along a curve (0 → 1.6 s)
+  const f=ease(t/1.6);
+  const cx=lerp(-120,540,f), cy=lerp(1500,820,f)+Math.sin(t*5)*18*(1-ease((t-1.2)/0.6));
+  const rot=lerp(-35,0,f)+Math.sin(t*4)*8*(1-ease((t-1.2)/0.6));
+  // 2) kite folds into an envelope (1.6 → 2.4 s)
+  const m=ease((t-1.6)/0.8);
+  // kite diamond points → envelope rectangle points (top, right, bottom, left)
+  const K=[[0,-210],[150,-20],[0,230],[-150,-20]];
+  const E=[[-190,-120],[190,-120],[190,130],[-190,130]];
+  const pts=K.map((k,i)=>[lerp(k[0],E[i][0],m),lerp(k[1],E[i][1],m)]);
+  const poly=pts.map(p=>p.join(',')).join(' ');
+  // spars fade out, envelope flap fades in
+  const spars=`<path d="M0,-210 V230 M-150,-20 H150" stroke="${INK}" stroke-width="7" opacity="${1-m}"/>`;
+  // 3) flap opens and logo rises (2.4 → 3.3 s)
+  const o=ease((t-2.4)/0.5);
+  const flapY=lerp(10,-250,o);
+  const flap=`<path d="M-190,-120 L0,${flapY} L190,-120" fill="${o>0.5?'#e8c36a':'none'}" stroke="${INK}" stroke-width="7" stroke-linejoin="round" opacity="${m}"/>`;
+  const vlines=`<path d="M-190,130 L-30,10 M190,130 L30,10" stroke="${INK}" stroke-width="5" opacity="${m*0.7}"/>`;
+  const tail=`<path d="M0,230 C-40,300 40,360 0,430 C-40,500 40,560 0,620" fill="none" stroke="${PAPER}" stroke-width="5" opacity="${1-m}"/>
+    ${[300,430,560].map(y=>`<path d="M-26,${y-14} L0,${y} L-26,${y+14} Z M26,${y-14} L0,${y} L26,${y+14} Z" fill="${AMB}" opacity="${1-m}"/>`).join('')}`;
+  const string=`<path d="M${cx},${cy+230} C${cx-200},${cy+600} ${-100},${1500} ${-200},${1920}" fill="none" stroke="#b9d0c1" stroke-width="3" opacity="${(1-m)*0.9}"/>`;
+  const envFade=1-ease((t-3.0)/0.5);
+  const lr=ease((t-2.55)/0.75); // logo rise
+  const logoY=lerp(cy-40,620,lr), logoS=lerp(0.25,1,lr);
+  const glow=ease((t-3.1)/0.6);
+  let html=`<svg class="ab" style="left:0;top:0" width="1080" height="1920">
+     <circle cx="540" cy="820" r="${lerp(0,460,glow)}" fill="none" stroke="#2d7049" stroke-width="4" opacity="${0.8*(1-glow*0.3)}"/>
+     ${string}
+     <g filter="url(#pencil)" transform="translate(${cx},${cy}) rotate(${rot*(1-m)})" opacity="${envFade}">
+       ${tail}
+       <polygon points="${poly}" fill="url(#hA)" stroke="${INK}" stroke-width="7" stroke-linejoin="round"/>
+       ${spars}${vlines}${flap}
+     </g></svg>`;
+  html+=`<img class="ab" src="logo-paper.png" style="left:${540-500*logoS}px;top:${logoY-200*logoS}px;width:${1000*logoS}px;opacity:${clamp((t-2.55)/0.3)}">`;
+  document.getElementById('stage').innerHTML=html;
+};
+render(0);
+</script>
+</body></html>

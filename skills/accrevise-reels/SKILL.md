@@ -50,9 +50,10 @@ We borrow only the STORY STRUCTURE from the reference reel we studied. Never use
 - Each beat builds in 2-3 steps timed to the spoken line; the headline stays put while the visual builds below it.
 
 ## Ending
-- Beat 13 is the last story frame. After it, cut to the original Accrevise kite -> envelope -> logo outro (from Accrevise_Chatbot_Privacy_Reel_9x16.mp4, from 24.6 s to the end; ask the user to attach it if it isn't available).
-- No separate CTA slide. The share/save CTA goes in the caption.
-- No logos of other companies; use plain name chips.
+- Beat 13 (closing truth on ledger green) is the last story frame. Then append the Accrevise kite outro: `reels/_brand/Accrevise_Kite_Outro_9x16.mp4` (4.6 s: an amber kite flies in, folds into an envelope, the flap opens and the Accrevise logo rises out, with whoosh + chime). Re-encode when concatenating (30 fps, yuv420p, 48 kHz stereo). The silent version gets the outro with silent audio.
+- This outro is a code recreation (source `reels/_brand/outro.html`). If the user supplies the original `Accrevise_Chatbot_Privacy_Reel_9x16.mp4`, use its section from 24.6 s to the end instead.
+- Keep reel + outro within 90 s: budget the story for ≤ 85 s.
+- No separate CTA slide; the share/save CTA goes in the caption. No logos of other companies; use plain name chips.
 
 ## Reel cover
 - Use the Accrevise design system's reel cover: white ground, logo centred at the top, a 2-3 word UPPERCASE title in the centre.
