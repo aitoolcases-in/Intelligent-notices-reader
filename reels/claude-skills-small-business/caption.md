@@ -1,37 +1,50 @@
-# Claude Skills, explained — Accrevise reel
+# Claude Skills, explained (v2: messy orders → clean sheet) — Accrevise reel
 
-**On-screen hook (beat 1):** Claude Skills, explained. · For a small business · 30 invoices a week
+**On-screen hook (beat 1):** Claude Skills, explained. · For a small shop · Priya with WhatsApp orders popping up
 
-**Spoken hook to record (optional):** "Priya spent six hours a week typing invoices. Now it takes one, and she only taught Claude once."
+**Spoken hook to record (optional):** "Your billing app is fast. Reading forty WhatsApp orders every evening isn't."
+
+## The angle (why this isn't just Tally / Zoho / QuickBooks)
+Billing software needs clean entries. A small shop's orders arrive messy: WhatsApp texts ("2kg KK – Sharma ji", "same as last week pls") and the counter book. A Claude Skill teaches Claude the shop's price list, nicknames and regular customers once, so it turns the day's screenshots and a photo of the book into a clean sheet to import, and flags unclear orders instead of guessing. It feeds the billing app; it doesn't replace it.
 
 ## Caption
-Typing the same invoice 30 times a week isn't hard work. It's lost work.
+Your billing app is fast. Typing 40 messy WhatsApp orders into it every evening isn't.
 
-A Claude Skill is your instructions, saved once: your template, your rules, your customers. Claude uses it whenever that job comes up, and you check before anything goes out.
-For one small shop, that's ~6 hours a week down to ~1.
+Teach Claude your shop once: your price list, your nicknames ("KK" = kaju katli), your regular customers, and 3 real orders with the right bill. That's a Claude Skill.
+Then drop in the day's screenshots and a photo of the counter book, and get back a clean sheet to import, with unclear orders flagged.
 
-Save this for your next "admin day", and send it to a shop owner who still types every bill 🧾
-Which job would you teach Claude first: invoices, reminders or orders? 👇
+How to make one:
+1. Settings → Capabilities → Skills: switch on "skill-creator"
+2. In a chat: "Help me make a Skill for my shop's orders"
+3. Upload the Skill it makes and test it on yesterday's orders
 
-#smallbusinessindia #claudeai #aitools #msme #invoicing #automation #accrevise
+Save this for later, and send it to a shop owner still retyping orders at night 🧾
+What's the messiest order you've ever received? 👇
+
+#smallbusinessindia #claudeai #aitools #msme #whatsappbusiness #automation #accrevise
 
 ## Post at
 Weekdays 7–9 PM IST or Sunday 10 AM–12 PM, then adjust from your Insights.
 
 ## Assumptions (also on the last frame)
-Illustrative: one shop, 30 invoices a week, ~12 minutes each by hand (6 hrs), ~2 minutes each to review a Claude draft (~1 hr), ~1 hour to set up the Skill. Claude Skills are available on Claude's paid plans (Pro, Max, Team, Enterprise); check claude.ai for your plan. Always review AI output before sending.
+Illustrative times for one shop: 40 orders a day × ~3 minutes = 2 hours an evening; 2 hours × 300 working days = 600 hours a year. Skills are on Claude's paid plans; menu names may change (see Claude's help centre). Claude doesn't read WhatsApp directly: share screenshots or chat exports. Check every line before billing.
 
 ## Voiceover script (Kokoro af_heart, speed 0.95, one line per beat)
-1. Claude Skills, explained. For a small business.
-2. Priya runs a sweet shop. Every week, she types thirty invoices by hand.
-3. A Claude Skill is your instructions, saved once. Your template, your rules. Claude uses it whenever that job comes up.
-4. Priya's week. Thirty invoices, twelve minutes each. That's six hours.
-5. One year later, that's over three hundred hours. Almost forty working days, just typing.
-6. Now meet a second Priya. She teaches Claude her invoice format. Just once.
-7. So, how long does her week take now?
-8. About one hour. Claude drafts. She checks, and sends.
-9. Same Claude. Her rules.
-10. Her Skill holds the boring part. The template, the tax rates, her customers. She sets it up once, and it pays back in the first week.
-11. To be fair, AI can make mistakes. She still checks every total before it goes out.
-12. And it's not just invoices. Payment reminders. Supplier orders. Monthly sales summaries.
-13. Teach it once. Save every week.
+1. Claude Skills, explained. For a small shop.
+2. Priya runs a sweet shop. Her orders come on WhatsApp, and in the counter book.
+3. Every evening, she reads each order and types it into her billing app.
+4. Forty orders a day. Three minutes each. Two hours, every evening.
+5. One year later, that's six hundred hours. And a few wrong quantities that cost her money.
+6. Now meet a second Priya. She teaches Claude how her shop works. Just once.
+7. So, what does she teach it?
+8. Three things. Her price list and nicknames. K K means kaju katli. Her regular customers. And three real orders, with the right bill for each.
+9. Her billing app keeps the books. Claude does the reading.
+10. Now she drops in the day's WhatsApp screenshots, and a photo of the counter book. Claude returns a clean sheet to import, and flags two unclear orders.
+11. To be fair, she still checks every line. Claude doesn't replace her billing app. It feeds it.
+12. To make one: in Claude's settings, turn on skill creator. Describe your orders in a chat. Upload the Skill it makes, and test it.
+13. Your software needs clean data. Teach Claude to make it clean.
+
+## Sources
+- https://support.claude.com/en/articles/12599426-how-to-create-a-skill-with-claude-through-conversation
+- https://support.claude.com/en/articles/12512180-getting-started-with-skills-on-claude-ai
+- https://claude.com/docs/skills
