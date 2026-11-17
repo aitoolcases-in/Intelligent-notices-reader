@@ -1,0 +1,44 @@
+# One-click setup for Render (render.com): New → Blueprint → pick this repository.
+services:
+  - type: web
+    name: office-desk
+    runtime: node
+    rootDir: office-desk
+    plan: starter            # paid plan: stays awake for the 6:30 PM emails and keeps a disk
+    region: singapore        # closest Render region to India
+    buildCommand: npm install --omit=dev
+    startCommand: npm start
+    healthCheckPath: /api/config
+    disk:
+      name: office-desk-data
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: DATA_DIR
+        value: /var/data
+      - key: REVIEW_TIME
+        value: "18:30"
+      - key: WORK_DAYS
+        value: "1,2,3,4,5,6"
+      - key: OFFICE_NAME
+        value: Accrevise
+      - key: SMTP_HOST
+        value: smtp.gmail.com
+      - key: SMTP_PORT
+        value: "465"
+      - key: OWNER_NAME
+        sync: false
+      - key: OWNER_EMAIL
+        sync: false
+      - key: OWNER_PASSWORD
+        sync: false
+      - key: OFFICE_EMAIL
+        sync: false
+      - key: SMTP_USER
+        sync: false
+      - key: SMTP_PASS
+        sync: false
+      - key: MAIL_FROM
+        sync: false
+      - key: APP_URL
+        sync: false
