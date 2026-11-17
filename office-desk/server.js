@@ -2,8 +2,7 @@ import "dotenv/config";
 import express from "express";
 import crypto from "node:crypto";
 import { db, q, newId, hashPin, checkPin, ensureOwner, readPlan, savePlan } from "./lib/db.js";
-import { chat } from "./lib/ai.js";
-import { mailConfigured } from "./lib/mail.js";
+import { mailConfigured, sendMail } from "./lib/mail.js";
 import { buildDrafts, askOwner, sendPlan, suggestFor, startScheduler } from "./lib/evening.js";
 import { AREAS, MODULES } from "./public/content.js";
 import { istDay, istDayStart, nextWorkDay } from "./lib/time.js";
@@ -92,36 +91,37 @@ app.get("/api/me", (req, res) => {
   res.json({ user: publicUser(req.user), training });
 });
 
-/* ---------- chat ---------- */
-app.post("/api/chat", need(), async (req, res) => {
-  const max = req.user.kind === "client" ? 20 : 60;
-  if (limited("chat:" + req.user.id, max, 60 * 60e3)) return res.status(429).json({ error: "You've asked a lot this hour. Please wait a little and try again." });
-  const history = (Array.isArray(req.body?.messages) ? req.body.messages : [])
-    .filter((m) => (m.role === "user" || m.role === "assistant") && typeof m.content === "string" && m.content.trim())
-    .slice(-16)
-    .map((m) => ({ role: m.role, content: m.content.slice(0, 6000) }));
-  while (history.length && history[0].role !== "user") history.shift();
-  if (!history.length || history.at(-1).role !== "user") return res.status(400).json({ error: "Send a question." });
+/* ---------- help desk ---------- */
+const OFFICE_EMAIL = process.env.OFFICE_EMAIL || process.env.OWNER_EMAIL;
+app.get("/api/config", (_req, res) => res.json({ officeEmail: OFFICE_EMAIL, officeName: process.env.OFFICE_NAME || "Office Desk" }));
 
-  res.setHeader("Content-Type", "application/x-ndjson; charset=utf-8");
-  res.setHeader("Cache-Control", "no-cache");
-  res.setHeader("X-Accel-Buffering", "no");
-  const send = (o) => res.write(JSON.stringify(o) + "\n");
+// Every question typed into the help desk is kept so the owner can see what people ask.
+app.post("/api/asks", need(), (req, res) => {
+  if (limited("ask:" + req.user.id, 120, 60 * 60e3)) return res.json({ ok: false });
+  const question = String(req.body?.q || "").trim().slice(0, 1000);
+  if (question) q.insertAsk.run(req.user.id, Date.now(), question, String(req.body?.matched || "(no ready answer)").slice(0, 300));
+  res.json({ ok: true });
+});
+
+// Sends the person's question to the official email address, with their contact details.
+app.post("/api/ask-office", need(), async (req, res) => {
+  if (limited("mailoffice:" + req.user.id, 10, 60 * 60e3)) return res.status(429).json({ error: "You've sent several questions this hour. Please wait or email the office directly." });
+  const question = String(req.body?.q || "").trim().slice(0, 4000);
+  if (!question) return res.status(400).json({ error: "Write your question first." });
+  const u = req.user;
   try {
-    const answer = await chat({
-      user: req.user,
-      history,
-      onText: (d) => send({ t: "text", d }),
-      onNote: (d) => send({ t: "note", d }),
-      record: (u) => addLog(req.user, { ...u, via: "chat" }),
+    await sendMail({
+      to: OFFICE_EMAIL,
+      subject: `Question from ${u.name} (${u.kind})`,
+      text: `${question}\n\n---\nFrom: ${u.name}\nType: ${u.kind}\nPhone: ${u.phone || "-"}\nEmail: ${u.email || "-"}\nSent from the Office Desk help desk.`,
+      replyTo: u.email || undefined,
     });
-    q.insertAsk.run(req.user.id, Date.now(), history.at(-1).content.slice(0, 1000), answer.slice(0, 2000));
-    send({ t: "done" });
+    q.insertAsk.run(u.id, Date.now(), question, "(emailed to the office)");
+    res.json({ ok: true, to: OFFICE_EMAIL });
   } catch (err) {
-    console.error("[chat]", err.status || "", err.message);
-    send({ t: "error", d: err.status === 429 ? "The assistant is busy right now. Try again in a minute." : "The assistant could not answer just now. Try again in a moment." });
+    console.error("[ask-office]", err.message);
+    res.status(500).json({ error: `Could not send right now. Please email ${OFFICE_EMAIL} directly.` });
   }
-  res.end();
 });
 
 /* ---------- work log ---------- */
@@ -225,7 +225,7 @@ app.get("/api/plan/suggest", need("owner"), (_req, res) => {
 
 app.post("/api/plan/draft", need("owner"), async (_req, res) => {
   try { res.json({ plan: await buildDrafts(nextWorkDay()) }); }
-  catch (err) { console.error(err); res.status(500).json({ error: "Could not draft the emails. Check the Claude API key." }); }
+  catch (err) { console.error(err); res.status(500).json({ error: "Could not prepare the emails." }); }
 });
 
 app.post("/api/plan/send", need("owner"), async (_req, res) => {
@@ -246,7 +246,6 @@ app.post("/api/plan/ask-me", need("owner"), async (_req, res) => {
 const PORT = Number(process.env.PORT || 3000);
 app.listen(PORT, () => {
   console.log(`Office Desk running on http://localhost:${PORT}`);
-  if (!process.env.ANTHROPIC_API_KEY) console.warn("ANTHROPIC_API_KEY is not set: the chatbot and email drafts will not work.");
   if (!mailConfigured()) console.warn("SMTP is not set: emails will be saved to data/outbox instead of being sent.");
   startScheduler();
 });

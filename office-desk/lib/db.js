@@ -99,7 +99,7 @@ export const q = {
   logsSince: db.prepare("SELECT l.*, u.name AS who, u.kind AS kind FROM logs l JOIN users u ON u.id = l.user_id WHERE l.ts >= ? ORDER BY l.ts DESC"),
   logsForUserSince: db.prepare("SELECT * FROM logs WHERE user_id = ? AND ts >= ? ORDER BY ts"),
   insertAsk: db.prepare("INSERT INTO asks (user_id, ts, q, a) VALUES (?, ?, ?, ?)"),
-  clientAsks: db.prepare("SELECT a.ts, a.q, u.name AS who FROM asks a JOIN users u ON u.id = a.user_id WHERE u.kind = 'client' ORDER BY a.ts DESC LIMIT 20"),
+  clientAsks: db.prepare("SELECT a.ts, a.q, a.a, u.name AS who, u.kind AS kind FROM asks a JOIN users u ON u.id = a.user_id WHERE u.kind <> 'owner' ORDER BY a.ts DESC LIMIT 25"),
   myTraining: db.prepare("SELECT module, score, at FROM training WHERE user_id = ?"),
   allTraining: db.prepare("SELECT user_id, module, score FROM training"),
   upsertTraining: db.prepare("INSERT INTO training (user_id, module, score, at) VALUES (?, ?, ?, ?) ON CONFLICT(user_id, module) DO UPDATE SET score = excluded.score, at = excluded.at"),

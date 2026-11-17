@@ -1,4 +1,5 @@
 import { AREAS, AREA_NAME, MODULES } from "./content.js";
+import { TOPICS, FAQ, UPDATE_WORDS, TECH_WORDS, searchFaq } from "./faq.js";
 
 /* ---------------- Helpers ---------------- */
 const $ = (s) => document.querySelector(s);
@@ -54,7 +55,7 @@ $("#registerForm").addEventListener("submit", async (e) => {
     $("#regPin").value = ""; await loadMe(r.user); location.hash = "ask"; toast("Welcome! Ask your first question.");
   } catch (err) { $("#regMsg").textContent = err.message; }
 });
-$("#logout").onclick = async () => { await api("/api/logout", { body: {} }).catch(() => {}); S.user = null; convo = []; ls.set("od.chat", []); location.hash = ""; renderAll(); };
+$("#logout").onclick = async () => { await api("/api/logout", { body: {} }).catch(() => {}); S.user = null; convo = []; ls.set("od.desk", []); location.hash = ""; renderAll(); };
 
 async function loadMe() {
   const me = await api("/api/me");
@@ -108,81 +109,119 @@ function renderLesson() {
 function selectMod(id) { currentMod = id; ls.set("od.mod", id); renderModList(); renderLesson(); window.scrollTo({ top: 0 }); }
 $("#modlist").addEventListener("click", (e) => { const b = e.target.closest("button[data-mod]"); if (b) selectMod(b.dataset.mod); });
 
-/* ---------------- Chat ---------------- */
-let convo = ls.get("od.chat", []);
+/* ---------------- Help desk (ready-made answers) ---------------- */
+let OFFICE_EMAIL = "";
+api("/api/config").then((c) => { OFFICE_EMAIL = c.officeEmail || ""; renderThread(); }).catch(() => {});
+let convo = ls.get("od.desk", []);
+const TOPIC_AREA = { itr: "itr", gst: "gst", notice: "drafting", trademark: "trademark", loans: "loans", docs: "docs", books: "accounting" };
+
 function md(t) {
   const lines = esc(t).split("\n"); let out = "", list = null;
-  const inline = (s) => s.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>").replace(/`([^`]+)`/g, '<code class="mono">$1</code>');
+  const inline = (s) => s.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
   const close = () => { if (list) { out += `</${list}>`; list = null; } };
   for (const raw of lines) {
     const l = raw.trimEnd(); let m;
-    if ((m = l.match(/^#{1,4}\s+(.*)/))) { close(); out += `<h4>${inline(m[1])}</h4>`; }
-    else if ((m = l.match(/^\s*[-*•]\s+(.*)/))) { if (list !== "ul") { close(); out += "<ul>"; list = "ul"; } out += `<li>${inline(m[1])}</li>`; }
+    if ((m = l.match(/^\s*[-•]\s+(.*)/))) { if (list !== "ul") { close(); out += "<ul>"; list = "ul"; } out += `<li>${inline(m[1])}</li>`; }
     else if ((m = l.match(/^\s*\d+[.)]\s+(.*)/))) { if (list !== "ol") { close(); out += "<ol>"; list = "ol"; } out += `<li>${inline(m[1])}</li>`; }
     else if (!l.trim()) close();
     else { close(); out += `<p>${inline(l)}</p>`; }
   }
   close(); return out;
 }
+const faqIndex = (f) => FAQ.indexOf(f);
+const topicButtons = () => `<div class="chips">${TOPICS.map(([k, v]) => `<button type="button" data-topic="${k}">${esc(v)}</button>`).join("")}</div>`;
+function emailBox(i, question) {
+  const addr = esc(OFFICE_EMAIL || "the office email");
+  return `<div class="mailbox stack"><p><strong>Please email this to the office</strong> and a team member will reply within one working day. Write your question below and press Send, or email <span class="mono">${addr}</span> yourself.</p>
+    <label for="mq${i}">Your question<textarea id="mq${i}" data-mq="${i}" rows="3">${esc(question || "")}</textarea></label>
+    <div class="row"><button type="button" data-send="${i}">Send to office</button><button type="button" class="quiet" data-copy="${i}">Copy email address</button>${OFFICE_EMAIL ? `<a class="small" href="mailto:${encodeURIComponent(OFFICE_EMAIL)}?subject=${encodeURIComponent("Question from " + (S.user?.name || "a client"))}&body=${encodeURIComponent(question || "")}">Open my email app</a>` : ""}</div></div>`;
+}
+function itemHTML(m, i) {
+  if (m.role === "user") return `<div class="msg me">${esc(m.content).replace(/\n/g, "<br>")}</div>`;
+  if (m.role === "note") return `<div class="msg note">${esc(m.content)}</div>`;
+  let h = m.content ? md(m.content) : "";
+  if (m.kind === "topics") h += topicButtons();
+  if (m.kind === "questions") h += `<div class="qlist">${m.list.map((k) => `<button type="button" data-faq="${k}">${esc(FAQ[k].q)}</button>`).join("")}</div>`;
+  if (m.related?.length) h += `<p class="small muted">Related questions</p><div class="qlist">${m.related.map((k) => `<button type="button" data-faq="${k}">${esc(FAQ[k].q)}</button>`).join("")}</div>`;
+  if (m.email && !m.emailed) h += emailBox(i, m.question);
+  if (m.emailed) h += `<p class="small" style="color:var(--ok)">Sent to the office. We'll reply by email or phone.</p>`;
+  if (m.kind === "update" && !m.saved) h += `<div class="mailbox stack"><label for="ua${i}">Work area<select id="ua${i}" data-ua="${i}">${AREAS.map(([k, v]) => `<option value="${k}" ${k === m.area ? "selected" : ""}>${esc(v)}</option>`).join("")}</select></label><div class="row"><button type="button" data-save="${i}">Save as update</button><button type="button" class="quiet" data-search="${i}">No, find an answer instead</button></div></div>`;
+  if (m.kind === "update" && m.saved) h += `<p class="small" style="color:var(--ok)">Saved. The team will see it today.</p>`;
+  return `<div class="msg bot">${h}</div>`;
+}
+function greeting() {
+  return { role: "bot", kind: "topics", content: role() === "client"
+    ? `Namaste ${S.user?.name || ""}! Pick a topic or type your question. You can also type an update like “Sent bank statements for October”.`
+    : "Pick a topic or type a question. Type what you finished (for example “Filed GSTR-1 for Sharma Traders”) to save it as an update." };
+}
 function renderThread() {
-  const th = $("#thread");
-  if (!convo.length) {
-    const hello = role() === "client"
-      ? `Namaste ${S.user?.name || ""}! I can answer questions about your tax, GST, loan or trademark work, tell you which documents to send, and pass your updates to the team.`
-      : "Ask me anything from the training modules, or for a worked example, a draft, or a checklist. Tell me what you finished and I'll log it for the office.";
-    th.innerHTML = `<div class="msg bot">${esc(hello)}</div>`; return;
+  const items = convo.length ? convo : [greeting()];
+  $("#thread").innerHTML = items.map(itemHTML).join("");
+}
+function push(...items) { convo.push(...items); ls.set("od.desk", convo.slice(-60)); renderThread(); $("#thread").lastElementChild?.scrollIntoView({ block: "nearest" }); }
+function showTopic(k) {
+  const name = TOPICS.find((t) => t[0] === k)?.[1] || "";
+  if (!convo.length) convo.push(greeting());
+  push({ role: "user", content: name }, { role: "bot", kind: "questions", content: `Common questions about **${name}**:`, list: FAQ.map((f, i) => (f.topic === k ? i : -1)).filter((i) => i >= 0) });
+}
+function showAnswer(i, asked) {
+  const f = FAQ[i];
+  if (!convo.length) convo.push(greeting());
+  const related = FAQ.map((g, j) => (g.topic === f.topic && j !== i ? j : -1)).filter((j) => j >= 0).slice(0, 3);
+  push({ role: "user", content: asked || f.q }, { role: "bot", content: f.a, email: !!f.email, question: asked || f.q, related });
+}
+function answerTyped(text, skipUpdate) {
+  const low = " " + text.toLowerCase() + " ";
+  api("/api/asks", { body: { q: text, matched: "" } }).catch(() => {});
+  if (!convo.length) convo.push(greeting());
+  if (!skipUpdate && UPDATE_WORDS.some((w) => low.includes(" " + w))) {
+    const guess = searchFaq(text, 1)[0];
+    push({ role: "user", content: text }, { role: "bot", kind: "update", content: "Is this an update on your work? Save it so the team sees it.", text: text.replace(/^log:\s*/i, ""), area: TOPIC_AREA[guess?.topic] || "other" });
+    return;
   }
-  th.innerHTML = convo.map((m) => m.role === "note" ? `<div class="msg note">${esc(m.content)}</div>` :
-    `<div class="msg ${m.role === "user" ? "me" : "bot"}">${m.role === "user" ? esc(m.content).replace(/\n/g, "<br>") : md(m.content)}</div>`).join("");
+  const hits = searchFaq(text);
+  const tech = TECH_WORDS.some((w) => low.includes(w));
+  if (tech) {
+    push({ role: "user", content: text }, { role: "bot", content: "The answer depends on your own details, so a person at the office should reply to this.", email: true, question: text, related: hits.map(faqIndex) });
+  } else if (hits.length) {
+    const best = hits[0];
+    push({ role: "user", content: text }, { role: "bot", content: `**${best.q}**\n\n${best.a}`, email: !!best.email, question: text, related: hits.slice(1).map(faqIndex) });
+  } else {
+    push({ role: "user", content: text }, { role: "bot", kind: "topics", content: "I don't have a ready answer for that. Please send it to the office, or pick a topic below.", email: true, question: text });
+  }
 }
-function renderChips() {
-  const c = role() === "client" ? [
-    "Which documents do I send for my ITR?", "My GST return is due. What do you need from me?", "I got an income tax notice. What should I do?",
-    "What documents are needed for a business loan?", "How long does trademark registration take?", "I have sent my bank statements for October",
-  ] : [
-    "Walk me through filing ITR-2 with mutual fund gains", "How do I reconcile GSTR-2B with the purchase register?", "Draft a reply to a 143(1)(a) mismatch notice",
-    "Which class for a clothing brand trademark?", "Make a loan document checklist for a proprietor", "Give me a cold call opening for GST services", "Log: finished GSTR-1 for Sharma Traders",
-  ];
-  $("#chips").innerHTML = c.map((x) => `<button type="button">${esc(x)}</button>`).join("");
-}
-$("#chips").addEventListener("click", (e) => { const b = e.target.closest("button"); if (b) { $("#askInput").value = b.textContent; ask(); } });
-$("#clearChat").onclick = () => { convo = []; ls.set("od.chat", convo); renderThread(); };
+$("#thread").addEventListener("input", (e) => {
+  const i = e.target.dataset.mq; if (i !== undefined) convo[+i].question = e.target.value;
+  const u = e.target.dataset.ua; if (u !== undefined) convo[+u].area = e.target.value;
+});
+$("#thread").addEventListener("change", (e) => { const u = e.target.dataset.ua; if (u !== undefined) convo[+u].area = e.target.value; });
+$("#thread").addEventListener("click", async (e) => {
+  const b = e.target.closest("button"); if (!b) return;
+  const d = b.dataset;
+  if (d.topic) showTopic(d.topic);
+  else if (d.faq) showAnswer(+d.faq);
+  else if (d.copy !== undefined) {
+    try { await navigator.clipboard.writeText(OFFICE_EMAIL); toast("Email address copied"); } catch { toast(OFFICE_EMAIL); }
+  } else if (d.send !== undefined) {
+    const m = convo[+d.send]; b.disabled = true;
+    try { await api("/api/ask-office", { body: { q: m.question } }); m.emailed = true; ls.set("od.desk", convo); renderThread(); toast("Sent to the office"); }
+    catch (err) { toast(err.message); b.disabled = false; }
+  } else if (d.save !== undefined) {
+    const m = convo[+d.save]; b.disabled = true;
+    try {
+      const r = await api("/api/logs", { body: { area: m.area || "other", client: "", text: m.text, status: "done", next: "" } });
+      S.logs.unshift(r.entry); renderMyEntries(); m.saved = true; ls.set("od.desk", convo); renderThread(); toast("Update saved");
+    } catch (err) { toast(err.message); b.disabled = false; }
+  } else if (d.search !== undefined) {
+    const m = convo[+d.search]; m.saved = true; m.content = "OK, searching the answers instead."; m.kind = ""; answerTyped(m.text, true);
+  }
+});
+function renderChips() { $("#chips").innerHTML = TOPICS.map(([k, v]) => `<button type="button" data-topic="${k}">${esc(v)}</button>`).join(""); }
+$("#chips").addEventListener("click", (e) => { const b = e.target.closest("button[data-topic]"); if (b) showTopic(b.dataset.topic); });
+$("#clearChat").onclick = () => { convo = []; ls.set("od.desk", convo); renderThread(); };
 $("#askInput").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); ask(); } });
 $("#composer").addEventListener("submit", (e) => { e.preventDefault(); ask(); });
-
-let asking = false;
-async function ask() {
-  const q = $("#askInput").value.trim(); if (!q || asking) return;
-  asking = true; $("#askSend").disabled = true; $("#askInput").value = "";
-  convo.push({ role: "user", content: q }); renderThread();
-  const bubble = document.createElement("div"); bubble.className = "msg bot"; bubble.textContent = "Thinking…";
-  $("#thread").append(bubble); bubble.scrollIntoView({ block: "nearest" });
-  let text = "", logged = false;
-  try {
-    const res = await fetch("/api/chat", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ messages: convo.filter((m) => m.role !== "note").slice(-16) }) });
-    if (!res.ok) throw new Error((await res.json().catch(() => ({}))).error || "The assistant could not answer just now.");
-    const reader = res.body.getReader(); const dec = new TextDecoder(); let buf = "";
-    for (;;) {
-      const { value, done } = await reader.read(); if (done) break;
-      buf += dec.decode(value, { stream: true });
-      let i;
-      while ((i = buf.indexOf("\n")) >= 0) {
-        const line = buf.slice(0, i); buf = buf.slice(i + 1); if (!line) continue;
-        const ev = JSON.parse(line);
-        if (ev.t === "text") { text += ev.d; bubble.innerHTML = md(text); }
-        else if (ev.t === "note") { convo.push({ role: "note", content: ev.d }); logged = true; }
-        else if (ev.t === "error") text += (text ? "\n\n" : "") + ev.d;
-      }
-    }
-    convo.push({ role: "assistant", content: text || "No answer came back. Please try again." });
-    if (logged) { const l = await api("/api/logs"); S.logs = l.logs; renderMyEntries(); }
-  } catch (err) {
-    convo.push({ role: "assistant", content: err.message });
-  } finally {
-    asking = false; $("#askSend").disabled = false; ls.set("od.chat", convo.slice(-40)); renderThread();
-    $("#thread").lastElementChild?.scrollIntoView({ block: "nearest" });
-  }
-}
+function ask() { const t = $("#askInput").value.trim(); if (!t) return; $("#askInput").value = ""; answerTyped(t); }
 
 /* ---------------- Updates ---------------- */
 $("#logArea").innerHTML = AREAS.map(([k, v]) => `<option value="${k}">${esc(v)}</option>`).join("");
@@ -240,7 +279,7 @@ function renderOffice() {
     `<div class="person"><div class="row"><strong>${esc(who)}</strong>${list[0].kind === "client" ? '<span class="pill client">client</span>' : ""}</div><div class="entries">${list.map((e) => entryHTML(e)).join("")}</div></div>`).join("") :
     `<div class="empty">No updates yet today. Team members and clients add them from “Work log”, or by telling the desk in chat.</div>`;
   $("#openList").innerHTML = o.open.length ? o.open.map((e) => entryHTML(e, e.who)).join("") : `<div class="empty">Nothing open or stuck.</div>`;
-  $("#askList").innerHTML = o.asks.length ? o.asks.map((a) => `<div class="entry"><span class="when">${esc(istWhen(a.ts))}</span><div class="what"><strong>${esc(a.who)}</strong><br>${esc(a.q)}</div><span></span></div>`).join("") : `<div class="empty">No client questions yet.</div>`;
+  $("#askList").innerHTML = o.asks.length ? o.asks.map((a) => `<div class="entry"><span class="when">${esc(istWhen(a.ts))}</span><div class="what"><strong>${esc(a.who)}</strong>${a.kind === "client" ? ' <span class="pill client">client</span>' : ""}<br>${esc(a.q)}</div><span class="pill ${a.a === "(emailed to the office)" ? "blocked" : ""}">${a.a === "(emailed to the office)" ? "emailed" : "asked"}</span></div>`).join("") : `<div class="empty">No questions yet.</div>`;
   $("#clientList").innerHTML = o.clients.length ? o.clients.map((c) => `<div class="entry"><span class="when">${esc(istHuman(istDay(new Date(c.created_at))))}</span><div class="what"><strong>${esc(c.name)}</strong><br><span class="mono small">${esc(c.phone || "")}</span>${c.email ? ` · ${esc(c.email)}` : ""}</div><span></span></div>`).join("") : `<div class="empty">No clients have signed up yet. Share this site's link with them.</div>`;
   const st = o.plan.status;
   $("#planStatus").textContent = st === "sent" ? "Sent" : st === "awaiting_approval" ? "Waiting for your approval" : "Draft";

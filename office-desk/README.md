@@ -3,10 +3,10 @@
 One web app for the office:
 
 - **Training** – 9 modules for new staff (ITR, GST, contracts and notice replies, trademark, bank/NBFC loans, document preparation, accounting, billing, cold calling), each with steps, checklists, key dates, common mistakes and a 3-question quiz. Scores are saved.
-- **Ask the desk** – a Claude-powered chatbot. Clients ask about their tax, GST, loan or trademark work and which documents to send; staff use it as a tutor and for drafts. Anyone can say “I finished X” or “I sent my bank statements” and it is logged automatically.
+- **Ask the desk** – a free help desk with about 40 ready-made questions and answers in 9 topics (ITR, GST, notices, trademark, loans, documents, accounting and billing, fees and contact). People pick a topic or type a question and the closest answers come up. Questions that are case-specific or have no ready answer get a box to **email the official address** (`OFFICE_EMAIL`) with one click. Typing “I sent my bank statements” offers to save it as a work update. No AI and no running cost.
 - **Work log / My updates** – staff and clients record what is done, in progress, or stuck.
 - **Office** (owner only) – today's activity, open and stuck items, client questions, client list, the team list with sign-in PINs, and tomorrow's plan for each person.
-- **Evening emails** – at `REVIEW_TIME` (default 18:30 IST) Claude drafts each team member's email for the next working day from your plan and their open items, and emails you the drafts. You review and edit them in the Office tab and press **Approve and send**. Nothing reaches the team before you approve (unless you set `AUTO_SEND_TIME`).
+- **Evening emails** – at `REVIEW_TIME` (default 18:30 IST) the app writes each team member's email for the next working day from your plan (or their open items if you left it blank), and emails you the drafts. You review and edit them in the Office tab and press **Approve and send**. Nothing reaches the team before you approve (unless you set `AUTO_SEND_TIME`).
 
 ## Run it
 
@@ -46,19 +46,22 @@ Set `APP_URL=https://desk.yourfirm.in` in `.env` so links in the evening email w
 
 **Back up** the `data/` folder (or the `office-desk-data` Docker volume). It holds every account, log and plan in one SQLite file.
 
-## Costs and limits
+## Editing the answers
 
-- Each chat answer and each evening email is one Claude API call, billed to your Anthropic account. Clients are limited to 20 questions an hour, staff to 60. Set `CHAT_EFFORT=low` for cheaper, faster answers.
-- If the main model declines a request, the API retries it on a fallback model automatically (`fallbacks: "default"`).
-- The training content reflects rules as of November 2026 (including the Income-tax Act, 2025 from tax year 2026-27 and the September 2025 GST rate changes). Edit `public/content.js` to change modules, dates, or add your own procedures; the chatbot uses the same text as its knowledge base.
+- Help desk questions and answers: `public/faq.js`. Each entry has a topic, the question, extra words people might type (`keys`), the answer, and `email: true` if the reply should also offer the email box. Words that send a question straight to email are in `TECH_WORDS`.
+- Training modules: `public/content.js`. The content reflects rules as of November 2026 (including the Income-tax Act, 2025 from tax year 2026-27 and the September 2025 GST rate changes); have it checked before staff rely on it.
+- The Office tab lists every question typed at the help desk, so you can see what people ask and add answers for the common ones.
+
+## Cost
+
+Nothing beyond hosting. There is no AI service; email goes through your own SMTP account.
 
 ## Files
 
 | Path | What it is |
 |---|---|
 | `server.js` | Web server and API |
-| `lib/ai.js` | Claude chat and email drafting |
 | `lib/evening.js` | Evening schedule, approval and sending |
 | `lib/mail.js` | SMTP email |
 | `lib/db.js` | SQLite tables |
-| `public/` | The web pages; `content.js` holds the training material |
+| `public/` | The web pages; `faq.js` holds the help-desk answers, `content.js` the training material |

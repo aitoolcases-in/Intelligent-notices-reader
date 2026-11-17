@@ -1,6 +1,5 @@
-// Evening planner: drafts tomorrow's emails, asks the owner to approve, then sends them.
+// Evening planner: writes tomorrow's emails from a template, asks the owner to approve, then sends them.
 import { q, readPlan, savePlan } from "./db.js";
-import { draftEmail } from "./ai.js";
 import { sendMail } from "./mail.js";
 import { AREA_NAME } from "../public/content.js";
 import { istDay, istHM, istHuman, istDayStart, nextWorkDay } from "./time.js";
@@ -19,6 +18,24 @@ export function suggestFor(userId, sinceDays = 14) {
   ).join("\n");
 }
 
+/** Plain email built from the owner's plan lines. */
+export function templateEmail({ employee, day, planText, note, ownerName, todayLogs }) {
+  const lines = String(planText || "").split("\n").map((l) => l.trim().replace(/^[-•*]\s*/, "")).filter(Boolean);
+  const done = todayLogs.filter((l) => l.status === "done").length;
+  const body = [
+    `Hi ${employee.name},`,
+    "",
+    lines.length ? `Here is your plan for ${istHuman(day)}:` : `There is no fixed plan for you on ${istHuman(day)} yet. Please check with me in the morning.`,
+    ...(lines.length ? ["", ...lines.map((l) => `- ${l}`)] : []),
+    ...(note ? ["", `Note for everyone: ${note}`] : []),
+    "",
+    done ? `Thank you for finishing ${done} task${done === 1 ? "" : "s"} today.` : "Please log your updates in the Office Desk as you work.",
+    "",
+    ownerName,
+  ].join("\n");
+  return { subject: `Your plan for ${istHuman(day)}`, body };
+}
+
 /** Build email drafts for every active employee for `day`. Keeps the owner's written plan; fills blanks from open items. */
 export async function buildDrafts(day = nextWorkDay()) {
   const plan = readPlan(day);
@@ -29,13 +46,7 @@ export async function buildDrafts(day = nextWorkDay()) {
   for (const e of team) {
     const planText = (plan.items[e.id] || "").trim() || suggestFor(e.id);
     if (!plan.items[e.id]?.trim() && planText) plan.items[e.id] = planText;
-    try {
-      const d = await draftEmail({ employee: e, day, planText, note: plan.note, recentLogs: q.logsForUserSince.all(e.id, todayStart), ownerName: owner.name });
-      emails.push({ userId: e.id, to: e.email, name: e.name, ...d });
-    } catch (err) {
-      emails.push({ userId: e.id, to: e.email, name: e.name, subject: `Your plan for ${istHuman(day)}`, body: `Hi ${e.name},\n\nHere is your plan for ${istHuman(day)}:\n\n${planText || "Please check with me in the morning."}\n\n${plan.note || ""}\n\n${owner.name}`.replace(/\n{3,}/g, "\n\n").trim() });
-      console.error("[evening] draft failed for", e.name, err.message);
-    }
+    emails.push({ userId: e.id, to: e.email, name: e.name, ...templateEmail({ employee: e, day, planText, note: plan.note, ownerName: owner.name, todayLogs: q.logsForUserSince.all(e.id, todayStart) }) });
   }
   savePlan(day, { items: plan.items, note: plan.note, status: "awaiting_approval", emails });
   return readPlan(day);
