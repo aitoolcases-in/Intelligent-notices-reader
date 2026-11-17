@@ -1,15 +1,15 @@
 [
- "Claude Skills, explained. For a small business.",
- "Priya runs a sweet shop. Every week, she types thirty invoices by hand.",
- "A Claude Skill is your instructions, saved once. Your template, your rules. Claude uses it whenever that job comes up.",
- "Priya's week. Thirty invoices, twelve minutes each. That's six hours.",
- "One year later, that's over three hundred hours. Almost forty working days, just typing.",
- "Now meet a second Priya. She teaches Claude her invoice format. Just once.",
- "So, how long does her week take now?",
- "About one hour. Claude drafts. She checks, and sends.",
- "Same Claude. Her rules.",
- "Her Skill holds the boring part. The template, the tax rates, her customers. She sets it up once, and it pays back in the first week.",
- "To be fair, AI can make mistakes. She still checks every total before it goes out.",
- "And it's not just invoices. Payment reminders. Supplier orders. Monthly sales summaries.",
- "Teach it once. Save every week."
+ "Claude Skills, explained. For a small shop.",
+ "Priya runs a sweet shop. Her orders come on WhatsApp, and in the counter book.",
+ "Every evening, she reads each order and types it into her billing app.",
+ "Forty orders a day. Three minutes each. Two hours, every evening.",
+ "One year later, that's six hundred hours. And a few wrong quantities that cost her money.",
+ "Now meet a second Priya. She teaches Claude how her shop works. Just once.",
+ "So, what does she teach it?",
+ "Three things. Her price list and nicknames. K K means kaju katli. Her regular customers. And three real orders, with the right bill for each.",
+ "Her billing app keeps the books. Claude does the reading.",
+ "Now she drops in the day's WhatsApp screenshots, and a photo of the counter book. Claude returns a clean sheet to import, and flags two unclear orders.",
+ "To be fair, she still checks every line. Claude doesn't replace her billing app. It feeds it.",
+ "To make one: in Claude's settings, turn on skill creator. Describe your orders in a chat. Upload the Skill it makes, and test it.",
+ "Your software needs clean data. Teach Claude to make it clean."
 ]
