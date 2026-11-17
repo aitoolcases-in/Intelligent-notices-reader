@@ -1,0 +1,15 @@
+[
+ "Editing videos with Claude Code, explained.",
+ "Rohan films reels for his shop. Editing each one takes him two hours.",
+ "And it's the same edits every time. Trim the pauses. Add his logo. Add a title. Export for Instagram.",
+ "Now meet a second Rohan. He teaches Claude Code those edits once, as a Skill.",
+ "Step one. Make a folder. Raw clips go in one folder, your logo in another.",
+ "Step two. Install Claude Code, and F F mpeg, the free tool that does the actual cutting.",
+ "Step three. Open the folder in your terminal, type claude, and log in.",
+ "Step four. Ask Claude to make the Skill. Describe your edits in plain words.",
+ "Claude saves it as a file in your folder, so it remembers next time.",
+ "Now Rohan just types: slash reel editor, and the clip's name. Claude runs F F mpeg, and saves the reel.",
+ "Two hours of editing, down to about ten minutes of checking.",
+ "To be fair, watch every reel before posting. If something's off, tell Claude, and ask it to update the Skill.",
+ "Teach the edit once. Post every day."
+]

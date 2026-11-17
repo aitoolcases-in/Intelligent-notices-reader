@@ -1,0 +1,261 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+@font-face{font-family:SS4;src:url(node_modules/@fontsource/source-serif-4/files/source-serif-4-latin-400-normal.woff2);font-weight:400}
+@font-face{font-family:SS4;src:url(node_modules/@fontsource/source-serif-4/files/source-serif-4-latin-600-normal.woff2);font-weight:600}
+@font-face{font-family:SS4;src:url(node_modules/@fontsource/source-serif-4/files/source-serif-4-latin-400-italic.woff2);font-weight:400;font-style:italic}
+@font-face{font-family:SS4;src:url(node_modules/@fontsource/source-serif-4/files/source-serif-4-latin-600-italic.woff2);font-weight:600;font-style:italic}
+@font-face{font-family:SS4X;src:url(node_modules/@fontsource/source-serif-4/files/source-serif-4-latin-ext-400-normal.woff2);font-weight:400}
+@font-face{font-family:SS4X;src:url(node_modules/@fontsource/source-serif-4/files/source-serif-4-latin-ext-600-normal.woff2);font-weight:600}
+@font-face{font-family:SS4X;src:url(node_modules/@fontsource/source-serif-4/files/source-serif-4-latin-ext-600-italic.woff2);font-weight:600;font-style:italic}
+@font-face{font-family:MS;src:url(node_modules/@fontsource/montserrat/files/montserrat-latin-700-normal.woff2);font-weight:700}
+@font-face{font-family:MS;src:url(node_modules/@fontsource/montserrat/files/montserrat-latin-800-normal.woff2);font-weight:800}
+@font-face{font-family:MSX;src:url(node_modules/@fontsource/montserrat/files/montserrat-latin-ext-700-normal.woff2);font-weight:700}
+@font-face{font-family:MSX;src:url(node_modules/@fontsource/montserrat/files/montserrat-latin-ext-800-normal.woff2);font-weight:800}
+@font-face{font-family:CV;src:url(node_modules/@fontsource/caveat/files/caveat-latin-600-normal.woff2);font-weight:600}
+@font-face{font-family:CVX;src:url(node_modules/@fontsource/caveat/files/caveat-latin-ext-600-normal.woff2);font-weight:600}
+html,body{margin:0;padding:0;background:#f7f5ef}
+#stage{position:relative;width:1080px;height:1920px;overflow:hidden;background:#f7f5ef;font-family:SS4,SS4X,Georgia,serif;color:#034620}
+.layer{background:#f7f5ef}
+.layer.green{background:#034620;color:#f7f5ef}
+.ring{position:absolute;border:4px solid #9fbfab;border-radius:9999px;pointer-events:none}
+.green .ring{border-color:#2d7049}
+.logo{position:absolute;left:72px;top:74px;height:118px}
+.kick{position:absolute;left:80px;top:232px;font-family:MS,MSX,sans-serif;font-weight:700;font-size:26px;letter-spacing:.14em;color:#3f5e4b}
+.mark{background:#e2b04a;color:#034620;border-radius:8px;padding:0 12px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.mark.loss{background:#a8452a;color:#f7f5ef}
+.layer{position:absolute;inset:0}
+.ab{position:absolute}
+.hl{position:absolute;left:80px;top:280px;width:900px;font-family:MS,MSX,sans-serif;font-size:72px;line-height:1.12;font-weight:800;letter-spacing:-.01em;color:#034620}
+.green .hl{color:#f7f5ef}
+.lab{font-family:MS,MSX,sans-serif;font-weight:700;letter-spacing:.06em}
+.hand{font-family:MS,MSX,sans-serif;font-weight:700;letter-spacing:-.01em}
+.foot{font-family:MS,MSX,sans-serif;font-weight:700;font-size:22px;line-height:1.4;color:#3f5e4b}
+</style></head>
+<body>
+<div id="stage"></div>
+<svg width="0" height="0" style="position:absolute">
+<defs>
+<filter id="pencil" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence id="turb" type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="1"/><feDisplacementMap in="SourceGraphic" scale="5"/></filter>
+<pattern id="hG" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="14" height="14" fill="#f7f5ef"/><line x1="0" y1="0" x2="0" y2="14" stroke="#9fbfab" stroke-width="2.6"/></pattern>
+<pattern id="hD" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(40)"><rect width="9" height="9" fill="#2d7049"/><line x1="0" y1="0" x2="0" y2="9" stroke="#034620" stroke-width="3"/></pattern>
+<pattern id="hA" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="14" height="14" fill="#f1cf86"/><line x1="0" y1="0" x2="0" y2="14" stroke="#c98f1c" stroke-width="3"/></pattern>
+<pattern id="hR" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="14" height="14" fill="#f3d7cc"/><line x1="0" y1="0" x2="0" y2="14" stroke="#a8452a" stroke-width="3.4"/></pattern>
+<pattern id="hN" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="14" height="14" fill="#dfe9e2"/><line x1="0" y1="0" x2="0" y2="14" stroke="#2d7049" stroke-width="3.4"/></pattern>
+</defs>
+</svg>
+<script src="vo_edit.js"></script>
+<script>
+const INK='#034620', GREEN='#034620', LOSS='#a8452a', G6='#2d7049', AMB='#e2b04a';
+const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const ease=x=>{x=clamp(x);return x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2};
+const P=(u,a,d=.5)=>ease((u-a)/d);
+// appear: fade + rise
+const ap=(u,a,d=.45)=>{const p=P(u,a,d);return `opacity:${p};transform:translateY(${(1-p)*24}px);`};
+let GT=0;
+const draw=(p)=>`pathLength="1" stroke-dasharray="1" stroke-dashoffset="${1-clamp(p)}"`;
+const EVENTS=[]; // build-step times for audio
+function hl(u,a,em,b,cls=''){return `<div class="hl" style="${ap(u,0.15,.5)}">${a}<span class="mark ${cls}">${em}</span>${b||''}</div>`}
+const kick=(u,txt)=>`<div class="kick" style="${ap(u,0,.4)}">${txt}</div>`;
+const ring=(x,y,d)=>`<div class="ring" style="left:${x}px;top:${y}px;width:${d}px;height:${d}px"></div>`;
+
+// ---------- the hero: Rohan ----------
+function rohan(x,y,s,o={}){
+  const mood=o.mood||'happy', prop=o.prop||'none', ph=x*0.0131+y*0.007;
+  const look=(o.look||0)+Math.sin(GT*0.8+ph*3)*4;
+  const bob=Math.sin(GT*2.4+ph)*4, tilt=Math.sin(GT*1.3+ph)*3 + (mood==='worried'?-4:0);
+  const jump=o.jump?-Math.abs(Math.sin(GT*5.5))*40:0;
+  const blink=((GT+ph*5)%3.3)<0.14;
+  const mouth = mood==='cheer' ? 'M172,312 Q200,356 230,312 Z' : mood==='happy' ? 'M178,318 Q200,338 224,316' : mood==='worried' ? 'M180,326 Q200,314 222,326' : 'M182,322 L220,320';
+  const eyes = blink ? `<path d="M158,270 H178 M224,270 H244" stroke-width="5"/>` : `<circle cx="168" cy="270" r="5" fill="${INK}"/><circle cx="234" cy="270" r="5" fill="${INK}"/>`;
+  const sw=Math.sin(GT*7+ph)*10;
+  let arm='';
+  if(o.scratch) arm=`<path d="M300,470 C340,420 330,330 ${300+sw*0.4},${262+sw*0.3}" stroke-width="5" fill="none"/><circle cx="${300+sw*0.4}" cy="${258+sw*0.3}" r="18" fill="#f7f5ef"/>`;
+  if(mood==='cheer') arm=`<path d="M300,470 C340,400 360,320 ${370+sw},${220}" stroke-width="5" fill="none"/><circle cx="${370+sw}" cy="210" r="20" fill="#f7f5ef"/><path d="M100,470 C60,400 40,320 ${30-sw},${220}" stroke-width="5" fill="none"/><circle cx="${30-sw}" cy="210" r="20" fill="#f7f5ef"/>`;
+  const brows = mood==='worried' ? '<path d="M146,236 L190,244 M212,244 L256,234" />' : '<path d="M146,238 Q168,228 190,236 M212,236 Q234,228 256,238" />';
+  let propS='';
+  if(prop==='phone') propS=`<g transform="translate(250,440) rotate(${-12+Math.sin(GT*1.7+ph)*5} 30 120)"><rect x="0" y="0" width="70" height="128" rx="12" fill="url(#hA)" stroke="${INK}" stroke-width="4"/><rect x="9" y="14" width="52" height="92" rx="4" fill="#fbe7b9" stroke="${INK}" stroke-width="2.5"/></g><path d="M300,600 C300,540 280,500 262,486 C250,478 246,500 258,508" fill="#f7f5ef" stroke="${INK}" stroke-width="4"/>`;
+  if(prop==='bill') propS=`<g transform="translate(230,430) rotate(8)"><path d="M0,0 L120,0 L120,150 L110,140 L100,150 L90,140 L80,150 L70,140 L60,150 L50,140 L40,150 L30,140 L20,150 L10,140 L0,150 Z" fill="#fff" stroke="${INK}" stroke-width="4"/><path d="M16,30 H100 M16,56 H90 M16,82 H70" stroke="#8a8a84" stroke-width="5"/><path d="M16,112 H100" stroke="${LOSS}" stroke-width="7"/></g>`;
+  if(prop==='calendar') propS=`<g transform="translate(240,420) rotate(6)"><rect x="0" y="0" width="140" height="130" fill="#fff" stroke="${INK}" stroke-width="4"/><rect x="0" y="0" width="140" height="34" fill="url(#hN)" stroke="${INK}" stroke-width="4"/><path d="M20,62 l12,12 l22,-24 M64,62 l12,12 l22,-24 M20,100 l12,12 l22,-24 M64,100 l12,12 l22,-24" stroke="${GREEN}" stroke-width="5" fill="none"/></g>`;
+  if(prop==='laptop') propS=`<g transform="translate(60,450) rotate(${Math.sin(GT*1.2+ph)*1.5} 140 100)"><rect x="0" y="0" width="280" height="180" rx="12" fill="#fff" stroke="${INK}" stroke-width="5"/><rect x="70" y="62" width="140" height="52" rx="26" fill="#f3d7cc" stroke="${INK}" stroke-width="3"/><text x="140" y="98" text-anchor="middle" font-family="MS,MSX,sans-serif" font-weight="800" font-size="28" fill="${INK}" stroke="none">Claude</text><path d="M-30,180 L310,180 L330,212 L-50,212 Z" fill="url(#hG)" stroke="${INK}" stroke-width="5"/></g>`;
+  const sweat = o.sweat ? `<path d="M296,200 C292,214 288,222 296,228 C304,222 300,214 296,200Z" fill="#cfe3ee" stroke="${INK}" stroke-width="3"/>` : '';
+  return `<g transform="translate(${x},${y+jump}) scale(${s})" filter="url(#pencil)" stroke="${INK}" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+   <path d="M40,640 C46,500 100,420 200,408 C300,420 354,500 360,640 Z" fill="url(#hG)"/>
+   <path d="M200,408 C186,440 176,470 170,520 M200,408 C214,440 224,470 230,520" />
+   <path d="M150,412 L200,470 L250,412" fill="#f7f5ef"/>
+   <path d="M120,440 C118,500 112,560 110,640 M282,440 C286,500 292,560 292,640" stroke-width="3.5"/>
+   <path d="M178,348 L178,412 M222,348 L222,412" />
+   <g transform="translate(0,${bob}) rotate(${tilt} 200 380)">
+   ${o.hair==='long'?`<path d="M108,250 C98,160 160,122 204,124 C252,122 312,160 298,252 C300,320 312,380 318,430 C300,446 284,440 270,452 C262,420 262,380 262,340 L146,340 C144,380 142,420 132,452 C118,440 102,446 86,430 C94,380 106,320 108,250 Z" fill="url(#hD)"/>`:`<ellipse cx="114" cy="272" rx="16" ry="26" fill="#f7f5ef"/><ellipse cx="288" cy="272" rx="16" ry="26" fill="#f7f5ef"/>`}
+   <path d="M118,250 C116,330 150,372 200,374 C252,372 286,330 284,250 C284,200 250,170 200,170 C150,170 118,200 118,250Z" fill="#f7f5ef"/>
+   ${o.hair==='long'?`<path d="M204,162 C168,164 124,196 116,262 C136,226 168,206 204,196 Z" fill="url(#hD)"/><path d="M204,162 C240,164 282,196 288,262 C268,226 238,206 204,196 Z" fill="url(#hD)"/><circle cx="112" cy="318" r="7" fill="url(#hA)"/><circle cx="290" cy="318" r="7" fill="url(#hA)"/>`:`<path d="M112,262 C96,170 160,120 214,130 C268,124 312,170 292,256 C290,222 272,200 250,196 C236,214 196,212 176,200 C160,214 136,212 124,206 C118,224 116,244 112,262Z" fill="url(#hD)"/>`}
+   ${o.glasses===false?`<g transform="translate(${look},0)">${eyes}<path d="M154,256 L160,261 M248,256 L242,261" stroke-width="3.5"/></g>`:`<g transform="translate(${look},0)"><rect x="140" y="248" width="54" height="42" rx="12" fill="#fbfbf8"/><rect x="208" y="248" width="54" height="42" rx="12" fill="#fbfbf8"/><path d="M194,266 Q201,258 208,266 M140,264 L120,258 M262,264 L284,258"/>
+   ${eyes}</g>`}
+   ${brows}
+   <path d="M200,284 C196,298 192,304 202,306" />
+   <path d="${mouth}" ${mood==='cheer'?'fill="#fff"':''}/>
+   ${sweat}
+   </g>
+   ${arm}
+   ${propS}
+  </g>`;
+}
+function sv(inner,x=0,y=0,w=1080,h=1920){return `<svg class="ab" style="left:${x}px;top:${y}px" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}">${inner}</svg>`}
+const T=(x,y,html,style='')=>`<div class="ab" style="left:${x}px;top:${y}px;${style}">${html}</div>`;
+function tick(u,a,x,y,text,col=INK){
+  const p=P(u,a,.4);
+  return sv(`<g filter="url(#pencil)"><rect x="4" y="4" width="54" height="54" fill="none" stroke="${INK}" stroke-width="4"/><path d="M14,30 L28,46 L56,10" fill="none" stroke="${GREEN}" stroke-width="7" stroke-linecap="round" ${draw(P(u,a+.1,.35))}/></g>`,x,y,64,64)
+   + T(x+90,y+2,`<span style="font-size:46px;color:${col}">${text}</span>`,`opacity:${p}`);
+}
+
+// ---------- scenes ----------
+const SC=[];
+// ---------- extra drawings ----------
+const MONO="'JetBrains Mono','DejaVu Sans Mono',monospace";
+const typ=(s,u,a,cps=32)=>{const n=Math.max(0,Math.floor((u-a)*cps));return n>=s.length?s:s.slice(0,n)+'<span style="opacity:.8">▍</span>'};
+function term(x,y,w,h,lines,u,a,title='Terminal'){ // a terminal window; lines: [{t,at,col,typed}]
+  const p=P(u,a,.4);
+  let body='';
+  lines.forEach(l=>{ if(u<l.at) return;
+    const txt=l.typed===false?l.t:typ(l.t,u,l.at,l.cps||32);
+    body+=`<div style="color:${l.col||'#f7f5ef'};white-space:pre-wrap;word-break:break-word">${l.p===false?'':'<span style="color:#e2b04a">$ </span>'}${txt}</div>`;});
+  return `<div class="ab" style="left:${x}px;top:${y}px;width:${w}px;height:${h}px;opacity:${p};transform:translateY(${(1-p)*20}px);background:#034620;border:5px solid #034620;border-radius:20px;overflow:hidden;box-shadow:0 10px 0 rgba(3,70,32,.15)">
+   <div style="background:#0b5a2e;padding:12px 18px;display:flex;gap:10px;align-items:center"><span style="width:16px;height:16px;border-radius:50%;background:#e2b04a"></span><span style="width:16px;height:16px;border-radius:50%;background:#9fbfab"></span><span style="width:16px;height:16px;border-radius:50%;background:#f7f5ef"></span><span class="lab" style="font-size:22px;color:#b9d0c1;margin-left:12px">${title}</span></div>
+   <div style="padding:22px 26px;font-family:${MONO};font-size:31px;line-height:1.45;display:flex;flex-direction:column;gap:6px">${body}</div></div>`;
+}
+function tree(x,y,rows,u){ // folder tree; rows: [{d,name,kind,at,note}]
+  let h='';
+  rows.forEach(r=>{const p=P(u,r.at,.35);
+    const icon=r.kind==='dir'?`<svg width="44" height="34" viewBox="0 0 44 34" style="flex:none"><path d="M2,6 H16 L20,11 H42 V32 H2 Z" fill="#f1cf86" stroke="#034620" stroke-width="3"/></svg>`
+      :`<svg width="34" height="40" viewBox="0 0 34 40" style="flex:none"><path d="M3,2 H22 L31,11 V38 H3 Z" fill="#fff" stroke="#034620" stroke-width="3"/><path d="M22,2 V11 H31" fill="none" stroke="#034620" stroke-width="3"/></svg>`;
+    h+=`<div style="display:flex;align-items:center;gap:16px;margin-left:${r.d*56}px;opacity:${p};transform:translateX(${(1-p)*-20}px);height:62px">${icon}<span style="font-family:${MONO};font-size:36px;color:#034620;${r.hi?'background:#e2b04a;padding:0 8px;border-radius:6px;':''}">${r.name}</span>${r.note?`<span style="font-size:30px;color:#3f5e4b;margin-left:8px">${r.note}</span>`:''}</div>`;});
+  return T(x,y,`<div>${h}</div>`);
+}
+function clock(x,y,r,label,u,a,col){
+  const p=P(u,a,.4), ang=-90+360*clamp((u-a)/1.6)*0.9;
+  return sv(`<g filter="url(#pencil)" style="opacity:${p}"><circle cx="${x}" cy="${y}" r="${r}" fill="#fff" stroke="${INK}" stroke-width="6"/><path d="M${x},${y} L${x+Math.cos(ang*Math.PI/180)*r*.7},${y+Math.sin(ang*Math.PI/180)*r*.7}" stroke="${col||LOSS}" stroke-width="7" stroke-linecap="round"/><path d="M${x},${y} L${x},${y-r*.5}" stroke="${INK}" stroke-width="7" stroke-linecap="round"/></g>`)+
+   T(x-r,y+r+16,`<div style="width:${2*r}px;text-align:center"><span style="font-size:52px;color:${col||LOSS};font-weight:600">${label}</span></div>`,`opacity:${p}`);
+}
+function film(x,y,w,u,a){const p=P(u,a,.4);let holes='';for(let i=0;i<Math.floor(w/40);i++)holes+=`<rect x="${x+10+i*40}" y="${y+8}" width="20" height="14" rx="3" fill="#f7f5ef"/><rect x="${x+10+i*40}" y="${y+118}" width="20" height="14" rx="3" fill="#f7f5ef"/>`;
+  let fr='';for(let i=0;i<3;i++)fr+=`<rect x="${x+14+i*(w-28)/3}" y="${y+32}" width="${(w-28)/3-12}" height="76" fill="url(#hA)" stroke="${INK}" stroke-width="3"/>`;
+  return sv(`<g filter="url(#pencil)" style="opacity:${p}"><rect x="${x}" y="${y}" width="${w}" height="140" rx="8" fill="#034620"/>${holes}${fr}</g>`);}
+
+// 1 hook
+SC.push({kick:'ACCREVISE EXPLAINS',ring:[520,700,1100],d:3.4,ev:[.2,1,1.8],f:u=>
+  `<div class="hl" style="${ap(u,.2)}">Edit videos with</div>` +
+  `<div class="hl" style="top:372px;${ap(u,1)}"><span class="mark">Claude Code.</span></div>` +
+  T(80,500,`<span class="lab" style="font-size:30px;color:#3f5e4b">END TO END · ONE SKILL</span>`,ap(u,1.8)) +
+  sv(rohan(20,440,1.5,{prop:'phone',mood:'happy'}),0,0) + film(620,640,400,u,1.2)
+});
+// 2 meet rohan
+SC.push({kick:'MEET ROHAN',ring:[-500,1100,1000],d:5.3,ev:[.2,.6,1.8,2.8],f:u=>
+  hl(u,'Rohan films ','reels') +
+  `<div style="opacity:${P(u,.4,.5)}">`+sv(rohan(-10,470,1.0,{prop:'phone',mood:u>2.8?'worried':'happy',scratch:u>3.6}),0,0)+`</div>` +
+  film(560,500,440,u,.8) +
+  clock(780,880,120,'2 hrs each',u,1.8) +
+  T(80,1170,`<span class="hand" style="font-size:48px;color:${LOSS}">in an editing app, by hand</span>`,ap(u,2.8))
+});
+// 3 same edits every time
+SC.push({kick:'THE REAL JOB',ring:[600,1250,900],d:7.9,ev:[.2,.6,2,3.2,4.4,5.6],f:u=>{
+  const bx=P(u,.6,.6);
+  return hl(u,'Same edits, ','every time') +
+   sv(`<g filter="url(#pencil)" style="opacity:${bx}"><rect x="80" y="440" width="880" height="620" fill="#fff" stroke="${INK}" stroke-width="6"/><rect x="80" y="440" width="880" height="80" fill="url(#hG)" stroke="${INK}" stroke-width="6"/></g>`) +
+   T(110,456,`<span class="lab" style="font-size:30px;color:#034620;background:#fff;padding:4px 10px">EVERY SINGLE REEL</span>`,`opacity:${bx}`) +
+   tick(u,2,130,560,'trim the pauses') + tick(u,3.2,130,680,'add his logo, top-left') +
+   tick(u,4.4,130,800,'add a title') + tick(u,5.6,130,920,'export 1080 × 1920 for Instagram');
+}});
+// 4 the twin
+SC.push({kick:'WHAT IF',ring:[640,-300,800],d:5.8,ev:[.2,.8,2.4],f:u=>{
+  const sp=P(u,.8,.6);
+  return hl(u,'A ','second',' Rohan') +
+   sv(`<g filter="url(#pencil)"><path d="M540,470 L540,${470+1000*sp}" stroke="${INK}" stroke-width="5"/></g>`) +
+   `<div style="opacity:${sp}">`+sv(rohan(40,620,1.15,{prop:'phone',mood:'worried'}),0,0)+sv(rohan(590,620,1.15,{prop:'laptop',mood:'happy'}),0,0)+`</div>`+
+   T(80,1380,`<span class="lab" style="font-size:30px;color:#3f5e4b">EDITS EVERY REEL</span>`,ap(u,1.2)) +
+   T(600,1380,`<span class="lab" style="font-size:30px;color:${G6}">TEACHES CLAUDE ONCE</span>`,ap(u,1.2)) +
+   T(80,470,`<span class="lab" style="font-size:36px;color:${G6}">THOSE 4 EDITS → ONE SKILL</span>`,ap(u,2.4));
+}});
+// 5 step 1: folder
+SC.push({kick:'STEP 1',ring:[-450,-300,900],d:5.6,ev:[.2,.6,1.4,2.2,3,3.8],f:u=>
+  hl(u,'Make a ','folder') +
+  tree(110,500,[{d:0,name:'my-reels/',kind:'dir',at:.6},{d:1,name:'raw/',kind:'dir',at:1.4,note:'your clips'},{d:2,name:'day1.mp4',kind:'file',at:1.8},{d:1,name:'brand/',kind:'dir',at:2.6,note:'your logo'},{d:2,name:'logo.png',kind:'file',at:3},{d:1,name:'final/',kind:'dir',at:3.8,note:'finished reels'}],u) +
+  `<div style="opacity:${P(u,1,.5)}">`+sv(rohan(600,1000,.8,{prop:'laptop',mood:'happy'}),0,0)+`</div>`
+});
+// 6 step 2: install
+SC.push({kick:'STEP 2',ring:[600,1250,900],d:6.8,ev:[.2,.6,1.2,3.4],f:u=>
+  hl(u,'Install ','2 tools') +
+  term(80,470,920,330,[{t:'# Claude Code (Mac / Linux)',at:.8,col:'#9fbfab',typed:false,p:false},{t:'curl -fsSL https://claude.ai/install.sh | bash',at:1.2}],u,.6,'1 · Claude Code') +
+  term(80,850,920,250,[{t:'# FFmpeg: the free video cutter',at:3,col:'#9fbfab',typed:false,p:false},{t:'brew install ffmpeg',at:3.4}],u,2.8,'2 · FFmpeg') +
+  T(80,1140,`<div class="foot" style="width:900px">Windows: <span style="font-family:${MONO}">irm https://claude.ai/install.ps1 | iex</span> and <span style="font-family:${MONO}">winget install Gyan.FFmpeg</span></div>`,ap(u,4.4))
+});
+// 7 step 3: open claude in the folder
+SC.push({kick:'STEP 3',ring:[-500,1100,1000],d:5,ev:[.2,.6,1.2,2.2],f:u=>
+  hl(u,'Open Claude ','in the folder') +
+  term(80,480,920,420,[{t:'cd my-reels',at:1},{t:'claude',at:2},{t:'✻ Welcome to Claude Code',at:2.8,col:'#e2b04a',typed:false,p:false},{t:'Log in with your Claude account',at:3.2,col:'#b9d0c1',typed:false,p:false}],u,.6) +
+  `<div style="opacity:${P(u,1,.5)}">`+sv(rohan(340,950,.85,{prop:'laptop',mood:'happy'}),0,0)+`</div>`
+});
+// 8 step 4: ask for the skill
+SC.push({kick:'STEP 4',ring:[640,-300,800],d:5.5,ev:[.2,.6,1],f:u=>
+  hl(u,'Ask for the ','Skill') +
+  term(80,470,920,640,[{t:'> Make a skill called reel-editor. For each clip in raw/: cut pauses longer than 1 second, put brand/logo.png top-left, add the title I give you, export 1080×1920 to final/.',at:1,p:false,col:'#f7f5ef',cps:70}],u,.6,'claude · my-reels') +
+  T(80,1150,`<span class="hand" style="font-size:44px;color:${G6}">plain words. no code.</span>`,ap(u,4.2))
+});
+// 9 it writes the skill
+SC.push({kick:'STEP 4 · DONE',ring:[560,1250,1000],d:4.9,ev:[.2,.6,1.4,2.2],f:u=>
+  hl(u,'Saved as a ','file') +
+  tree(110,480,[{d:0,name:'my-reels/',kind:'dir',at:-1},{d:1,name:'.claude/skills/reel-editor/',kind:'dir',at:.6},{d:2,name:'SKILL.md',kind:'file',at:1.4,hi:u>2.2},{d:1,name:'raw/  brand/  final/',kind:'dir',at:-1}],u) +
+  T(80,790,`<div style="background:#fff;border:4px solid #034620;border-radius:16px;padding:22px 26px;width:860px;font-family:${MONO};font-size:28px;line-height:1.45;color:#034620;opacity:${P(u,2.2,.4)}">---<br>name: reel-editor<br>description: Edit raw clips into<br>&nbsp;&nbsp;Instagram reels for my shop<br>---<br>1. Cut pauses over 1 s (ffmpeg)<br>2. Logo top-left, title on top<br>3. Export 1080×1920 to final/</div>`)
+});
+// 10 step 5: use it
+SC.push({kick:'STEP 5',ring:[-450,-300,900],d:8.2,ev:[.2,.6,1,3.4,5.2],f:u=>
+  hl(u,'Use it ','every day') +
+  term(80,470,920,520,[{t:'/reel-editor raw/day1.mp4 "Diwali offer"',at:1,p:false,col:'#e2b04a'},{t:'Running ffmpeg… cutting 14 pauses',at:3.4,typed:false,p:false,col:'#b9d0c1'},{t:'Adding logo + title… exporting',at:4.2,typed:false,p:false,col:'#b9d0c1'},{t:'✓ Saved final/day1_reel.mp4',at:5.2,typed:false,p:false,col:'#9fbfab'}],u,.6,'claude · my-reels') +
+  `<div style="opacity:${P(u,5.2,.5)}">`+sv(rohan(340,1030,.8,{prop:'phone',mood:'happy'}),0,0)+`</div>`
+});
+// 11 reveal
+SC.push({kick:'THE RESULT',ring:[600,1300,1000],d:4.4,ev:[.2,.6,1.6,2.6],f:u=>
+  hl(u,'From 2 hours to ','10 minutes') +
+  clock(270,700,150,'2 hrs editing',u,.6) + clock(790,700,150,'~10 min checking',u,1.6,G6) +
+  `<div style="opacity:${P(u,2.4,.5)}">`+sv(rohan(340,1020,.8,{mood:'cheer',jump:u>2.4&&u<4.2}),0,0)+`</div>`
+});
+// 12 be fair
+SC.push({kick:'TO BE FAIR',ring:[560,1250,1000],d:7.4,ev:[.2,.6,2,4.2],f:u=>
+  hl(u,'Always ','watch it') +
+  `<div style="opacity:${P(u,.6,.5)}">`+sv(rohan(60,480,1.05,{prop:'phone',mood:u>4.2?'happy':'neutral',look:6}),0,0)+`</div>` +
+  T(560,560,`<div style="font-size:46px;color:#034620;width:420px;line-height:1.25">Watch every reel before you post.</div>`,ap(u,2)) +
+  term(560,800,440,260,[{t:'> Make the title bigger, and update the Skill.',at:4.4,p:false}],u,4.2,'claude') +
+  T(560,1090,`<span class="hand" style="font-size:38px;color:${G6}">it remembers next time</span>`,ap(u,6.2))
+});
+// 13 truth
+SC.push({kick:null,ring:[-300,150,1700],green:true,logo:false,d:3.5,ev:[.2,.5,1.4,2.2],f:u=>
+  T(0,330,`<div style="width:1080px;text-align:center"><img src="logo-paper.png" style="height:330px"></div>`,ap(u,.2)) +
+  `<div class="hl" style="left:0;width:1080px;top:800px;text-align:center;${ap(u,.5)}">Teach the edit once.</div>` +
+  `<div class="hl" style="left:0;width:1080px;top:900px;text-align:center;${ap(u,1.4)}">Post <span class="mark">every day.</span></div>` +
+  T(110,1150,`<div class="foot" style="width:860px;text-align:center;color:#b9d0c1">Illustrative times. Claude Code needs a paid Claude plan or API account. Commands as of Nov 2026; see code.claude.com/docs. Always review before posting.</div>`,ap(u,2.2))
+});
+
+const VO=window.VO||[]; SC.forEach((s,i)=>{s.d0=s.d; s.d=Math.max(s.d,(VO[i]||0)+0.95); s.k=s.d0/s.d; s.ev=(s.ev||[]).map(t=>t/s.k);});
+let START=[],acc=0; SC.forEach(s=>{START.push(acc);acc+=s.d}); const TOTAL=acc; window.STARTS=START;
+window.TOTAL=TOTAL;
+window.EVENTS=(()=>{const e=[];SC.forEach((s,i)=>{(s.ev||[]).forEach(t=>e.push({t:START[i]+t,k:'pencil'}));if(i>0)e.push({t:START[i],k:'turn'})});return e})();
+function sceneAt(t){let i=SC.length-1;for(let k=0;k<SC.length;k++){if(t<START[k]+SC[k].d){i=k;break}}return i}
+window.render=function(t){
+  GT=t;
+  document.getElementById('turb').setAttribute('seed',String(1+Math.floor(t*6)%3));
+  const i=sceneAt(t), u=t-START[i];
+  const TR=.5;
+  let html='', k=i, uu=u, wipe='';
+  if(i>0 && u<TR){ // Accrevise green wipe: covers the old frame right-to-left, then uncovers the new one
+    const p=u/TR;
+    if(p<.5){k=i-1;uu=SC[i-1].d;const w=ease(p*2)*1080;wipe=`<div class="ab" style="right:0;top:0;width:${w}px;height:1920px;background:#034620;z-index:5"></div>`;}
+    else{const w=(1-ease((p-.5)*2))*1080;wipe=`<div class="ab" style="left:0;top:0;width:${w}px;height:1920px;background:#034620;z-index:5"></div>`;}
+  }
+  const s=SC[k], g=!!s.green;
+  html+=`<div class="layer ${g?'green':''}">${s.ring?ring(...s.ring):''}`+
+    (s.logo===false?'':`<img class="logo" src="${g?'logo-paper.png':'logo-green.png'}">`)+
+    (s.kick?`<div class="kick" style="${g?'color:#b9d0c1':''}">${s.kick}</div>`:'')+
+    `${s.f(uu*s.k)}</div>`+wipe;
+  document.getElementById('stage').innerHTML=html;
+};
+render(0);
+</script>
+</body></html>
