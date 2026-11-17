@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Accrevise Office Desk</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: ledger-style workspace. Sticky green band with tabs, one working column, side rail on wide screens. */
+:root{
+  --paper:#F7F5EF; --card:#FFFFFF; --ink:#16241B; --muted:#5B6A60; --line:#DCE3DA;
+  --green:#034620; --green-soft:#E3EEE6; --on-green:#F7F5EF; --amber:#E2B04A; --amber-soft:#FBF0D6;
+  --ok:#1E7A45; --warn:#A86A00; --bad:#B3261E;
+  --display:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
+  --body:"IBM Plex Sans",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#0F1712; --card:#16211A; --ink:#E7EEE8; --muted:#9AAA9F; --line:#28372D;
+  --green:#7FC99A; --green-soft:#1C3024; --on-green:#0F1712; --amber:#E9BE62; --amber-soft:#3A2F17;
+  --ok:#6FD39A; --warn:#E9BE62; --bad:#F2877F; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#0F1712; --card:#16211A; --ink:#E7EEE8; --muted:#9AAA9F; --line:#28372D;
+  --green:#7FC99A; --green-soft:#1C3024; --on-green:#0F1712; --amber:#E9BE62; --amber-soft:#3A2F17;
+  --ok:#6FD39A; --warn:#E9BE62; --bad:#F2877F; color-scheme:dark}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0}
+[hidden]{display:none!important}
+img{max-width:100%}
+body{background:var(--paper);color:var(--ink);font:15px/1.55 var(--body)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--green)}
+.wrap{max-width:1120px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--green);color:var(--on-green)}
+header.top .wrap{display:flex;flex-wrap:wrap;align-items:center;gap:8px 20px;padding-block:12px}
+.brand{font:700 20px/1 var(--display);letter-spacing:-.01em;display:flex;align-items:baseline;gap:10px}
+.brand small{font:500 11px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;opacity:.75}
+nav.tabs{display:flex;gap:4px;flex-wrap:wrap;margin-left:auto}
+nav.tabs a{color:var(--on-green);text-decoration:none;padding:7px 12px;border-radius:999px;font-weight:500;font-size:14px;opacity:.8}
+nav.tabs a:hover{opacity:1;background:color-mix(in srgb,var(--on-green) 14%,transparent)}
+nav.tabs a[aria-current="page"]{opacity:1;background:var(--amber);color:#16241B}
+nav.tabs a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+main{padding-block:24px 64px}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;letter-spacing:-.01em}
+h1{font-size:clamp(24px,4vw,32px);font-weight:700}
+h2{font-size:22px;font-weight:700}
+h3{font-size:17px;font-weight:700}
+p{margin:0}
+.eyebrow{font:500 11px/1.2 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.lede{color:var(--muted);max-width:65ch}
+.stack{display:flex;flex-direction:column;gap:16px}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px}
+.banner{background:var(--amber-soft);border:1px solid color-mix(in srgb,var(--amber) 55%,transparent);border-radius:10px;padding:14px 16px}
+.muted{color:var(--muted)}
+.small{font-size:13px}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+button,.btn{font:600 14px/1 var(--body);border-radius:8px;padding:10px 14px;border:1px solid var(--green);background:var(--green);color:var(--on-green);cursor:pointer}
+button.ghost{background:transparent;color:var(--green)}
+button.quiet{background:transparent;border-color:var(--line);color:var(--ink)}
+button:disabled{opacity:.5;cursor:default}
+label{display:flex;flex-direction:column;gap:5px;font-size:13px;font-weight:500;color:var(--muted);min-width:0}
+input,select,textarea{font:15px/1.4 var(--body);color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:9px 11px;width:100%;min-width:0}
+textarea{resize:vertical;min-height:70px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.pill{display:inline-flex;align-items:center;gap:6px;font:500 12px/1 var(--mono);padding:5px 9px;border-radius:999px;border:1px solid var(--line);white-space:nowrap}
+.pill.done{color:var(--ok);border-color:color-mix(in srgb,var(--ok) 40%,transparent)}
+.pill.in-progress{color:var(--warn);border-color:color-mix(in srgb,var(--warn) 40%,transparent)}
+.pill.blocked{color:var(--bad);border-color:color-mix(in srgb,var(--bad) 40%,transparent)}
+.pill.client{background:var(--green-soft);border-color:transparent;color:var(--green)}
+
+/* Training */
+.learn{display:grid;grid-template-columns:260px minmax(0,1fr);gap:24px;align-items:start}
+.modlist{position:sticky;top:calc(env(safe-area-inset-top,0px) + 76px);display:flex;flex-direction:column;gap:2px}
+.modlist button{display:flex;justify-content:space-between;align-items:center;gap:8px;text-align:left;background:transparent;border:0;color:var(--ink);padding:10px 12px;border-radius:8px;font-weight:500;line-height:1.3}
+.modlist button:hover{background:var(--green-soft)}
+.modlist button[aria-current="true"]{background:var(--card);box-shadow:inset 3px 0 0 var(--green)}
+.tick{font:500 11px/1 var(--mono);color:var(--muted)}
+.tick.yes{color:var(--ok)}
+.lesson h1{margin-top:4px}
+.lesson section{display:flex;flex-direction:column;gap:10px}
+.lesson ol,.lesson ul{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:6px}
+.lesson li{max-width:72ch}
+.checklist{list-style:none;padding:0!important}
+.checklist li{display:flex;gap:10px;align-items:flex-start}
+.checklist li::before{content:"";flex:none;width:14px;height:14px;margin-top:4px;border:1.5px solid var(--green);border-radius:3px}
+.facts{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font:500 11px/1.2 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+td.mono{white-space:nowrap}
+.script{font-family:var(--mono);font-size:13.5px;white-space:pre-wrap;background:var(--paper);border:1px dashed var(--line);border-radius:8px;padding:12px}
+.quiz .q{display:flex;flex-direction:column;gap:8px;padding-block:10px;border-top:1px solid var(--line)}
+.quiz .opts{display:flex;flex-direction:column;gap:6px}
+.quiz .opts button{background:var(--paper);color:var(--ink);border:1px solid var(--line);text-align:left;font-weight:500;line-height:1.35}
+.quiz .opts button.right{border-color:var(--ok);color:var(--ok)}
+.quiz .opts button.wrong{border-color:var(--bad);color:var(--bad)}
+.why{font-size:13px;color:var(--muted)}
+
+/* Chat */
+.chat{display:grid;grid-template-columns:minmax(0,1fr) 280px;gap:20px;align-items:start}
+.thread{display:flex;flex-direction:column;gap:12px;min-height:280px}
+.msg{max-width:min(680px,100%);padding:12px 14px;border-radius:12px;line-height:1.55;min-width:0;overflow-wrap:anywhere}
+.msg.me{align-self:flex-end;background:var(--green);color:var(--on-green);border-bottom-right-radius:3px}
+.msg.bot{align-self:flex-start;background:var(--card);border:1px solid var(--line);border-bottom-left-radius:3px}
+.msg.bot h4{font:700 15px/1.3 var(--display);margin:6px 0 2px}
+.msg.bot ul,.msg.bot ol{margin:4px 0;padding-left:20px}
+.msg.bot p+p{margin-top:8px}
+.msg.note{align-self:center;font:500 12px/1.3 var(--mono);color:var(--ok);background:transparent;padding:2px}
+.composer{display:flex;gap:8px;align-items:flex-end;position:sticky;bottom:calc(env(safe-area-inset-bottom,0px) + 8px);background:var(--card);border:1px solid var(--line);border-radius:12px;padding:8px}
+.composer textarea{border:0;background:transparent;min-height:44px;max-height:180px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips button{background:var(--card);color:var(--ink);border:1px solid var(--line);font-weight:500;font-size:13px;padding:8px 10px;line-height:1.3;text-align:left}
+.chips button:hover{border-color:var(--green)}
+
+/* Lists */
+.entries{display:flex;flex-direction:column}
+.entry{display:grid;grid-template-columns:92px minmax(0,1fr) auto;gap:4px 12px;padding:12px 0;border-top:1px solid var(--line);align-items:start}
+.entry:first-child{border-top:0}
+.entry .when{font:500 12px/1.4 var(--mono);color:var(--muted)}
+.entry .what{min-width:0;overflow-wrap:anywhere}
+.entry .next{grid-column:2/4;font-size:13px;color:var(--muted)}
+.person{display:flex;flex-direction:column;gap:10px}
+.teamrow{display:grid;grid-template-columns:1.1fr 1.5fr 1fr .8fr auto;gap:8px;align-items:end}
+.empty{padding:22px;border:1px dashed var(--line);border-radius:10px;color:var(--muted);text-align:center}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 18px);background:var(--ink);color:var(--paper);padding:10px 16px;border-radius:8px;font-weight:500;z-index:20}
+.auth{max-width:860px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.auth .hero{grid-column:1/-1;display:flex;flex-direction:column;gap:8px;padding-block:8px 4px}
+.who{display:flex;align-items:center;gap:10px;font-size:13px}
+.who button{padding:6px 10px;font-size:13px;background:transparent;border-color:color-mix(in srgb,var(--on-green) 45%,transparent);color:var(--on-green)}
+.mailcard{border:1px solid var(--line);border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:8px;background:var(--paper)}
+.mailcard textarea{min-height:150px;font-family:var(--mono);font-size:13px;background:var(--card)}
+.status{display:inline-flex;font:500 12px/1 var(--mono);padding:5px 9px;border-radius:999px;background:var(--amber-soft);color:var(--ink)}
+.status.sent{background:var(--green-soft);color:var(--green)}
+.split{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:20px;align-items:start}
+@media (max-width:860px){
+  .learn,.chat,.split{grid-template-columns:minmax(0,1fr)}
+  .modlist{position:static;flex-direction:row;overflow-x:auto;padding-bottom:6px}
+  .modlist button{flex:none}
+  .teamrow{grid-template-columns:1fr 1fr}
+  .auth{grid-template-columns:1fr}
+  .entry{grid-template-columns:minmax(0,1fr) auto}
+  .entry .when{grid-column:1/3}
+  .entry .next{grid-column:1/3}
+}
+@media (prefers-reduced-motion:no-preference){.msg{animation:rise .18s ease-out}@keyframes rise{from{transform:translateY(4px)}to{transform:none}}}
+</style>
+
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <div class="brand">Accrevise <small>Office Desk</small></div>
+    <nav class="tabs" aria-label="Sections">
+      <a href="#learn" data-tab="learn">Training</a>
+      <a href="#ask" data-tab="ask">Ask the desk</a>
+      <a href="#updates" data-tab="updates">My updates</a>
+      <a href="#office" data-tab="office" hidden id="officeTab">Office</a>
+    </nav>
+    <div class="who" id="who" hidden><span id="whoName"></span><button type="button" id="logout">Sign out</button></div>
+  </div>
+</header>
+
+<main class="wrap">
+  <!-- SIGN IN -->
+  <section id="view-login" class="auth" hidden>
+    <div class="hero"><span class="eyebrow">Accrevise</span><h1>Office Desk</h1><p class="lede">Ask about your tax, GST, loan or trademark work, send updates to the team, and see what to send next. Team members sign in here for training and their daily plan.</p></div>
+    <form class="card stack" id="loginForm">
+      <h2>Sign in</h2>
+      <label for="loginId">Mobile number or email<input id="loginId" autocomplete="username" required></label>
+      <label for="loginPin">PIN<input id="loginPin" type="password" inputmode="numeric" autocomplete="current-password" required></label>
+      <div class="row"><button type="submit">Sign in</button><span class="small muted" id="loginMsg" role="alert"></span></div>
+      <p class="small muted">Team members: use the email and PIN the office gave you.</p>
+    </form>
+    <form class="card stack" id="registerForm">
+      <h2>New client</h2>
+      <label for="regName">Your name or business name<input id="regName" required placeholder="e.g. Sharma Traders"></label>
+      <label for="regPhone">Mobile number<input id="regPhone" inputmode="tel" required placeholder="10 digits"></label>
+      <label for="regEmail">Email (optional)<input id="regEmail" type="email"></label>
+      <label for="regPin">Choose a PIN (4–8 digits)<input id="regPin" type="password" inputmode="numeric" autocomplete="new-password" required></label>
+      <div class="row"><button type="submit">Create account</button><span class="small muted" id="regMsg" role="alert"></span></div>
+    </form>
+  </section>
+  <!-- TRAINING -->
+  <section id="view-learn" class="learn" hidden>
+    <div class="modlist" id="modlist" role="list"></div>
+    <article class="lesson stack" id="lesson"></article>
+  </section>
+
+  <!-- CHAT -->
+  <section id="view-ask" class="chat" hidden>
+    <div class="stack" style="min-width:0">
+      <div class="stack" style="gap:6px">
+        <span class="eyebrow">Help desk</span>
+        <h1>Ask the desk</h1>
+        <p class="lede">Ask about income tax returns, GST, notices, trademarks, loans, documents, accounting or billing. You can also tell it what you finished today and it will record the update for the office.</p>
+      </div>
+      <div class="thread" id="thread" aria-live="polite"></div>
+      <form class="composer" id="composer">
+        <label for="askInput" class="sr" style="position:absolute;left:-9999px">Your question</label>
+        <textarea id="askInput" rows="1" placeholder="Type a question, or an update like “Sent GST data for October”"></textarea>
+        <button type="submit" id="askSend">Send</button>
+      </form>
+      <p class="small muted" id="askNote">Answers are general guidance. The office confirms anything specific to your case before filing.</p>
+    </div>
+    <aside class="stack">
+      <span class="eyebrow">Try asking</span>
+      <div class="chips" id="chips"></div>
+      <button class="quiet" type="button" id="clearChat">Start a new conversation</button>
+    </aside>
+  </section>
+
+  <!-- UPDATES -->
+  <section id="view-updates" class="split" hidden>
+    <div class="stack">
+      <div class="stack" style="gap:6px">
+        <span class="eyebrow" id="updEyebrow">Work log</span>
+        <h1 id="updTitle">My updates</h1>
+        <p class="lede" id="updLede">Record what you finished, what is still going on, and what is stuck. The office reads this every evening to plan the next day.</p>
+      </div>
+      <form class="card stack" id="logForm">
+        <div class="grid2">
+          <label for="logArea">Work area
+            <select id="logArea"></select>
+          </label>
+          <label for="logClient" id="logClientLabel">Client / file
+            <input id="logClient" placeholder="e.g. Sharma Traders">
+          </label>
+        </div>
+        <label for="logText">What was done
+          <textarea id="logText" required placeholder="e.g. Downloaded AIS and Form 26AS, matched TDS with Form 16"></textarea>
+        </label>
+        <div class="grid2">
+          <label for="logStatus">Status
+            <select id="logStatus">
+              <option value="done">Done</option>
+              <option value="in-progress">In progress</option>
+              <option value="blocked">Blocked / waiting</option>
+            </select>
+          </label>
+          <label for="logNext">Next step (optional)
+            <input id="logNext" placeholder="e.g. Waiting for bank statement from client">
+          </label>
+        </div>
+        <div class="row"><button type="submit" id="logSave">Save update</button><span class="small muted" id="logMsg"></span></div>
+      </form>
+      <div class="card stack">
+        <h3>My recent updates</h3>
+        <div class="entries" id="myEntries"></div>
+      </div>
+    </div>
+    <aside class="stack">
+      <div class="card stack" id="myPlanCard">
+        <span class="eyebrow">From the office</span>
+        <h3>Your plan</h3>
+        <div id="myPlan" class="stack small"></div>
+      </div>
+      <div class="card stack" id="profileCard">
+        <span class="eyebrow">Your profile</span>
+        <div id="profileView" class="small"></div>
+        
+      </div>
+    </aside>
+  </section>
+
+  <!-- OFFICE (owner) -->
+  <section id="view-office" class="stack" hidden>
+    <div class="stack" style="gap:6px">
+      <span class="eyebrow mono" id="officeDate"></span>
+      <h1>Office</h1>
+      <p class="lede" id="officeLede">Today's work from the team and clients, tomorrow's plan, and the team list.</p>
+    </div>
+    <div class="banner small" id="mailWarn" hidden>Email is not set up yet, so “sent” emails are saved on the server in data/outbox instead. Add your SMTP details to the .env file to send real email.</div>
+    <div class="split">
+      <div class="stack">
+        <div class="card stack">
+          <div class="row" style="justify-content:space-between"><h3>Today's activity</h3><span class="small muted mono" id="todayCount"></span></div>
+          <div id="todayList" class="stack"></div>
+        </div>
+        <div class="card stack">
+          <h3>Open and stuck items</h3>
+          <div class="entries" id="openList"></div>
+        </div>
+        <div class="card stack">
+          <h3>Recent client questions</h3>
+          <div class="entries" id="askList"></div>
+        </div>
+        <div class="card stack">
+          <h3>Clients</h3>
+          <div class="entries" id="clientList"></div>
+        </div>
+      </div>
+      <div class="stack">
+        <div class="card stack">
+          <div class="row" style="justify-content:space-between"><h3>Plan for <span id="planDay" class="mono"></span></h3><span class="status" id="planStatus"></span></div>
+          <p class="small muted" id="planHelp"></p>
+          <div class="row"><button class="ghost" type="button" id="planSuggest">Fill from open items</button></div>
+          <div id="planEditor" class="stack"></div>
+          <label for="planNote">Note for everyone (optional)<textarea id="planNote" rows="2"></textarea></label>
+          <div class="row"><button type="button" class="quiet" id="planSave">Save plan</button><button type="button" id="planDraft">Draft emails</button><span class="small muted" id="planMsg" role="status"></span></div>
+        </div>
+        <div class="card stack" id="mailsCard" hidden>
+          <h3>Emails ready to send</h3>
+          <p class="small muted">Edit anything, then approve. Each person gets only their own email.</p>
+          <div id="mails" class="stack"></div>
+          <div class="row"><button type="button" class="quiet" id="mailsSave">Save edits</button><button type="button" id="mailsSend">Approve and send</button><span class="small muted" id="mailsMsg" role="status"></span></div>
+        </div>
+        <div class="card stack">
+          <h3>Team</h3>
+          <p class="small muted">Each person signs in with their email and PIN. Leave PIN empty to keep the current one.</p>
+          <div id="teamEditor" class="stack"></div>
+          <div class="row"><button class="ghost" type="button" id="teamAdd">Add person</button><button type="button" id="teamSave">Save team</button><span class="small muted" id="teamMsg" role="status"></span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script type="module" src="/app.js"></script>
+</body>
+</html>

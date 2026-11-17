@@ -1,0 +1,19 @@
+{
+  "name": "office-desk",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Training portal, client help-desk chatbot, work log and evening email planner for a tax & finance practice.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node --no-warnings server.js",
+    "check": "node --check server.js && node --check lib/db.js && node --check lib/ai.js && node --check lib/mail.js && node --check lib/evening.js && node --check public/app.js"
+  },
+  "engines": { "node": ">=22.13" },
+  "dependencies": {
+    "@anthropic-ai/sdk": "1.9.0",
+    "dotenv": "16.4.7",
+    "express": "4.22.3",
+    "nodemailer": "6.9.16"
+  }
+}
