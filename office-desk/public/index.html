@@ -138,6 +138,9 @@ td.mono{white-space:nowrap}
 .mailcard textarea{min-height:150px;font-family:var(--mono);font-size:13px;background:var(--card)}
 .status{display:inline-flex;font:500 12px/1 var(--mono);padding:5px 9px;border-radius:999px;background:var(--amber-soft);color:var(--ink)}
 .status.sent{background:var(--green-soft);color:var(--green)}
+html.embed header.top,html.embed #view-ask aside,html.embed #view-ask .stack>.stack:first-child{display:none}
+html.embed main{padding-block:12px}
+html.embed .composer{bottom:8px}
 .split{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:20px;align-items:start}
 @media (max-width:860px){
   .learn,.chat,.split{grid-template-columns:minmax(0,1fr)}
@@ -170,7 +173,7 @@ td.mono{white-space:nowrap}
 <main class="wrap">
   <!-- SIGN IN -->
   <section id="view-login" class="auth" hidden>
-    <div class="hero"><span class="eyebrow">Accrevise</span><h1>Office Desk</h1><p class="lede">Ask about your tax, GST, loan or trademark work, send updates to the team, and see what to send next. Team members sign in here for training and their daily plan.</p></div>
+    <div class="hero"><span class="eyebrow">Accrevise</span><h1>Office Desk</h1><p class="lede">Ask about your tax, GST, loan or trademark work, send updates to the team, and see what to send next. Team members sign in here for training and their daily plan.</p><p><a href="#ask" style="color:var(--green);font-weight:600">Just have a question? Use the help desk without signing in →</a></p></div>
     <form class="card stack" id="loginForm">
       <h2>Sign in</h2>
       <label for="loginId">Mobile number or email<input id="loginId" autocomplete="username" required></label>

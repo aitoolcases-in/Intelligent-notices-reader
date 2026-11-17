@@ -21,7 +21,7 @@ function toast(t) {
 async function api(path, opts = {}) {
   const res = await fetch(path, { method: opts.body ? "POST" : "GET", ...opts, headers: { "Content-Type": "application/json" }, body: opts.body ? JSON.stringify(opts.body) : undefined });
   const data = await res.json().catch(() => ({}));
-  if (res.status === 401 && path !== "/api/login") { S.user = null; renderAll(); }
+  if (res.status === 401 && path !== "/api/login" && S.user) { S.user = null; renderAll(); }
   if (!res.ok) throw new Error(data.error || "Something went wrong. Try again.");
   return data;
 }
@@ -29,12 +29,16 @@ async function api(path, opts = {}) {
 /* ---------------- State ---------------- */
 const S = { user: null, training: {}, logs: [], myPlans: [], office: null };
 const role = () => S.user?.kind || "";
+// Opened inside the website chat button (widget.js): help desk only, usable without signing in.
+const EMBED = new URLSearchParams(location.search).has("embed");
+if (EMBED) document.documentElement.classList.add("embed");
 
 /* ---------------- Routing ---------------- */
 const VIEWS = ["login", "learn", "ask", "updates", "office"];
 function route() {
   let v = location.hash.slice(1);
-  if (!S.user) v = "login";
+  if (EMBED) v = "ask";
+  else if (!S.user) v = v === "ask" ? "ask" : "login";
   else if (!VIEWS.includes(v) || v === "login" || (v === "office" && role() !== "owner") || (v === "learn" && role() === "client")) v = role() === "client" ? "ask" : role() === "owner" ? "office" : "learn";
   VIEWS.forEach((n) => ($("#view-" + n).hidden = n !== v));
   document.querySelectorAll("nav.tabs a").forEach((a) => (a.dataset.tab === v ? a.setAttribute("aria-current", "page") : a.removeAttribute("aria-current")));
@@ -132,8 +136,9 @@ const faqIndex = (f) => FAQ.indexOf(f);
 const topicButtons = () => `<div class="chips">${TOPICS.map(([k, v]) => `<button type="button" data-topic="${k}">${esc(v)}</button>`).join("")}</div>`;
 function emailBox(i, question) {
   const addr = esc(OFFICE_EMAIL || "the office email");
+  const guest = !S.user ? `<div class="grid2"><label for="gn${i}">Your name<input id="gn${i}" data-gn="${i}" value="${esc(convo[i]?.gname || ls.get("od.guest", {}).name || "")}" autocomplete="name"></label><label for="gp${i}">Mobile or email<input id="gp${i}" data-gp="${i}" value="${esc(convo[i]?.gcontact || ls.get("od.guest", {}).contact || "")}" autocomplete="tel"></label></div>` : "";
   return `<div class="mailbox stack"><p><strong>Please email this to the office</strong> and a team member will reply within one working day. Write your question below and press Send, or email <span class="mono">${addr}</span> yourself.</p>
-    <label for="mq${i}">Your question<textarea id="mq${i}" data-mq="${i}" rows="3">${esc(question || "")}</textarea></label>
+    <label for="mq${i}">Your question<textarea id="mq${i}" data-mq="${i}" rows="3">${esc(question || "")}</textarea></label>${guest}
     <div class="row"><button type="button" data-send="${i}">Send to office</button><button type="button" class="quiet" data-copy="${i}">Copy email address</button>${OFFICE_EMAIL ? `<a class="small" href="mailto:${encodeURIComponent(OFFICE_EMAIL)}?subject=${encodeURIComponent("Question from " + (S.user?.name || "a client"))}&body=${encodeURIComponent(question || "")}">Open my email app</a>` : ""}</div></div>`;
 }
 function itemHTML(m, i) {
@@ -150,6 +155,7 @@ function itemHTML(m, i) {
   return `<div class="msg bot">${h}</div>`;
 }
 function greeting() {
+  if (!S.user) return { role: "bot", kind: "topics", content: "Namaste! Pick a topic or type your question. For anything about your own case, I'll help you send it to our team." };
   return { role: "bot", kind: "topics", content: role() === "client"
     ? `Namaste ${S.user?.name || ""}! Pick a topic or type your question. You can also type an update like “Sent bank statements for October”.`
     : "Pick a topic or type a question. Type what you finished (for example “Filed GSTR-1 for Sharma Traders”) to save it as an update." };
@@ -174,7 +180,7 @@ function answerTyped(text, skipUpdate) {
   const low = " " + text.toLowerCase() + " ";
   api("/api/asks", { body: { q: text, matched: "" } }).catch(() => {});
   if (!convo.length) convo.push(greeting());
-  if (!skipUpdate && UPDATE_WORDS.some((w) => low.includes(" " + w))) {
+  if (!skipUpdate && S.user && UPDATE_WORDS.some((w) => low.includes(" " + w))) {
     const guess = searchFaq(text, 1)[0];
     push({ role: "user", content: text }, { role: "bot", kind: "update", content: "Is this an update on your work? Save it so the team sees it.", text: text.replace(/^log:\s*/i, ""), area: TOPIC_AREA[guess?.topic] || "other" });
     return;
@@ -192,6 +198,8 @@ function answerTyped(text, skipUpdate) {
 }
 $("#thread").addEventListener("input", (e) => {
   const i = e.target.dataset.mq; if (i !== undefined) convo[+i].question = e.target.value;
+  const gn = e.target.dataset.gn; if (gn !== undefined) convo[+gn].gname = e.target.value;
+  const gp = e.target.dataset.gp; if (gp !== undefined) convo[+gp].gcontact = e.target.value;
   const u = e.target.dataset.ua; if (u !== undefined) convo[+u].area = e.target.value;
 });
 $("#thread").addEventListener("change", (e) => { const u = e.target.dataset.ua; if (u !== undefined) convo[+u].area = e.target.value; });
@@ -204,7 +212,10 @@ $("#thread").addEventListener("click", async (e) => {
     try { await navigator.clipboard.writeText(OFFICE_EMAIL); toast("Email address copied"); } catch { toast(OFFICE_EMAIL); }
   } else if (d.send !== undefined) {
     const m = convo[+d.send]; b.disabled = true;
-    try { await api("/api/ask-office", { body: { q: m.question } }); m.emailed = true; ls.set("od.desk", convo); renderThread(); toast("Sent to the office"); }
+    const g = { name: (m.gname ?? ls.get("od.guest", {}).name ?? "").trim(), contact: (m.gcontact ?? ls.get("od.guest", {}).contact ?? "").trim() };
+    if (!S.user && (!g.name || !g.contact)) { toast("Add your name and mobile or email so we can reply."); b.disabled = false; return; }
+    if (!S.user) ls.set("od.guest", g);
+    try { await api("/api/ask-office", { body: { q: m.question, name: g.name, contact: g.contact } }); m.emailed = true; ls.set("od.desk", convo); renderThread(); toast("Sent to the office"); }
     catch (err) { toast(err.message); b.disabled = false; }
   } else if (d.save !== undefined) {
     const m = convo[+d.save]; b.disabled = true;
@@ -248,6 +259,7 @@ function renderMyPlan() {
 function renderProfile() {
   const r = role(), u = S.user;
   $("#profileView").innerHTML = !u ? "" : r === "owner" ? `Owner · ${esc(u.email)}` : r === "employee" ? `<strong>${esc(u.name)}</strong><br>${esc(u.email || "")}` : `<strong>${esc(u.name)}</strong><br>${esc(u.phone || "")}`;
+  $("#askInput").placeholder = u ? "Type a question, or an update like “Sent GST data for October”" : "Type your question";
   const isClient = r === "client";
   $("#updEyebrow").textContent = isClient ? "Client updates" : "Work log";
   $("#updTitle").textContent = isClient ? "Send an update to the office" : "My updates";

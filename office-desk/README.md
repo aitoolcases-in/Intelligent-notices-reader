@@ -46,6 +46,16 @@ Set `APP_URL=https://desk.yourfirm.in` in `.env` so links in the evening email w
 
 **Back up** the `data/` folder (or the `office-desk-data` Docker volume). It holds every account, log and plan in one SQLite file.
 
+## Add the chat button to your existing website
+
+Run Office Desk on a sub-address of your domain, e.g. `desk.yourfirm.in` (Render: Settings → Custom Domains), then paste this one line just before `</body>` on your website, or in your site builder's "custom code / footer script" box:
+
+```html
+<script src="https://desk.yourfirm.in/widget.js" data-label="Ask us" defer></script>
+```
+
+A floating **Ask us** button appears on every page. Visitors can browse answers and send questions to `OFFICE_EMAIL` with their name and phone, without signing in. Signed-in clients and staff use the full site at `https://desk.yourfirm.in`. Optional: `data-color="#034620"` changes the button colour.
+
 ## Editing the answers
 
 - Help desk questions and answers: `public/faq.js`. Each entry has a topic, the question, extra words people might type (`keys`), the answer, and `email: true` if the reply should also offer the email box. Words that send a question straight to email are in `TECH_WORDS`.

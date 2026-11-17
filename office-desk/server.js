@@ -96,19 +96,22 @@ const OFFICE_EMAIL = process.env.OFFICE_EMAIL || process.env.OWNER_EMAIL;
 app.get("/api/config", (_req, res) => res.json({ officeEmail: OFFICE_EMAIL, officeName: process.env.OFFICE_NAME || "Office Desk" }));
 
 // Every question typed into the help desk is kept so the owner can see what people ask.
-app.post("/api/asks", need(), (req, res) => {
-  if (limited("ask:" + req.user.id, 120, 60 * 60e3)) return res.json({ ok: false });
+app.post("/api/asks", (req, res) => {
+  if (limited("ask:" + (req.user?.id || req.ip), 120, 60 * 60e3)) return res.json({ ok: false });
   const question = String(req.body?.q || "").trim().slice(0, 1000);
-  if (question) q.insertAsk.run(req.user.id, Date.now(), question, String(req.body?.matched || "(no ready answer)").slice(0, 300));
+  if (question) q.insertAsk.run(req.user?.id || "visitor", Date.now(), question, String(req.body?.matched || "(no ready answer)").slice(0, 300));
   res.json({ ok: true });
 });
 
 // Sends the person's question to the official email address, with their contact details.
-app.post("/api/ask-office", need(), async (req, res) => {
-  if (limited("mailoffice:" + req.user.id, 10, 60 * 60e3)) return res.status(429).json({ error: "You've sent several questions this hour. Please wait or email the office directly." });
+app.post("/api/ask-office", async (req, res) => {
+  if (limited("mailoffice:" + (req.user?.id || req.ip), req.user ? 10 : 5, 60 * 60e3)) return res.status(429).json({ error: "You've sent several questions this hour. Please wait or email the office directly." });
   const question = String(req.body?.q || "").trim().slice(0, 4000);
   if (!question) return res.status(400).json({ error: "Write your question first." });
-  const u = req.user;
+  const contact = String(req.body?.contact || "").trim().slice(0, 120);
+  const u = req.user || { id: "visitor", kind: "website visitor", name: String(req.body?.name || "").trim().slice(0, 80),
+    phone: contact.includes("@") ? "" : contact, email: contact.includes("@") ? contact : "" };
+  if (!req.user && (!u.name || !contact)) return res.status(400).json({ error: "Add your name and mobile or email so we can reply." });
   try {
     await sendMail({
       to: OFFICE_EMAIL,
@@ -116,7 +119,7 @@ app.post("/api/ask-office", need(), async (req, res) => {
       text: `${question}\n\n---\nFrom: ${u.name}\nType: ${u.kind}\nPhone: ${u.phone || "-"}\nEmail: ${u.email || "-"}\nSent from the Office Desk help desk.`,
       replyTo: u.email || undefined,
     });
-    q.insertAsk.run(u.id, Date.now(), question, "(emailed to the office)");
+    q.insertAsk.run(u.id, Date.now(), req.user ? question : `${question}\n(${u.name}, ${contact})`, "(emailed to the office)");
     res.json({ ok: true, to: OFFICE_EMAIL });
   } catch (err) {
     console.error("[ask-office]", err.message);
