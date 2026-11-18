@@ -31,6 +31,7 @@ Weekdays 7–9 PM IST or Sunday 10 AM–12 PM, then adjust from your Insights.
 Illustrative example for one shop; hours are estimates. Ends with the Accrevise kite outro.
 
 ## Voiceover script (Kokoro af_heart, speed 0.95, one line per beat)
+Pronunciation: "Gupta ji" is said "Goopta-G"; for the voice engine it is spelled "Goopta jee".
 1. AI is not for my business. Let's test that.
 2. Gupta ji has run his hardware shop for twenty-five years. He's sure AI isn't for him.
 3. He's half right. The question isn't, should I use AI? It's, which of my jobs fit it?

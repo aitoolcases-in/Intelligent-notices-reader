@@ -62,6 +62,9 @@ We borrow only the STORY STRUCTURE from the reference reel we studied. Never use
 - Default: voiceover. Kokoro TTS (pip kokoro-onnx; model files from the thewh1teagle/kokoro-onnx GitHub releases, model-files-v1.0), voice af_heart at a normal, unhurried pace: speed 0.95 (1.1 was too fast; Kokoro's Indian voices were tried and rejected), one calm explainer line per beat, numbers written out as words. Each beat lasts at least its line + ~1 s; the beat's animations stretch to fit. No sound effects under the voice.
 - Also deliver a silent version so they can add a trending track.
 
+## Pronouncing Indian names in the voiceover
+- Spell names phonetically in the voiceover lines only (screen text keeps the real spelling): "Gupta ji" → "Goopta jee" (said Goopta-G; the engine reads "ji" as "jai"). Check new names with the engine's phonemizer before rendering.
+
 ## Facts
 Look up every price, rate or app setting before it goes on screen. Show approximate figures with a footnote where sources disagree, and list the sources in the reply.
 
