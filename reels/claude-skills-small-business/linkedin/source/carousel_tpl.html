@@ -1,0 +1,204 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+@font-face{font-family:SS4;src:url(node_modules/@fontsource/source-serif-4/files/source-serif-4-latin-400-normal.woff2);font-weight:400}
+@font-face{font-family:SS4;src:url(node_modules/@fontsource/source-serif-4/files/source-serif-4-latin-600-normal.woff2);font-weight:600}
+@font-face{font-family:SS4;src:url(node_modules/@fontsource/source-serif-4/files/source-serif-4-latin-400-italic.woff2);font-weight:400;font-style:italic}
+@font-face{font-family:SS4X;src:url(node_modules/@fontsource/source-serif-4/files/source-serif-4-latin-ext-400-normal.woff2);font-weight:400}
+@font-face{font-family:MS;src:url(node_modules/@fontsource/montserrat/files/montserrat-latin-700-normal.woff2);font-weight:700}
+@font-face{font-family:MS;src:url(node_modules/@fontsource/montserrat/files/montserrat-latin-800-normal.woff2);font-weight:800}
+@font-face{font-family:MSX;src:url(node_modules/@fontsource/montserrat/files/montserrat-latin-ext-700-normal.woff2);font-weight:700}
+@font-face{font-family:MSX;src:url(node_modules/@fontsource/montserrat/files/montserrat-latin-ext-800-normal.woff2);font-weight:800}
+@page{size:1080px 1350px;margin:0}
+html,body{margin:0;padding:0}
+.slide{position:relative;width:1080px;height:1350px;overflow:hidden;box-sizing:border-box;padding:88px;display:flex;flex-direction:column;page-break-after:always;font-family:SS4,SS4X,Georgia,serif}
+.paper{background:#f7f5ef;color:#034620}
+.green{background:#034620;color:#f7f5ef}
+.ring{position:absolute;border:4px solid #9fbfab;border-radius:9999px;pointer-events:none}
+.green .ring{border-color:#2d7049}
+.kick{font-family:MS,MSX,sans-serif;font-weight:700;font-size:24px;letter-spacing:.14em;color:#3f5e4b;margin:0 0 16px}
+.green .kick{color:#b9d0c1}
+.hook{font-family:MS,MSX,sans-serif;font-weight:800;font-size:104px;line-height:.98;letter-spacing:-.01em;margin:0;text-transform:uppercase}
+.head{font-family:MS,MSX,sans-serif;font-weight:800;font-size:64px;line-height:1.06;margin:0}
+.body{font-size:36px;line-height:1.35;margin:48px 0 0;color:#034620;max-width:860px}
+.green .body{color:#f7f5ef}
+.mark{background:#e2b04a;color:#034620;border-radius:8px;padding:0 10px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.loss{color:#a8452a}
+.grow{flex:1}
+.footer{display:flex;align-items:center;justify-content:space-between;position:relative;z-index:2}
+.logo{height:150px}
+.counter{font-family:MS,MSX,sans-serif;font-weight:700;font-size:24px;letter-spacing:.1em;color:#3f5e4b}
+.green .counter{color:#b9d0c1}
+.lab{font-family:MS,MSX,sans-serif;font-weight:700;letter-spacing:.06em}
+.bubble{background:#dfe9e2;border:3px solid #034620;border-radius:22px 22px 22px 4px;padding:14px 22px;font-size:34px;line-height:1.2;color:#034620;display:inline-block}
+.receipt{background:#fff;border:4px solid #034620;position:relative;padding:44px 40px 36px}
+.receipt:before{content:"";position:absolute;left:-4px;right:-4px;top:-22px;height:22px;background:linear-gradient(135deg,transparent 50%,#034620 50%,#034620 calc(50% + 3px),#fff calc(50% + 3px)) 0 0/22px 22px repeat-x, linear-gradient(225deg,transparent 50%,#034620 50%,#034620 calc(50% + 3px),#fff calc(50% + 3px)) 11px 0/22px 22px repeat-x}
+.row{display:flex;gap:24px;align-items:flex-start;padding:18px 0;border-bottom:2px dashed #9fbfab}
+.row:last-child{border-bottom:none}
+.num{flex:none;width:58px;height:58px;border-radius:9999px;background:#034620;color:#f7f5ef;font-family:MS,MSX,sans-serif;font-weight:800;font-size:30px;display:flex;align-items:center;justify-content:center}
+.step{background:#fff;border:4px solid #034620;border-radius:20px;padding:26px 30px;display:flex;gap:24px;align-items:flex-start}
+.conn{width:6px;height:36px;background:#2d7049;margin-left:56px}
+.mono{font-family:'JetBrains Mono','DejaVu Sans Mono',monospace}
+table{border-collapse:collapse;width:100%;font-size:30px;color:#034620}
+th{font-family:MS,MSX,sans-serif;font-weight:700;font-size:22px;letter-spacing:.06em;text-align:left;padding:10px 12px;border-bottom:4px solid #034620}
+td{padding:12px;border-bottom:2px solid #9fbfab}
+</style></head>
+<body>
+/*DEFS*/
+
+<!-- 1 COVER (green) -->
+<section class="slide green">
+ <div class="ring" style="width:1100px;height:1100px;right:-520px;top:-260px"></div>
+ <p class="kick">SMALL BUSINESS · AI</p>
+ <h1 class="hook">The slow part isn’t <span class="mark">billing</span></h1>
+ <p class="body" style="max-width:640px">How one sweet shop turns messy WhatsApp and counter-book orders into clean entries, with a Claude Skill.</p>
+ <div class="grow"></div>
+ <div class="priya" data-o='{"prop":"phone","mood":"happy"}' data-x="610" data-y="470" data-s="1.0"></div>
+ <div class="footer"><img class="logo" src="logo-paper.png"><span class="counter">1 / 10 · SWIPE →</span></div>
+</section>
+
+<!-- 2 messy orders -->
+<section class="slide paper">
+ <div class="ring" style="width:900px;height:900px;left:-560px;bottom:-300px"></div>
+ <p class="kick">THE PROBLEM</p>
+ <h2 class="head">Orders don’t arrive <span class="mark">clean</span></h2>
+ <p class="body">Priya runs a sweet shop. About 40 orders a day come in like this:</p>
+ <div style="display:flex;flex-direction:column;gap:18px;margin-top:40px;align-items:flex-start">
+  <span class="bubble">2kg KK – Sharma ji</span>
+  <span class="bubble">same as last week pls</span>
+  <span class="bubble">1 box soan papdi, Sat delivery</span>
+  <span class="lab" style="font-size:24px;color:#3f5e4b;margin-top:14px">+ THE COUNTER BOOK, IN PEN</span>
+ </div>
+ <div class="grow"></div>
+ <div class="priya" data-o='{"prop":"phone","mood":"neutral"}' data-x="640" data-y="520" data-s=".9"></div>
+ <div class="footer"><img class="logo" src="logo-green.png"><span class="counter">2 / 10</span></div>
+</section>
+
+<!-- 3 cost -->
+<section class="slide paper">
+ <div class="ring" style="width:900px;height:900px;right:-520px;top:-380px"></div>
+ <p class="kick">THE REAL COST</p>
+ <h2 class="head">Retyping, every evening</h2>
+ <div style="margin-top:56px;font-family:MS,MSX,sans-serif;font-weight:800;font-size:180px;line-height:.9;color:#a8452a">600 hrs</div>
+ <p class="body" style="margin-top:28px">40 orders × 3 minutes = 2 hours a night. Over 300 working days, that’s 600 hours a year, plus the odd <span class="loss">2 kg billed as 2 boxes.</span></p>
+ <div class="grow"></div>
+ <div class="priya" data-o='{"prop":"bill","mood":"worried","scratch":true,"sweat":true}' data-x="660" data-y="560" data-s=".85"></div>
+ <div class="footer"><img class="logo" src="logo-green.png"><span class="counter">3 / 10</span></div>
+</section>
+
+<!-- 4 billing software -->
+<section class="slide paper">
+ <div class="ring" style="width:1000px;height:1000px;left:-600px;top:300px"></div>
+ <p class="kick">WHY SOFTWARE ALONE DOESN’T FIX IT</p>
+ <h2 class="head">Billing apps need <span class="mark">clean data</span></h2>
+ <p class="body">Tally, Zoho Books and QuickBooks are great at invoices, GST and the books. None of them can read “KK, same as last week”. Someone still has to turn that into a line item.</p>
+ <div style="display:flex;align-items:center;gap:28px;margin-top:64px">
+  <div class="receipt" style="padding:26px 30px;font-size:32px">“2kg KK – Sharma ji”</div>
+  <span style="font-family:MS,MSX;font-weight:800;font-size:60px;color:#a8452a">→ ?</span>
+  <div class="step" style="padding:20px 26px"><span class="lab" style="font-size:26px">BILLING APP</span></div>
+ </div>
+ <div class="grow"></div>
+ <div class="footer"><img class="logo" src="logo-green.png"><span class="counter">4 / 10</span></div>
+</section>
+
+<!-- 5 the idea (green) -->
+<section class="slide green">
+ <div class="ring" style="width:1300px;height:1300px;left:-300px;top:200px"></div>
+ <p class="kick">THE FIX</p>
+ <h2 class="hook" style="font-size:96px">Teach Claude <span class="mark">once</span></h2>
+ <p class="body">A Claude Skill is a saved set of instructions and files that Claude uses whenever that job comes up. Priya’s Skill does the reading. Her billing app keeps the books.</p>
+ <div class="grow"></div>
+ <div class="priya" data-o='{"prop":"laptop","mood":"happy"}' data-x="620" data-y="520" data-s=".9"></div>
+ <div class="footer"><img class="logo" src="logo-paper.png"><span class="counter">5 / 10</span></div>
+</section>
+
+<!-- 6 what she taught -->
+<section class="slide paper">
+ <div class="ring" style="width:900px;height:900px;right:-560px;bottom:-200px"></div>
+ <p class="kick">INSIDE HER SKILL</p>
+ <h2 class="head">What she <span class="mark">taught</span> it</h2>
+ <div class="receipt" style="margin-top:72px">
+  <div class="row"><span class="num">1</span><div><div class="lab" style="font-size:30px">PRICE LIST + NICKNAMES</div><div style="font-size:34px;color:#3f5e4b;margin-top:6px">“KK” = kaju katli, “SP” = soan papdi</div></div></div>
+  <div class="row"><span class="num">2</span><div><div class="lab" style="font-size:30px">REGULAR CUSTOMERS</div><div style="font-size:34px;color:#3f5e4b;margin-top:6px">names, addresses, GST numbers</div></div></div>
+  <div class="row"><span class="num">3</span><div><div class="lab" style="font-size:30px">3 REAL ORDERS</div><div style="font-size:34px;color:#3f5e4b;margin-top:6px">each with the correct bill</div></div></div>
+ </div>
+ <div class="grow"></div>
+ <div class="footer"><img class="logo" src="logo-green.png"><span class="counter">6 / 10</span></div>
+</section>
+
+<!-- 7 every evening now -->
+<section class="slide paper">
+ <p class="kick">EVERY EVENING NOW</p>
+ <h2 class="head">Messy in, <span class="mark">clean</span> out</h2>
+ <div style="margin-top:48px">
+  <div class="step"><span class="num">1</span><div style="font-size:34px">Drops in the day’s WhatsApp screenshots + a photo of the counter book</div></div>
+  <div class="conn"></div>
+  <div class="step"><span class="num">2</span><div style="font-size:34px">Claude reads them with her prices, nicknames and customers</div></div>
+  <div class="conn"></div>
+  <div class="step" style="flex-direction:column;gap:14px"><div style="display:flex;gap:24px;align-items:center"><span class="num">3</span><div style="font-size:34px">A clean sheet to import</div></div>
+   <table><tr><th>CUSTOMER</th><th>ITEM</th><th>QTY</th><th>CHECK</th></tr>
+   <tr><td>Sharma ji</td><td>Kaju katli</td><td>2 kg</td><td></td></tr>
+   <tr style="background:#f6e2b4"><td>Mehta</td><td>Same as last week</td><td>?</td><td class="loss">confirm</td></tr>
+   <tr style="background:#f6e2b4"><td>Rao</td><td>Ladoo</td><td>2</td><td class="loss">kg or box?</td></tr></table>
+  </div>
+ </div>
+ <div class="grow"></div>
+ <div class="footer"><img class="logo" src="logo-green.png"><span class="counter">7 / 10</span></div>
+</section>
+
+<!-- 8 build yours -->
+<section class="slide paper">
+ <div class="ring" style="width:900px;height:900px;left:-560px;bottom:-360px"></div>
+ <p class="kick">BUILD YOURS</p>
+ <h2 class="head">Your Skill in <span class="mark">3 steps</span></h2>
+ <div style="margin-top:56px;display:flex;flex-direction:column;gap:28px">
+  <div class="step"><span class="num">1</span><div><div class="lab" style="font-size:28px">TURN IT ON</div><div style="font-size:34px;color:#3f5e4b;margin-top:6px">Settings → Capabilities → Skills: switch on “skill-creator”</div></div></div>
+  <div class="step"><span class="num">2</span><div><div class="lab" style="font-size:28px">DESCRIBE IT</div><div style="font-size:34px;color:#3f5e4b;margin-top:6px">In a chat: “Help me make a Skill for my shop’s orders.” Share your price list and 3 past orders.</div></div></div>
+  <div class="step"><span class="num">3</span><div><div class="lab" style="font-size:28px">UPLOAD + TEST</div><div style="font-size:34px;color:#3f5e4b;margin-top:6px">Upload the Skill it makes. Test it on yesterday’s orders and correct it.</div></div></div>
+ </div>
+ <div class="grow"></div>
+ <div class="footer"><img class="logo" src="logo-green.png"><span class="counter">8 / 10</span></div>
+</section>
+
+<!-- 9 honest limits -->
+<section class="slide paper">
+ <div class="ring" style="width:1000px;height:1000px;right:-600px;top:-300px"></div>
+ <p class="kick">TO BE FAIR</p>
+ <h2 class="head">What it <span class="mark">doesn’t</span> do</h2>
+ <div class="receipt" style="margin-top:72px">
+  <div class="row"><span class="num">✕</span><div style="font-size:34px">Replace her billing app. It feeds it.</div></div>
+  <div class="row"><span class="num">✕</span><div style="font-size:34px">Read WhatsApp on its own. She shares screenshots or chat exports.</div></div>
+  <div class="row"><span class="num">✕</span><div style="font-size:34px">Skip the check. She reviews every line before billing.</div></div>
+ </div>
+ <p class="body" style="font-size:26px;color:#3f5e4b;margin-top:36px">Illustrative figures for one shop. Skills are on Claude’s paid plans; menu names may change.</p>
+ <div class="grow"></div>
+ <div class="footer"><img class="logo" src="logo-green.png"><span class="counter">9 / 10</span></div>
+</section>
+
+<!-- 10 CTA (green) -->
+<section class="slide green" style="align-items:center;text-align:center">
+ <div class="ring" style="width:1400px;height:1400px;left:-160px;top:-40px"></div>
+ <div class="grow"></div>
+ <img src="logo-paper.png" style="height:360px;position:relative">
+ <h2 class="head" style="margin-top:64px;position:relative;font-size:54px">Your software needs clean data.<br>Teach Claude to make it <span class="mark">clean.</span></h2>
+ <p class="body" style="text-align:center;margin:48px auto 0;position:relative">Follow Accrevise for one practical automation every week.</p>
+ <div class="grow"></div>
+ <span class="counter" style="position:relative">10 / 10</span>
+</section>
+
+<script>
+/*PARTS*/
+GT=0.4;
+document.querySelectorAll('.priya').forEach(el=>{
+  const o=Object.assign({hair:'long',glasses:false},JSON.parse(el.dataset.o));
+  const x=+el.dataset.x, y=+el.dataset.y, s=+el.dataset.s;
+  const slide=el.closest('.slide');
+  const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+  svg.setAttribute('width','1080');svg.setAttribute('height','1350');svg.setAttribute('viewBox','0 0 1080 1350');
+  svg.style.cssText='position:absolute;left:0;top:0;pointer-events:none';
+  svg.innerHTML=rohan(x/s>0?x:0,y,s,o).replace('translate('+x+','+y+')','translate('+x+','+y+')');
+  slide.insertBefore(svg,slide.querySelector('.footer'));
+  el.remove();
+});
+</script>
+</body></html>
