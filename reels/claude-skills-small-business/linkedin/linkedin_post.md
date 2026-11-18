@@ -4,7 +4,27 @@
 
 **Attach:** `Accrevise_Sweet_Shop_Skill_Carousel.pdf` (10 slides, 1080×1350)
 
+## Short version (use this)
+
+The slow part of small-business billing isn't the billing. It's the reading.
+
+Priya's sweet shop gets ~40 orders a day like "2kg KK – Sharma ji" and "same as last week pls". Retyping them takes her 2 hours every night.
+
+Her billing app can't read that. A Claude Skill can.
+
+She teaches it once: her price list, her regular customers, 3 real orders. Now she drops in the day's screenshots and gets a clean sheet to import, with unclear orders flagged.
+
+The software keeps the books. Claude does the reading.
+
+How to build one is in the carousel 👉
+
+Which job in your week is still pure retyping?
+
+#SmallBusiness #MSME #AI #Claude
+
 ---
+
+## Long version (original)
 
 The slow part of small-business billing usually isn't the billing.
 
