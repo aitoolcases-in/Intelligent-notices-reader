@@ -10,7 +10,7 @@ Every reel follows a character-and-story flow (13 beats). The full beat sheet is
 We borrow only the STORY STRUCTURE from the reference reel we studied. Never use its creator's name or handle, its series tag ("in 90 seconds"), its character, its wording, or its exact look (ruled paper, serif headlines with an italic word, greyscale sketch with a yellow pop). Every frame is unmistakably Accrevise.
 
 ## The flow (13 beats, 80-90 s total, never over 90 s)
-1. **Hook + promise:** kicker "ACCREVISE EXPLAINS", a short headline with one word in the amber marker ("Minimum due, ==explained.=="), one line of the example's key numbers, and a big animated Rohan with the thing he wants. Keep text minimal: the story and the man carry it.
+1. **Hook = negative + solution, in the first 3 seconds:** kicker "ACCREVISE EXPLAINS"; line 1 states the fear or loss as a question, with the key words in the loss-red marker ("Scared AI will misuse *your data?*"); about 2 s in, the solution promise lands in the amber marker ("*3 rules* so it can't."). The hero reacts (worried → relieved). The spoken line says both: "Scared AI will misuse your data? Here are three simple rules, so it can't." Keep text minimal: the story and the man carry the rest.
 2. **Meet the hero:** "Rohan buys a ==phone==": the object, its ₹ price tag, and the decision ("he pays only the minimum: ₹2,500").
 3. **Define it:** three plain features on a receipt, ticked one at a time.
 4. **The numbers:** amount, rate and payment boxes pop in, with an assumptions footnote.

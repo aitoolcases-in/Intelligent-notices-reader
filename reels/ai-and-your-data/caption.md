@@ -1,11 +1,13 @@
 # "AI will take my data and misuse it" — Accrevise reel
 
-**On-screen hook (beat 1):** "AI will take my data." · Let's check that
+**On-screen hook (beat 1):** Scared AI will misuse your data? → 3 rules so it can't.
 
 **Spoken hook to record (optional):** "Scared AI will leak your customers' data? Good. Here are 3 rules so it can't."
 
 ## Caption
-"AI will take my data." The worry is fair: whatever you paste into an AI app is sent to that company. So decide what goes in.
+Scared AI will misuse your data? 3 rules so it can't 👇
+
+The worry is fair: whatever you paste into an AI app is sent to that company. So decide what goes in.
 
 3 rules to use AI without risking your customers:
 
@@ -37,7 +39,7 @@ Setting names as of Nov 2026; they differ by app and change over time. Turning t
 
 ## Voiceover script (Kokoro af_heart, speed 0.95, one line per beat)
 Pronunciation spellings used for the voice engine: "Sharma jee", "O T Ps".
-1. AI will take my data and misuse it. Let's check that.
+1. Scared AI will misuse your data? Here are three simple rules, so it can't.
 2. Harry runs a phone repair shop. He'd like AI's help, but he has one worry. His customers' data.
 3. The worry is fair. Whatever you paste into an AI app goes to that company. So you decide what goes in.
 4. Meet two Harrys. One avoids AI completely. The other uses it, with three rules.
