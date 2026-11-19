@@ -133,12 +133,12 @@ function toggle(x,y,on){ // on: 0..1
   return `<div class="ab" style="left:${x}px;top:${y}px;width:150px;height:80px;border-radius:9999px;background:${bg};border:4px solid #034620"><div style="position:absolute;top:6px;left:${8+on*62}px;width:60px;height:60px;border-radius:50%;background:#fff;border:3px solid #034620"></div></div>`;
 }
 
-// 1 hook
-SC.push({kick:'ACCREVISE EXPLAINS',ring:[520,700,1100],d:4.4,ev:[.2,1,2],f:u=>
-  `<div class="hl" style="${ap(u,.2)}">“AI will take</div>` +
-  `<div class="hl" style="top:372px;${ap(u,1)}"><span class="mark">my data.</span>”</div>` +
-  T(80,500,`<span class="lab" style="font-size:30px;color:#3f5e4b">LET’S CHECK THAT</span>`,ap(u,2)) +
-  sv(rohan(150,440,1.6,hr({mood:'worried',crossed:true})),0,0)
+// 1 hook: negative + solution
+SC.push({kick:'ACCREVISE EXPLAINS',ring:[520,700,1100],d:4.4,ev:[.2,1,2.4],f:u=>
+  `<div class="hl" style="${ap(u,.2)}">Scared AI will</div>` +
+  `<div class="hl" style="top:372px;${ap(u,.6)}">misuse <span class="mark loss">your data?</span></div>` +
+  T(80,500,`<div style="font-family:MS,MSX;font-weight:800;font-size:58px;color:#034620;opacity:${P(u,2.4,.4)};transform:translateY(${(1-P(u,2.4,.4))*20}px)"><span class="mark">3 rules</span> so it can’t.</div>`) +
+  sv(rohan(150,600,1.5,hr({mood:u>2.6?'happy':'worried',crossed:u<2.6,sweat:u<2.6})),0,0)
 });
 // 2 meet harry
 SC.push({kick:'MEET HARRY',ring:[-500,1100,1000],d:6.9,ev:[.2,.6,1.6,2.4,3.2,4.4],f:u=>
