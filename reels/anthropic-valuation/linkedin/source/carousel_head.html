@@ -1,0 +1,45 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+@font-face{font-family:SS4;src:url(node_modules/@fontsource/source-serif-4/files/source-serif-4-latin-400-normal.woff2);font-weight:400}
+@font-face{font-family:SS4;src:url(node_modules/@fontsource/source-serif-4/files/source-serif-4-latin-600-normal.woff2);font-weight:600}
+@font-face{font-family:SS4;src:url(node_modules/@fontsource/source-serif-4/files/source-serif-4-latin-400-italic.woff2);font-weight:400;font-style:italic}
+@font-face{font-family:SS4X;src:url(node_modules/@fontsource/source-serif-4/files/source-serif-4-latin-ext-400-normal.woff2);font-weight:400}
+@font-face{font-family:MS;src:url(node_modules/@fontsource/montserrat/files/montserrat-latin-700-normal.woff2);font-weight:700}
+@font-face{font-family:MS;src:url(node_modules/@fontsource/montserrat/files/montserrat-latin-800-normal.woff2);font-weight:800}
+@font-face{font-family:MSX;src:url(node_modules/@fontsource/montserrat/files/montserrat-latin-ext-700-normal.woff2);font-weight:700}
+@font-face{font-family:MSX;src:url(node_modules/@fontsource/montserrat/files/montserrat-latin-ext-800-normal.woff2);font-weight:800}
+@page{size:1080px 1350px;margin:0}
+html,body{margin:0;padding:0}
+.slide{position:relative;width:1080px;height:1350px;overflow:hidden;box-sizing:border-box;padding:88px;display:flex;flex-direction:column;page-break-after:always;font-family:SS4,SS4X,Georgia,serif}
+.paper{background:#f7f5ef;color:#034620}
+.green{background:#034620;color:#f7f5ef}
+.ring{position:absolute;border:4px solid #9fbfab;border-radius:9999px;pointer-events:none}
+.green .ring{border-color:#2d7049}
+.kick{font-family:MS,MSX,sans-serif;font-weight:700;font-size:24px;letter-spacing:.14em;color:#3f5e4b;margin:0 0 16px}
+.green .kick{color:#b9d0c1}
+.hook{font-family:MS,MSX,sans-serif;font-weight:800;font-size:104px;line-height:.98;letter-spacing:-.01em;margin:0;text-transform:uppercase}
+.head{font-family:MS,MSX,sans-serif;font-weight:800;font-size:64px;line-height:1.06;margin:0}
+.body{font-size:36px;line-height:1.35;margin:48px 0 0;color:#034620;max-width:860px}
+.green .body{color:#f7f5ef}
+.mark{background:#e2b04a;color:#034620;border-radius:8px;padding:0 10px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.loss{color:#a8452a}
+.grow{flex:1}
+.footer{display:flex;align-items:center;justify-content:space-between;position:relative;z-index:2}
+.logo{height:150px}
+.counter{font-family:MS,MSX,sans-serif;font-weight:700;font-size:24px;letter-spacing:.1em;color:#3f5e4b}
+.green .counter{color:#b9d0c1}
+.lab{font-family:MS,MSX,sans-serif;font-weight:700;letter-spacing:.06em}
+.bubble{background:#dfe9e2;border:3px solid #034620;border-radius:22px 22px 22px 4px;padding:14px 22px;font-size:34px;line-height:1.2;color:#034620;display:inline-block}
+.receipt{background:#fff;border:4px solid #034620;position:relative;padding:44px 40px 36px}
+.receipt:before{content:"";position:absolute;left:-4px;right:-4px;top:-22px;height:22px;background:linear-gradient(135deg,transparent 50%,#034620 50%,#034620 calc(50% + 3px),#fff calc(50% + 3px)) 0 0/22px 22px repeat-x, linear-gradient(225deg,transparent 50%,#034620 50%,#034620 calc(50% + 3px),#fff calc(50% + 3px)) 11px 0/22px 22px repeat-x}
+.row{display:flex;gap:24px;align-items:flex-start;padding:18px 0;border-bottom:2px dashed #9fbfab}
+.row:last-child{border-bottom:none}
+.num{flex:none;width:58px;height:58px;border-radius:9999px;background:#034620;color:#f7f5ef;font-family:MS,MSX,sans-serif;font-weight:800;font-size:30px;display:flex;align-items:center;justify-content:center}
+.step{background:#fff;border:4px solid #034620;border-radius:20px;padding:26px 30px;display:flex;gap:24px;align-items:flex-start}
+.conn{width:6px;height:36px;background:#2d7049;margin-left:56px}
+.mono{font-family:'JetBrains Mono','DejaVu Sans Mono',monospace}
+table{border-collapse:collapse;width:100%;font-size:30px;color:#034620}
+th{font-family:MS,MSX,sans-serif;font-weight:700;font-size:22px;letter-spacing:.06em;text-align:left;padding:10px 12px;border-bottom:4px solid #034620}
+td{padding:12px;border-bottom:2px solid #9fbfab}
+</style></head>
