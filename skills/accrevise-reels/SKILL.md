@@ -60,6 +60,7 @@ We borrow only the STORY STRUCTURE from the reference reel we studied. Never use
 
 ## Audio
 - Default: voiceover. Kokoro TTS (pip kokoro-onnx; model files from the thewh1teagle/kokoro-onnx GitHub releases, model-files-v1.0), voice af_heart at a normal, unhurried pace: speed 0.95 (1.1 was too fast; Kokoro's Indian voices were tried and rejected), one calm explainer line per beat, numbers written out as words. Each beat lasts at least its line + ~1 s; the beat's animations stretch to fit. No sound effects under the voice.
+- Hindi voiceover (on request): write natural conversational Hindi in Devanagari (keep everyday English words like valuation, business, AI written in Devanagari; spell AI as "ए आई"), voice hf_beta, lang "hi", speed 1.0. Hindi runs ~15% longer than English, so tighten the script rather than speeding up. On-screen text stays English. The user rejected Indian-accented English voices, not Hindi.
 - Also deliver a silent version so they can add a trending track.
 
 ## Pronouncing Indian names in the voiceover
