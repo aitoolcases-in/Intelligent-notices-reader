@@ -20,7 +20,7 @@ SC.push({kick:'ACCREVISE EXPLAINS',ring:[520,700,1100],d:4.6,ev:[.2,.6,2.4],f:u=
   sv(rohan(150,620,1.5,PR({prop:'bill',mood:u>.8?'worried':'happy',sweat:u>1.4})),0,0)
 });
 // 2 diwali rush
-SC.push({kick:'MEET PRIYA',ring:[-500,1100,1000],d:4.8,ev:[.2,.6,1,1.4,1.8,2.6],f:u=>{
+SC.push({kick:'MEET ALIA',ring:[-500,1100,1000],d:4.8,ev:[.2,.6,1,1.4,1.8,2.6],f:u=>{
   let b=''; [[560,980],[690,980],[820,980],[620,890],[750,890],[690,800]].forEach(([x,y],i)=>b+=box(x,y,1,u,.6+i*.3));
   const n=Math.round(clamp((u-.6)/2)*6);
   return hl(u,'Diwali ','rush') + sv(b) +
@@ -79,7 +79,7 @@ SC.push({kick:'THE DIFFERENCE',ring:[350,500,1300],d:5,ev:[.2,.6,2.2],f:u=>
 // 10 twin
 SC.push({kick:'WHAT IF',ring:[560,1250,1000],d:4.2,ev:[.2,.8,2],f:u=>{
   const sp=P(u,.8,.6);
-  return hl(u,'A ','second',' Priya') +
+  return hl(u,'A ','second',' Alia') +
    sv(`<g filter="url(#pencil)"><path d="M540,470 L540,${470+1000*sp}" stroke="${INK}" stroke-width="5"/></g>`) +
    `<div style="opacity:${sp}">`+sv(rohan(40,620,1.15,PR({prop:'bill',mood:'worried'})),0,0)+sv(rohan(590,620,1.15,PR({prop:'phone',mood:'happy'})),0,0)+`</div>`+
    T(80,1380,`<span class="lab" style="font-size:30px;color:#3f5e4b">SAME SALES</span>`,ap(u,1.2)) +
