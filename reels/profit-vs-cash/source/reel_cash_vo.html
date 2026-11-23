@@ -1,0 +1,257 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+@font-face{font-family:SS4;src:url(node_modules/@fontsource/source-serif-4/files/source-serif-4-latin-400-normal.woff2);font-weight:400}
+@font-face{font-family:SS4;src:url(node_modules/@fontsource/source-serif-4/files/source-serif-4-latin-600-normal.woff2);font-weight:600}
+@font-face{font-family:SS4;src:url(node_modules/@fontsource/source-serif-4/files/source-serif-4-latin-400-italic.woff2);font-weight:400;font-style:italic}
+@font-face{font-family:SS4;src:url(node_modules/@fontsource/source-serif-4/files/source-serif-4-latin-600-italic.woff2);font-weight:600;font-style:italic}
+@font-face{font-family:SS4X;src:url(node_modules/@fontsource/source-serif-4/files/source-serif-4-latin-ext-400-normal.woff2);font-weight:400}
+@font-face{font-family:SS4X;src:url(node_modules/@fontsource/source-serif-4/files/source-serif-4-latin-ext-600-normal.woff2);font-weight:600}
+@font-face{font-family:SS4X;src:url(node_modules/@fontsource/source-serif-4/files/source-serif-4-latin-ext-600-italic.woff2);font-weight:600;font-style:italic}
+@font-face{font-family:MS;src:url(node_modules/@fontsource/montserrat/files/montserrat-latin-700-normal.woff2);font-weight:700}
+@font-face{font-family:MS;src:url(node_modules/@fontsource/montserrat/files/montserrat-latin-800-normal.woff2);font-weight:800}
+@font-face{font-family:MSX;src:url(node_modules/@fontsource/montserrat/files/montserrat-latin-ext-700-normal.woff2);font-weight:700}
+@font-face{font-family:MSX;src:url(node_modules/@fontsource/montserrat/files/montserrat-latin-ext-800-normal.woff2);font-weight:800}
+@font-face{font-family:CV;src:url(node_modules/@fontsource/caveat/files/caveat-latin-600-normal.woff2);font-weight:600}
+@font-face{font-family:CVX;src:url(node_modules/@fontsource/caveat/files/caveat-latin-ext-600-normal.woff2);font-weight:600}
+html,body{margin:0;padding:0;background:#f7f5ef}
+#stage{position:relative;width:1080px;height:1920px;overflow:hidden;background:#f7f5ef;font-family:SS4,SS4X,Georgia,serif;color:#034620}
+.layer{background:#f7f5ef}
+.layer.green{background:#034620;color:#f7f5ef}
+.ring{position:absolute;border:4px solid #9fbfab;border-radius:9999px;pointer-events:none}
+.green .ring{border-color:#2d7049}
+.logo{position:absolute;left:72px;top:74px;height:118px}
+.kick{position:absolute;left:80px;top:232px;font-family:MS,MSX,sans-serif;font-weight:700;font-size:26px;letter-spacing:.14em;color:#3f5e4b}
+.mark{background:#e2b04a;color:#034620;border-radius:8px;padding:0 12px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.mark.loss{background:#a8452a;color:#f7f5ef}
+.layer{position:absolute;inset:0}
+.ab{position:absolute}
+.hl{position:absolute;left:80px;top:280px;width:900px;font-family:MS,MSX,sans-serif;font-size:72px;line-height:1.12;font-weight:800;letter-spacing:-.01em;color:#034620}
+.green .hl{color:#f7f5ef}
+.lab{font-family:MS,MSX,sans-serif;font-weight:700;letter-spacing:.06em}
+.hand{font-family:MS,MSX,sans-serif;font-weight:700;letter-spacing:-.01em}
+.foot{font-family:MS,MSX,sans-serif;font-weight:700;font-size:22px;line-height:1.4;color:#3f5e4b}
+</style></head>
+<body>
+<div id="stage"></div>
+<svg width="0" height="0" style="position:absolute">
+<defs>
+<filter id="pencil" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence id="turb" type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="1"/><feDisplacementMap in="SourceGraphic" scale="5"/></filter>
+<pattern id="hG" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="14" height="14" fill="#f7f5ef"/><line x1="0" y1="0" x2="0" y2="14" stroke="#9fbfab" stroke-width="2.6"/></pattern>
+<pattern id="hD" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(40)"><rect width="9" height="9" fill="#2d7049"/><line x1="0" y1="0" x2="0" y2="9" stroke="#034620" stroke-width="3"/></pattern>
+<pattern id="hA" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="14" height="14" fill="#f1cf86"/><line x1="0" y1="0" x2="0" y2="14" stroke="#c98f1c" stroke-width="3"/></pattern>
+<pattern id="hR" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="14" height="14" fill="#f3d7cc"/><line x1="0" y1="0" x2="0" y2="14" stroke="#a8452a" stroke-width="3.4"/></pattern>
+<pattern id="hN" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="14" height="14" fill="#dfe9e2"/><line x1="0" y1="0" x2="0" y2="14" stroke="#2d7049" stroke-width="3.4"/></pattern>
+</defs>
+</svg>
+<script src="vo_cash.js"></script>
+<script>
+const INK='#034620', GREEN='#034620', LOSS='#a8452a', G6='#2d7049', AMB='#e2b04a';
+const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const ease=x=>{x=clamp(x);return x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2};
+const P=(u,a,d=.5)=>ease((u-a)/d);
+// appear: fade + rise
+const ap=(u,a,d=.45)=>{const p=P(u,a,d);return `opacity:${p};transform:translateY(${(1-p)*24}px);`};
+let GT=0;
+const draw=(p)=>`pathLength="1" stroke-dasharray="1" stroke-dashoffset="${1-clamp(p)}"`;
+const EVENTS=[]; // build-step times for audio
+function hl(u,a,em,b,cls=''){return `<div class="hl" style="${ap(u,0.15,.5)}">${a}<span class="mark ${cls}">${em}</span>${b||''}</div>`}
+const kick=(u,txt)=>`<div class="kick" style="${ap(u,0,.4)}">${txt}</div>`;
+const ring=(x,y,d)=>`<div class="ring" style="left:${x}px;top:${y}px;width:${d}px;height:${d}px"></div>`;
+
+// ---------- the hero: Rohan ----------
+function rohan(x,y,s,o={}){
+  const mood=o.mood||'happy', prop=o.prop||'none', ph=x*0.0131+y*0.007;
+  const look=(o.look||0)+Math.sin(GT*0.8+ph*3)*4;
+  const bob=Math.sin(GT*2.4+ph)*4, tilt=Math.sin(GT*1.3+ph)*3 + (mood==='worried'?-4:0);
+  const jump=o.jump?-Math.abs(Math.sin(GT*5.5))*40:0;
+  const blink=((GT+ph*5)%3.3)<0.14;
+  const mouth = mood==='cheer' ? 'M172,312 Q200,356 230,312 Z' : mood==='happy' ? 'M178,318 Q200,338 224,316' : mood==='worried' ? 'M180,326 Q200,314 222,326' : 'M182,322 L220,320';
+  const eyes = blink ? `<path d="M158,270 H178 M224,270 H244" stroke-width="5"/>` : `<circle cx="168" cy="270" r="5" fill="${INK}"/><circle cx="234" cy="270" r="5" fill="${INK}"/>`;
+  const sw=Math.sin(GT*7+ph)*10;
+  let arm='';
+  if(o.scratch) arm=`<path d="M300,470 C340,420 330,330 ${300+sw*0.4},${262+sw*0.3}" stroke-width="5" fill="none"/><circle cx="${300+sw*0.4}" cy="${258+sw*0.3}" r="18" fill="#f7f5ef"/>`;
+  if(mood==='cheer') arm=`<path d="M300,470 C340,400 360,320 ${370+sw},${220}" stroke-width="5" fill="none"/><circle cx="${370+sw}" cy="210" r="20" fill="#f7f5ef"/><path d="M100,470 C60,400 40,320 ${30-sw},${220}" stroke-width="5" fill="none"/><circle cx="${30-sw}" cy="210" r="20" fill="#f7f5ef"/>`;
+  const brows = mood==='worried' ? '<path d="M146,236 L190,244 M212,244 L256,234" />' : '<path d="M146,238 Q168,228 190,236 M212,236 Q234,228 256,238" />';
+  let propS='';
+  if(prop==='phone') propS=`<g transform="translate(250,440) rotate(${-12+Math.sin(GT*1.7+ph)*5} 30 120)"><rect x="0" y="0" width="70" height="128" rx="12" fill="url(#hA)" stroke="${INK}" stroke-width="4"/><rect x="9" y="14" width="52" height="92" rx="4" fill="#fbe7b9" stroke="${INK}" stroke-width="2.5"/></g><path d="M300,600 C300,540 280,500 262,486 C250,478 246,500 258,508" fill="#f7f5ef" stroke="${INK}" stroke-width="4"/>`;
+  if(prop==='bill') propS=`<g transform="translate(230,430) rotate(8)"><path d="M0,0 L120,0 L120,150 L110,140 L100,150 L90,140 L80,150 L70,140 L60,150 L50,140 L40,150 L30,140 L20,150 L10,140 L0,150 Z" fill="#fff" stroke="${INK}" stroke-width="4"/><path d="M16,30 H100 M16,56 H90 M16,82 H70" stroke="#8a8a84" stroke-width="5"/><path d="M16,112 H100" stroke="${LOSS}" stroke-width="7"/></g>`;
+  if(prop==='calendar') propS=`<g transform="translate(240,420) rotate(6)"><rect x="0" y="0" width="140" height="130" fill="#fff" stroke="${INK}" stroke-width="4"/><rect x="0" y="0" width="140" height="34" fill="url(#hN)" stroke="${INK}" stroke-width="4"/><path d="M20,62 l12,12 l22,-24 M64,62 l12,12 l22,-24 M20,100 l12,12 l22,-24 M64,100 l12,12 l22,-24" stroke="${GREEN}" stroke-width="5" fill="none"/></g>`;
+  if(prop==='laptop') propS=`<g transform="translate(60,450) rotate(${Math.sin(GT*1.2+ph)*1.5} 140 100)"><rect x="0" y="0" width="280" height="180" rx="12" fill="#fff" stroke="${INK}" stroke-width="5"/><rect x="70" y="62" width="140" height="52" rx="26" fill="#f3d7cc" stroke="${INK}" stroke-width="3"/><text x="140" y="98" text-anchor="middle" font-family="MS,MSX,sans-serif" font-weight="800" font-size="28" fill="${INK}" stroke="none">AIS</text><path d="M-30,180 L310,180 L330,212 L-50,212 Z" fill="url(#hG)" stroke="${INK}" stroke-width="5"/></g>`;
+  const sweat = o.sweat ? `<path d="M296,200 C292,214 288,222 296,228 C304,222 300,214 296,200Z" fill="#cfe3ee" stroke="${INK}" stroke-width="3"/>` : '';
+  return `<g transform="translate(${x},${y+jump}) scale(${s})" filter="url(#pencil)" stroke="${INK}" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+   <path d="M40,640 C46,500 100,420 200,408 C300,420 354,500 360,640 Z" fill="url(#hG)"/>
+   <path d="M200,408 C186,440 176,470 170,520 M200,408 C214,440 224,470 230,520" />
+   <path d="M150,412 L200,470 L250,412" fill="#f7f5ef"/>
+   <path d="M120,440 C118,500 112,560 110,640 M282,440 C286,500 292,560 292,640" stroke-width="3.5"/>
+   <path d="M178,348 L178,412 M222,348 L222,412" />
+   <g transform="translate(0,${bob}) rotate(${tilt} 200 380)">
+   ${o.hair==='long'?`<path d="M108,250 C98,160 160,122 204,124 C252,122 312,160 298,252 C300,320 312,380 318,430 C300,446 284,440 270,452 C262,420 262,380 262,340 L146,340 C144,380 142,420 132,452 C118,440 102,446 86,430 C94,380 106,320 108,250 Z" fill="url(#hD)"/>`:`<ellipse cx="114" cy="272" rx="16" ry="26" fill="#f7f5ef"/><ellipse cx="288" cy="272" rx="16" ry="26" fill="#f7f5ef"/>`}
+   <path d="M118,250 C116,330 150,372 200,374 C252,372 286,330 284,250 C284,200 250,170 200,170 C150,170 118,200 118,250Z" fill="#f7f5ef"/>
+   ${o.hair==='long'?`<path d="M204,162 C168,164 124,196 116,262 C136,226 168,206 204,196 Z" fill="url(#hD)"/><path d="M204,162 C240,164 282,196 288,262 C268,226 238,206 204,196 Z" fill="url(#hD)"/><circle cx="112" cy="318" r="7" fill="url(#hA)"/><circle cx="290" cy="318" r="7" fill="url(#hA)"/>`:`<path d="M112,262 C96,170 160,120 214,130 C268,124 312,170 292,256 C290,222 272,200 250,196 C236,214 196,212 176,200 C160,214 136,212 124,206 C118,224 116,244 112,262Z" fill="url(${o.grey?'#hG':'#hD'})"/>`}
+   ${o.glasses===false?`<g transform="translate(${look},0)">${eyes}<path d="M154,256 L160,261 M248,256 L242,261" stroke-width="3.5"/></g>`:`<g transform="translate(${look},0)"><rect x="140" y="248" width="54" height="42" rx="12" fill="#fbfbf8"/><rect x="208" y="248" width="54" height="42" rx="12" fill="#fbfbf8"/><path d="M194,266 Q201,258 208,266 M140,264 L120,258 M262,264 L284,258"/>
+   ${eyes}</g>`}
+   ${brows}
+   <path d="M200,284 C196,298 192,304 202,306" />
+   ${o.mustache?`<path d="M166,312 C180,298 194,300 201,306 C208,300 222,298 236,312 C222,318 210,316 201,311 C192,316 180,318 166,312 Z" fill="${INK}"/>`:''}
+   <path d="${mouth}" ${mood==='cheer'?'fill="#fff"':''}/>
+   ${sweat}
+   </g>
+   ${arm}
+   ${o.crossed?`<path d="M96,500 C150,560 260,560 318,500 L312,540 C260,600 150,600 92,540 Z" fill="url(#hG)" stroke-width="5"/><path d="M110,520 C170,500 240,500 300,526" stroke-width="4"/>`:''}
+   ${propS}
+  </g>`;
+}
+function sv(inner,x=0,y=0,w=1080,h=1920){return `<svg class="ab" style="left:${x}px;top:${y}px" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}">${inner}</svg>`}
+const T=(x,y,html,style='')=>`<div class="ab" style="left:${x}px;top:${y}px;${style}">${html}</div>`;
+function tick(u,a,x,y,text,col=INK){
+  const p=P(u,a,.4);
+  return sv(`<g filter="url(#pencil)"><rect x="4" y="4" width="54" height="54" fill="none" stroke="${INK}" stroke-width="4"/><path d="M14,30 L28,46 L56,10" fill="none" stroke="${GREEN}" stroke-width="7" stroke-linecap="round" ${draw(P(u,a+.1,.35))}/></g>`,x,y,64,64)
+   + T(x+90,y+2,`<span style="font-size:46px;color:${col}">${text}</span>`,`opacity:${p}`);
+}
+
+// ---------- scenes ----------
+const SC=[];
+// ---------- silent reel: profit on paper, no cash in bank ----------
+const PR=(o)=>Object.assign({hair:'long',glasses:false},o);
+const CAP=(y,html,u,a,size=58)=>T(80,y,`<div style="width:920px;font-family:MS,MSX;font-weight:800;font-size:${size}px;line-height:1.15;color:#034620">${html}</div>`,ap(u,a));
+function box(x,y,s,u,a){const p=P(u,a,.35);
+  return `<g filter="url(#pencil)" transform="translate(${x},${y}) scale(${s})" style="opacity:${p}"><rect x="0" y="0" width="120" height="90" fill="url(#hA)" stroke="${INK}" stroke-width="5"/><path d="M60,0 V90 M0,45 H120" stroke="${LOSS}" stroke-width="6"/><path d="M60,0 C40,-30 20,-20 40,0 M60,0 C80,-30 100,-20 80,0" fill="none" stroke="${LOSS}" stroke-width="5"/></g>`;}
+function bubble(x,y,w,text,u,a){const p=P(u,a,.35);
+  return `<div class="ab" style="left:${x}px;top:${y}px;width:${w}px;opacity:${p};transform:translateY(${(1-p)*20}px)"><div style="background:#dfe9e2;border:3px solid #034620;border-radius:22px 22px 22px 4px;padding:14px 20px;font-size:36px;line-height:1.2;color:#034620">${text}</div></div>`;}
+function card(x,y,w,h,title,lines,u,a,num,bg){
+  const p=P(u,a,.45);
+  return sv(`<g filter="url(#pencil)" style="opacity:${p}"><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="20" fill="${bg||'#fff'}" stroke="${INK}" stroke-width="5"/>${num?`<circle cx="${x}" cy="${y}" r="34" fill="#034620"/>`:''}</g>`)+
+   (num?T(x-12,y-26,`<span class="lab" style="font-size:36px;color:#f7f5ef">${num}</span>`,`opacity:${p}`):'')+
+   T(x+40,y+24,`<div style="width:${w-72}px"><div class="lab" style="font-size:30px;color:#034620">${title}</div>${lines?`<div style="font-size:36px;color:#3f5e4b;margin-top:8px;line-height:1.25">${lines}</div>`:''}</div>`,`opacity:${p}`);
+}
+
+// 1 hook: negative + solution
+SC.push({kick:'ACCREVISE EXPLAINS',ring:[520,700,1100],d:4.6,ev:[.2,.6,2.4],f:u=>
+  `<div class="hl" style="${ap(u,.2)}">Made a profit.</div>` +
+  `<div class="hl" style="top:372px;${ap(u,.8)}"><span class="mark loss">Bank is empty?</span></div>` +
+  T(80,500,`<div style="font-family:MS,MSX;font-weight:800;font-size:56px;color:#034620;opacity:${P(u,2.4,.4)};transform:translateY(${(1-P(u,2.4,.4))*20}px)">Here’s where <span class="mark">the cash went.</span></div>`) +
+  sv(rohan(150,620,1.5,PR({prop:'bill',mood:u>.8?'worried':'happy',sweat:u>1.4})),0,0)
+});
+// 2 diwali rush
+SC.push({kick:'MEET ALIA',ring:[-500,1100,1000],d:4.8,ev:[.2,.6,1,1.4,1.8,2.6],f:u=>{
+  let b=''; [[560,980],[690,980],[820,980],[620,890],[750,890],[690,800]].forEach(([x,y],i)=>b+=box(x,y,1,u,.6+i*.3));
+  const n=Math.round(clamp((u-.6)/2)*6);
+  return hl(u,'Diwali ','rush') + sv(b) +
+   `<div style="opacity:${P(u,.4,.5)}">`+sv(rohan(-10,560,1.0,PR({mood:'cheer',jump:u>2.6&&u<4.2})),0,0)+`</div>` +
+   CAP(470,`Record sales: <span class="mark">₹${n} lakh</span>`,u,.6,60);
+}});
+// 3 profit on paper
+SC.push({kick:'ON PAPER',ring:[600,1250,900],d:4.6,ev:[.2,.6,1.4,2.2],f:u=>
+  hl(u,'Profit: ','₹1.2 lakh') +
+  T(110,520,`<div style="background:#fff;border:4px solid #034620;padding:34px 40px;width:860px;box-sizing:border-box;font-size:46px;color:#034620;line-height:1.7">
+   <div style="display:flex;justify-content:space-between;opacity:${P(u,.6,.3)}"><span>Sales</span><b>₹6,00,000</b></div>
+   <div style="display:flex;justify-content:space-between;opacity:${P(u,1.4,.3)}"><span>Costs</span><b>− ₹4,80,000</b></div>
+   <div style="display:flex;justify-content:space-between;border-top:4px solid #034620;margin-top:10px;padding-top:10px;opacity:${P(u,2.2,.3)}"><span>Profit</span><b style="color:${G6}">₹1,20,000 ✓</b></div></div>`) +
+  `<div style="opacity:${P(u,2.4,.5)}">`+sv(rohan(340,1030,.8,PR({mood:'happy'})),0,0)+`</div>`
+});
+// 4 bank balance
+SC.push({kick:'1 NOVEMBER',ring:[640,-300,800],d:4.4,ev:[.2,.6,1.6],f:u=>{
+  const bal=Math.round(340000-clamp((u-.6)/1.4)*330000);
+  return hl(u,'Bank ','balance','',' loss') +
+   T(260,480,`<div style="width:560px;background:#034620;border-radius:44px;padding:70px 40px;text-align:center;box-shadow:0 10px 0 rgba(3,70,32,.15);opacity:${P(u,.4,.3)}"><div class="lab" style="font-size:26px;color:#b9d0c1">AVAILABLE BALANCE</div><div style="font-family:MS,MSX;font-weight:800;font-size:92px;color:${u>2?'#f0a58c':'#f7f5ef'};margin-top:20px">₹${bal.toLocaleString('en-IN')}</div></div>`) +
+   `<div style="opacity:${P(u,1.6,.4)}">`+sv(rohan(340,920,.85,PR({mood:'worried',scratch:true,sweat:true})),0,0)+`</div>`;
+}});
+// 5 bills due
+SC.push({kick:'THIS WEEK',ring:[-400,1300,900],d:4.4,ev:[.2,.6,1.2,1.8,2.6],f:u=>
+  hl(u,'Bills ','due') +
+  card(110,500,850,130,'SUPPLIER','₹1,50,000',u,.6,null) +
+  card(110,660,850,130,'STAFF SALARIES','₹45,000',u,1.2,null) +
+  card(110,820,850,130,'RENT','₹15,000',u,1.8,null) +
+  CAP(1010,`Total due: <span class="mark loss">₹2.1 lakh</span>`,u,2.6,62)
+});
+// 6 question
+SC.push({kick:'SO…',ring:[-300,400,1300],green:true,d:3,ev:[.2],f:u=>
+  `<div class="hl" style="top:780px;text-align:center;${ap(u,.2)}">Where did the<br><span class="mark">cash go?</span></div>`
+});
+// 7 leak 1: credit
+SC.push({kick:'LEAK 1',ring:[600,1300,1000],d:5,ev:[.2,.6,1.2,1.8,2.8],f:u=>
+  hl(u,'Stuck with ','customers') +
+  bubble(80,500,600,'Will pay after Diwali 🙏',u,.6) +
+  bubble(200,620,600,'Send bill, will clear next month',u,1.2) +
+  bubble(80,740,600,'Office order. Pay in 30 days.',u,1.8) +
+  CAP(900,`<span class="mark loss">₹3 lakh</span> sold on credit.<br>Profit, but no cash.`,u,2.8,56)
+});
+// 8 leak 2: stock
+SC.push({kick:'LEAK 2',ring:[-450,-300,900],d:4.8,ev:[.2,.6,2.6],f:u=>{
+  let j=''; for(let r=0;r<3;r++)for(let c=0;c<5;c++){const i=r*5+c;j+=`<g style="opacity:${P(u,.6+i*.08,.2)}"><rect x="${130+c*170}" y="${560+r*150}" width="110" height="110" rx="14" fill="url(#hA)" stroke="${INK}" stroke-width="4"/><rect x="${140+c*170}" y="${545+r*150}" width="90" height="20" rx="6" fill="url(#hN)" stroke="${INK}" stroke-width="3"/></g>`;}
+  return hl(u,'Sitting on the ','shelf') +
+   sv(`<g filter="url(#pencil)">${j}<path d="M100,680 H960 M100,830 H960 M100,980 H960" stroke="${INK}" stroke-width="6"/></g>`) +
+   CAP(1060,`<span class="mark loss">₹1.5 lakh</span> of extra dry-fruit stock.`,u,2.6,52);
+}});
+// 9 the rule
+SC.push({kick:'THE DIFFERENCE',ring:[350,500,1300],d:5,ev:[.2,.6,2.2],f:u=>
+  hl(u,'Profit ≠ ','cash') +
+  card(80,500,430,420,'',null,u,.6,null,'#dfe9e2') + T(120,540,`<div style="width:360px"><div style="font-family:MS,MSX;font-weight:800;font-size:64px;color:#034620">PROFIT</div><div style="font-size:48px;line-height:1.25;color:#034620;margin-top:24px">What you <b>earn</b> on paper.</div></div>`,ap(u,.6)) +
+  card(570,500,430,420,'',null,u,2.2,null,'#f6e2b4') + T(610,540,`<div style="width:360px"><div style="font-family:MS,MSX;font-weight:800;font-size:64px;color:#034620">CASH</div><div style="font-size:48px;line-height:1.25;color:#034620;margin-top:24px">What you can <b>spend</b> today.</div></div>`,ap(u,2.2))
+});
+// 10 twin
+SC.push({kick:'WHAT IF',ring:[560,1250,1000],d:4.2,ev:[.2,.8,2],f:u=>{
+  const sp=P(u,.8,.6);
+  return hl(u,'A ','second',' Alia') +
+   sv(`<g filter="url(#pencil)"><path d="M540,470 L540,${470+1000*sp}" stroke="${INK}" stroke-width="5"/></g>`) +
+   `<div style="opacity:${sp}">`+sv(rohan(40,620,1.15,PR({prop:'bill',mood:'worried'})),0,0)+sv(rohan(590,620,1.15,PR({prop:'phone',mood:'happy'})),0,0)+`</div>`+
+   T(80,1380,`<span class="lab" style="font-size:30px;color:#3f5e4b">SAME SALES</span>`,ap(u,1.2)) +
+   T(600,1380,`<span class="lab" style="font-size:30px;color:${G6}">3 CASH HABITS</span>`,ap(u,2));
+}});
+// 11 habits
+SC.push({kick:'3 CASH HABITS',ring:[-500,1350,900],d:7.6,ev:[.2,.8,2.8,4.8],f:u=>
+  hl(u,'Cash ','first') +
+  card(110,490,850,190,'50% ADVANCE','on every bulk or office order',u,.8,1) +
+  card(110,740,850,190,'A DUE DATE ON EVERY CREDIT','+ a polite reminder every week',u,2.8,2) +
+  card(110,990,850,190,'BUY STOCK IN BATCHES','not all at once before the rush',u,4.8,3)
+});
+// 12 cash calendar + AI
+SC.push({kick:'EVERY MONDAY',ring:[600,1250,900],d:7,ev:[.2,.6,1,1.4,1.8,4],f:u=>{
+  const wk=[['WEEK 1','+₹1.8L','−₹1.2L'],['WEEK 2','+₹1.1L','−₹0.9L'],['WEEK 3','+₹0.9L','−₹1.4L'],['WEEK 4','+₹1.5L','−₹0.8L']];
+  let rows=wk.map((w,i)=>`<div style="display:flex;justify-content:space-between;padding:14px 0;border-bottom:2px dashed #9fbfab;opacity:${P(u,.6+i*.4,.3)}"><span class="lab" style="font-size:28px">${w[0]}</span><span style="color:${G6}">${w[1]} in</span><span style="color:${LOSS}">${w[2]} out</span></div>`).join('');
+  return hl(u,'A 4-week ','cash calendar') +
+   T(80,500,`<div style="background:#fff;border:4px solid #034620;border-radius:18px;padding:20px 30px;width:920px;box-sizing:border-box;font-size:38px;color:#034620">${rows}</div>`) +
+   T(80,920,`<div style="background:#034620;color:#f7f5ef;border-radius:18px;padding:24px 30px;width:920px;box-sizing:border-box;font-size:40px;line-height:1.25;opacity:${P(u,4,.4)}"><span style="color:#e2b04a;font-family:MS,MSX;font-weight:800">AI</span> can build this from your bank statement and dues list in minutes.</div>`) +
+   T(80,1110,`<div class="foot" style="font-size:24px">Illustrative numbers.</div>`,ap(u,4));
+}});
+// 13 result
+SC.push({kick:'THE RESULT',ring:[-400,1300,900],d:4.4,ev:[.2,.6,1.6],f:u=>
+  hl(u,'No ','panic loan') +
+  T(80,500,`<div style="font-size:48px;color:#034620;line-height:1.6"><div style="opacity:${P(u,.6,.3)}"><span style="color:${G6};font-family:MS,MSX;font-weight:800">✓</span> Supplier paid on time</div><div style="opacity:${P(u,1,.3)}"><span style="color:${G6};font-family:MS,MSX;font-weight:800">✓</span> Staff paid on the 1st</div><div style="opacity:${P(u,1.4,.3)}"><span style="color:${G6};font-family:MS,MSX;font-weight:800">✓</span> Sleeps well after Diwali</div></div>`) +
+  `<div style="opacity:${P(u,1.6,.5)}">`+sv(rohan(340,900,.85,PR({mood:'cheer',jump:u>1.8&&u<3.6})),0,0)+`</div>`
+});
+// 14 truth
+SC.push({kick:null,ring:[-300,150,1700],green:true,logo:false,d:4.8,ev:[.2,.5,1.5,2.4],f:u=>
+  T(0,330,`<div style="width:1080px;text-align:center"><img src="logo-paper.png" style="height:330px"></div>`,ap(u,.2)) +
+  `<div class="hl" style="left:0;width:1080px;top:800px;text-align:center;${ap(u,.5)}">Profit is an opinion.</div>` +
+  `<div class="hl" style="left:0;width:1080px;top:900px;text-align:center;${ap(u,1.5)}">Cash is a <span class="mark">fact.</span></div>` +
+  T(110,1120,`<div class="foot" style="width:860px;text-align:center;color:#b9d0c1">Illustrative example for one shop. General information, not financial advice.</div>`,ap(u,2.4))
+});
+
+const VO=window.VO||[]; SC.forEach((s,i)=>{s.d0=s.d; s.d=Math.max(s.d,(VO[i]||0)+0.95); s.k=s.d0/s.d; s.ev=(s.ev||[]).map(t=>t/s.k);});
+let START=[],acc=0; SC.forEach(s=>{START.push(acc);acc+=s.d}); const TOTAL=acc; window.STARTS=START;
+window.TOTAL=TOTAL;
+window.EVENTS=(()=>{const e=[];SC.forEach((s,i)=>{(s.ev||[]).forEach(t=>e.push({t:START[i]+t,k:'pencil'}));if(i>0)e.push({t:START[i],k:'turn'})});return e})();
+function sceneAt(t){let i=SC.length-1;for(let k=0;k<SC.length;k++){if(t<START[k]+SC[k].d){i=k;break}}return i}
+window.render=function(t){
+  GT=t;
+  document.getElementById('turb').setAttribute('seed',String(1+Math.floor(t*6)%3));
+  const i=sceneAt(t), u=t-START[i];
+  const TR=.5;
+  let html='', k=i, uu=u, wipe='';
+  if(i>0 && u<TR){ // Accrevise green wipe: covers the old frame right-to-left, then uncovers the new one
+    const p=u/TR;
+    if(p<.5){k=i-1;uu=SC[i-1].d;const w=ease(p*2)*1080;wipe=`<div class="ab" style="right:0;top:0;width:${w}px;height:1920px;background:#034620;z-index:5"></div>`;}
+    else{const w=(1-ease((p-.5)*2))*1080;wipe=`<div class="ab" style="left:0;top:0;width:${w}px;height:1920px;background:#034620;z-index:5"></div>`;}
+  }
+  const s=SC[k], g=!!s.green;
+  html+=`<div class="layer ${g?'green':''}">${s.ring?ring(...s.ring):''}`+
+    (s.logo===false?'':`<img class="logo" src="${g?'logo-paper.png':'logo-green.png'}">`)+
+    (s.kick?`<div class="kick" style="${g?'color:#b9d0c1':''}">${s.kick}</div>`:'')+
+    `${s.f(uu*s.k)}</div>`+wipe;
+  document.getElementById('stage').innerHTML=html;
+};
+render(0);
+</script>
+</body></html>
