@@ -78,3 +78,20 @@ Illustrative example for one shop. General information, not financial advice.
 | | काइट आउट्रो | |
 
 हिंदी कैप्शन की शुरुआत: "मुनाफ़ा हुआ, पर बैंक ख़ाली? देखिए पैसा गया कहाँ 👇"
+
+## English story voiceover (Kokoro af_heart, speed 0.95)
+File: `Accrevise_Profit_vs_Cash_Story_VO_9x16.mp4`. Voice spellings used: "Aalia" (said Aa-lia), "laakh".
+1. Alia made a profit this Diwali. So why is her bank empty? Let's find out.
+2. Alia runs a sweet shop. This Diwali was her best ever. Six lakh in sales.
+3. Her books showed a profit of one lakh twenty thousand. She was thrilled.
+4. Then, on the first of November, she checked her bank. Ten thousand rupees.
+5. And this week, she owed two lakh ten thousand in bills.
+6. So, where did the cash go?
+7. Three lakh was stuck with customers who said, "We'll pay after Diwali."
+8. And one and a half lakh was sitting on her shelf, as extra stock.
+9. Profit is what you earn on paper. Cash is what you can spend today.
+10. Now meet a second Alia. Same sales. Three cash habits.
+11. Fifty percent advance on bulk orders. A due date on every credit. And stock bought in smaller batches.
+12. Every Monday, a four-week cash calendar. AI builds it from her bank statement in minutes.
+13. Her bills get paid on time. No panic loan.
+14. Profit is an opinion. Cash is a fact.
