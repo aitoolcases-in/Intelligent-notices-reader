@@ -1,0 +1,306 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+@font-face{font-family:SS4;src:url(node_modules/@fontsource/source-serif-4/files/source-serif-4-latin-400-normal.woff2);font-weight:400}
+@font-face{font-family:SS4;src:url(node_modules/@fontsource/source-serif-4/files/source-serif-4-latin-600-normal.woff2);font-weight:600}
+@font-face{font-family:SS4;src:url(node_modules/@fontsource/source-serif-4/files/source-serif-4-latin-400-italic.woff2);font-weight:400;font-style:italic}
+@font-face{font-family:SS4;src:url(node_modules/@fontsource/source-serif-4/files/source-serif-4-latin-600-italic.woff2);font-weight:600;font-style:italic}
+@font-face{font-family:SS4X;src:url(node_modules/@fontsource/source-serif-4/files/source-serif-4-latin-ext-400-normal.woff2);font-weight:400}
+@font-face{font-family:SS4X;src:url(node_modules/@fontsource/source-serif-4/files/source-serif-4-latin-ext-600-normal.woff2);font-weight:600}
+@font-face{font-family:SS4X;src:url(node_modules/@fontsource/source-serif-4/files/source-serif-4-latin-ext-600-italic.woff2);font-weight:600;font-style:italic}
+@font-face{font-family:MS;src:url(node_modules/@fontsource/montserrat/files/montserrat-latin-700-normal.woff2);font-weight:700}
+@font-face{font-family:MS;src:url(node_modules/@fontsource/montserrat/files/montserrat-latin-800-normal.woff2);font-weight:800}
+@font-face{font-family:MSX;src:url(node_modules/@fontsource/montserrat/files/montserrat-latin-ext-700-normal.woff2);font-weight:700}
+@font-face{font-family:MSX;src:url(node_modules/@fontsource/montserrat/files/montserrat-latin-ext-800-normal.woff2);font-weight:800}
+@font-face{font-family:CV;src:url(node_modules/@fontsource/caveat/files/caveat-latin-600-normal.woff2);font-weight:600}
+@font-face{font-family:CVX;src:url(node_modules/@fontsource/caveat/files/caveat-latin-ext-600-normal.woff2);font-weight:600}
+html,body{margin:0;padding:0;background:#f7f5ef}
+#stage{position:relative;width:1080px;height:1920px;overflow:hidden;background:#f7f5ef;font-family:SS4,SS4X,Georgia,serif;color:#034620}
+.layer{background:#f7f5ef}
+.layer.green{background:#034620;color:#f7f5ef}
+.ring{position:absolute;border:4px solid #9fbfab;border-radius:9999px;pointer-events:none}
+.green .ring{border-color:#2d7049}
+.logo{position:absolute;left:72px;top:74px;height:118px}
+.kick{position:absolute;left:80px;top:232px;font-family:MS,MSX,sans-serif;font-weight:700;font-size:26px;letter-spacing:.14em;color:#3f5e4b}
+.mark{background:#e2b04a;color:#034620;border-radius:8px;padding:0 12px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.mark.loss{background:#a8452a;color:#f7f5ef}
+.layer{position:absolute;inset:0}
+.ab{position:absolute}
+.hl{position:absolute;left:80px;top:280px;width:900px;font-family:MS,MSX,sans-serif;font-size:72px;line-height:1.12;font-weight:800;letter-spacing:-.01em;color:#034620}
+.green .hl{color:#f7f5ef}
+.lab{font-family:MS,MSX,sans-serif;font-weight:700;letter-spacing:.06em}
+.hand{font-family:MS,MSX,sans-serif;font-weight:700;letter-spacing:-.01em}
+.foot{font-family:MS,MSX,sans-serif;font-weight:700;font-size:22px;line-height:1.4;color:#3f5e4b}
+</style></head>
+<body>
+<div id="stage"></div>
+<svg width="0" height="0" style="position:absolute">
+<defs>
+<filter id="pencil" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence id="turb" type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="1"/><feDisplacementMap in="SourceGraphic" scale="5"/></filter>
+<pattern id="hG" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="14" height="14" fill="#f7f5ef"/><line x1="0" y1="0" x2="0" y2="14" stroke="#9fbfab" stroke-width="2.6"/></pattern>
+<pattern id="hD" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(40)"><rect width="9" height="9" fill="#2d7049"/><line x1="0" y1="0" x2="0" y2="9" stroke="#034620" stroke-width="3"/></pattern>
+<pattern id="hA" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="14" height="14" fill="#f1cf86"/><line x1="0" y1="0" x2="0" y2="14" stroke="#c98f1c" stroke-width="3"/></pattern>
+<pattern id="hR" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="14" height="14" fill="#f3d7cc"/><line x1="0" y1="0" x2="0" y2="14" stroke="#a8452a" stroke-width="3.4"/></pattern>
+<pattern id="hN" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="14" height="14" fill="#dfe9e2"/><line x1="0" y1="0" x2="0" y2="14" stroke="#2d7049" stroke-width="3.4"/></pattern>
+</defs>
+</svg>
+<script src="vo_auto_yt.js"></script>
+<script>
+const INK='#034620', GREEN='#034620', LOSS='#a8452a', G6='#2d7049', AMB='#e2b04a';
+const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const ease=x=>{x=clamp(x);return x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2};
+const P=(u,a,d=.5)=>ease((u-a)/d);
+// appear: fade + rise
+const ap=(u,a,d=.45)=>{const p=P(u,a,d);return `opacity:${p};transform:translateY(${(1-p)*24}px);`};
+let GT=0;
+const draw=(p)=>`pathLength="1" stroke-dasharray="1" stroke-dashoffset="${1-clamp(p)}"`;
+const EVENTS=[]; // build-step times for audio
+function hl(u,a,em,b,cls=''){return `<div class="hl" style="${ap(u,0.15,.5)}">${a}<span class="mark ${cls}">${em}</span>${b||''}</div>`}
+const kick=(u,txt)=>`<div class="kick" style="${ap(u,0,.4)}">${txt}</div>`;
+const ring=(x,y,d)=>`<div class="ring" style="left:${x}px;top:${y}px;width:${d}px;height:${d}px"></div>`;
+
+// ---------- the hero: Rohan ----------
+function rohan(x,y,s,o={}){
+  const mood=o.mood||'happy', prop=o.prop||'none', ph=x*0.0131+y*0.007;
+  const look=(o.look||0)+Math.sin(GT*0.8+ph*3)*4;
+  const bob=Math.sin(GT*2.4+ph)*4, tilt=Math.sin(GT*1.3+ph)*3 + (mood==='worried'?-4:0);
+  const jump=o.jump?-Math.abs(Math.sin(GT*5.5))*40:0;
+  const blink=((GT+ph*5)%3.3)<0.14;
+  const mouth = mood==='cheer' ? 'M172,312 Q200,356 230,312 Z' : mood==='happy' ? 'M178,318 Q200,338 224,316' : mood==='worried' ? 'M180,326 Q200,314 222,326' : 'M182,322 L220,320';
+  const eyes = blink ? `<path d="M158,270 H178 M224,270 H244" stroke-width="5"/>` : `<circle cx="168" cy="270" r="5" fill="${INK}"/><circle cx="234" cy="270" r="5" fill="${INK}"/>`;
+  const sw=Math.sin(GT*7+ph)*10;
+  let arm='';
+  if(o.scratch) arm=`<path d="M300,470 C340,420 330,330 ${300+sw*0.4},${262+sw*0.3}" stroke-width="5" fill="none"/><circle cx="${300+sw*0.4}" cy="${258+sw*0.3}" r="18" fill="#f7f5ef"/>`;
+  if(mood==='cheer') arm=`<path d="M300,470 C340,400 360,320 ${370+sw},${220}" stroke-width="5" fill="none"/><circle cx="${370+sw}" cy="210" r="20" fill="#f7f5ef"/><path d="M100,470 C60,400 40,320 ${30-sw},${220}" stroke-width="5" fill="none"/><circle cx="${30-sw}" cy="210" r="20" fill="#f7f5ef"/>`;
+  const brows = mood==='worried' ? '<path d="M146,236 L190,244 M212,244 L256,234" />' : '<path d="M146,238 Q168,228 190,236 M212,236 Q234,228 256,238" />';
+  let propS='';
+  if(prop==='phone') propS=`<g transform="translate(250,440) rotate(${-12+Math.sin(GT*1.7+ph)*5} 30 120)"><rect x="0" y="0" width="70" height="128" rx="12" fill="url(#hA)" stroke="${INK}" stroke-width="4"/><rect x="9" y="14" width="52" height="92" rx="4" fill="#fbe7b9" stroke="${INK}" stroke-width="2.5"/></g><path d="M300,600 C300,540 280,500 262,486 C250,478 246,500 258,508" fill="#f7f5ef" stroke="${INK}" stroke-width="4"/>`;
+  if(prop==='bill') propS=`<g transform="translate(230,430) rotate(8)"><path d="M0,0 L120,0 L120,150 L110,140 L100,150 L90,140 L80,150 L70,140 L60,150 L50,140 L40,150 L30,140 L20,150 L10,140 L0,150 Z" fill="#fff" stroke="${INK}" stroke-width="4"/><path d="M16,30 H100 M16,56 H90 M16,82 H70" stroke="#8a8a84" stroke-width="5"/><path d="M16,112 H100" stroke="${LOSS}" stroke-width="7"/></g>`;
+  if(prop==='calendar') propS=`<g transform="translate(240,420) rotate(6)"><rect x="0" y="0" width="140" height="130" fill="#fff" stroke="${INK}" stroke-width="4"/><rect x="0" y="0" width="140" height="34" fill="url(#hN)" stroke="${INK}" stroke-width="4"/><path d="M20,62 l12,12 l22,-24 M64,62 l12,12 l22,-24 M20,100 l12,12 l22,-24 M64,100 l12,12 l22,-24" stroke="${GREEN}" stroke-width="5" fill="none"/></g>`;
+  if(prop==='laptop') propS=`<g transform="translate(60,450) rotate(${Math.sin(GT*1.2+ph)*1.5} 140 100)"><rect x="0" y="0" width="280" height="180" rx="12" fill="#fff" stroke="${INK}" stroke-width="5"/><rect x="70" y="62" width="140" height="52" rx="26" fill="#f3d7cc" stroke="${INK}" stroke-width="3"/><text x="140" y="98" text-anchor="middle" font-family="MS,MSX,sans-serif" font-weight="800" font-size="28" fill="${INK}" stroke="none">Claude</text><path d="M-30,180 L310,180 L330,212 L-50,212 Z" fill="url(#hG)" stroke="${INK}" stroke-width="5"/></g>`;
+  const sweat = o.sweat ? `<path d="M296,200 C292,214 288,222 296,228 C304,222 300,214 296,200Z" fill="#cfe3ee" stroke="${INK}" stroke-width="3"/>` : '';
+  return `<g transform="translate(${x},${y+jump}) scale(${s})" filter="url(#pencil)" stroke="${INK}" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+   <path d="M40,640 C46,500 100,420 200,408 C300,420 354,500 360,640 Z" fill="url(#hG)"/>
+   <path d="M200,408 C186,440 176,470 170,520 M200,408 C214,440 224,470 230,520" />
+   <path d="M150,412 L200,470 L250,412" fill="#f7f5ef"/>
+   <path d="M120,440 C118,500 112,560 110,640 M282,440 C286,500 292,560 292,640" stroke-width="3.5"/>
+   <path d="M178,348 L178,412 M222,348 L222,412" />
+   <g transform="translate(0,${bob}) rotate(${tilt} 200 380)">
+   ${o.hair==='long'?`<path d="M108,250 C98,160 160,122 204,124 C252,122 312,160 298,252 C300,320 312,380 318,430 C300,446 284,440 270,452 C262,420 262,380 262,340 L146,340 C144,380 142,420 132,452 C118,440 102,446 86,430 C94,380 106,320 108,250 Z" fill="url(#hD)"/>`:`<ellipse cx="114" cy="272" rx="16" ry="26" fill="#f7f5ef"/><ellipse cx="288" cy="272" rx="16" ry="26" fill="#f7f5ef"/>`}
+   <path d="M118,250 C116,330 150,372 200,374 C252,372 286,330 284,250 C284,200 250,170 200,170 C150,170 118,200 118,250Z" fill="#f7f5ef"/>
+   ${o.hair==='long'?`<path d="M204,162 C168,164 124,196 116,262 C136,226 168,206 204,196 Z" fill="url(#hD)"/><path d="M204,162 C240,164 282,196 288,262 C268,226 238,206 204,196 Z" fill="url(#hD)"/><circle cx="112" cy="318" r="7" fill="url(#hA)"/><circle cx="290" cy="318" r="7" fill="url(#hA)"/>`:`<path d="M112,262 C96,170 160,120 214,130 C268,124 312,170 292,256 C290,222 272,200 250,196 C236,214 196,212 176,200 C160,214 136,212 124,206 C118,224 116,244 112,262Z" fill="url(${o.grey?'#hG':'#hD'})"/>`}
+   ${o.glasses===false?`<g transform="translate(${look},0)">${eyes}<path d="M154,256 L160,261 M248,256 L242,261" stroke-width="3.5"/></g>`:`<g transform="translate(${look},0)"><rect x="140" y="248" width="54" height="42" rx="12" fill="#fbfbf8"/><rect x="208" y="248" width="54" height="42" rx="12" fill="#fbfbf8"/><path d="M194,266 Q201,258 208,266 M140,264 L120,258 M262,264 L284,258"/>
+   ${eyes}</g>`}
+   ${brows}
+   <path d="M200,284 C196,298 192,304 202,306" />
+   ${o.mustache?`<path d="M166,312 C180,298 194,300 201,306 C208,300 222,298 236,312 C222,318 210,316 201,311 C192,316 180,318 166,312 Z" fill="${INK}"/>`:''}
+   <path d="${mouth}" ${mood==='cheer'?'fill="#fff"':''}/>
+   ${sweat}
+   </g>
+   ${arm}
+   ${o.crossed?`<path d="M96,500 C150,560 260,560 318,500 L312,540 C260,600 150,600 92,540 Z" fill="url(#hG)" stroke-width="5"/><path d="M110,520 C170,500 240,500 300,526" stroke-width="4"/>`:''}
+   ${propS}
+  </g>`;
+}
+function sv(inner,x=0,y=0,w=1080,h=1920){return `<svg class="ab" style="left:${x}px;top:${y}px" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}">${inner}</svg>`}
+const T=(x,y,html,style='')=>`<div class="ab" style="left:${x}px;top:${y}px;${style}">${html}</div>`;
+function tick(u,a,x,y,text,col=INK){
+  const p=P(u,a,.4);
+  return sv(`<g filter="url(#pencil)"><rect x="4" y="4" width="54" height="54" fill="none" stroke="${INK}" stroke-width="4"/><path d="M14,30 L28,46 L56,10" fill="none" stroke="${GREEN}" stroke-width="7" stroke-linecap="round" ${draw(P(u,a+.1,.35))}/></g>`,x,y,64,64)
+   + T(x+90,y+2,`<span style="font-size:46px;color:${col}">${text}</span>`,`opacity:${p}`);
+}
+
+// ---------- scenes ----------
+const SC=[];
+// ---------- shared: Gupta ji, Meera, simplified app screens ----------
+const GJ=(o)=>Object.assign({mustache:true,grey:true},o);
+const MR=(o)=>Object.assign({hair:'long'},o);
+const MONO="'JetBrains Mono','DejaVu Sans Mono',monospace";
+const CAP=(y,html,u,a,size=54)=>T(80,y,`<div style="width:920px;font-family:MS,MSX;font-weight:800;font-size:${size}px;line-height:1.15;color:#034620">${html}</div>`,ap(u,a));
+const typ=(s,u,a,cps=40)=>{const n=Math.max(0,Math.floor((u-a)*cps));return n>=s.length?s:s.slice(0,n)+'<span style="opacity:.8">▍</span>'};
+function win(x,y,w,title,inner,u,a){const p=P(u,a,.4);
+  return `<div class="ab" style="left:${x}px;top:${y}px;width:${w}px;opacity:${p};transform:translateY(${(1-p)*20}px);background:#fff;border:4px solid #034620;border-radius:20px;overflow:hidden;box-shadow:0 10px 0 rgba(3,70,32,.12)">
+   <div style="background:#dfe9e2;padding:12px 18px;display:flex;gap:10px;align-items:center;border-bottom:3px solid #034620"><span style="width:14px;height:14px;border-radius:50%;background:#e2b04a"></span><span style="width:14px;height:14px;border-radius:50%;background:#9fbfab"></span><span class="lab" style="font-size:22px;color:#034620;margin-left:10px">${title}</span></div>
+   <div style="padding:22px 26px">${inner}</div></div>`;}
+function tog(on){const bg=on>.5?G6:'#b9c4bd';return `<span style="display:inline-block;position:relative;width:104px;height:56px;border-radius:9999px;background:${bg};border:3px solid #034620;flex:none"><span style="position:absolute;top:4px;left:${6+on*42}px;width:42px;height:42px;border-radius:50%;background:#fff;border:3px solid #034620"></span></span>`;}
+function connRow(name,letter,on,label){return `<div style="display:flex;align-items:center;gap:20px;padding:16px 0;border-bottom:2px dashed #9fbfab"><span style="width:60px;height:60px;border-radius:14px;background:#f6e2b4;border:3px solid #034620;display:flex;align-items:center;justify-content:center;font-family:MS,MSX;font-weight:800;font-size:30px;color:#034620;flex:none">${letter}</span><span style="flex:1;font-size:38px;color:#034620">${name}</span><span class="lab" style="font-size:22px;color:${on>.5?G6:'#3f5e4b'};margin-right:12px">${on>.5?'CONNECTED':(label||'CONNECT')}</span>${tog(on)}</div>`;}
+function promptCard(x,y,w,text,u,a,cps,label){const p=P(u,a,.4);
+  return `<div class="ab" style="left:${x}px;top:${y}px;width:${w}px;opacity:${p};background:#034620;border-radius:20px;padding:26px 30px;box-sizing:border-box;box-shadow:0 10px 0 rgba(3,70,32,.15)"><div class="lab" style="font-size:22px;color:#e2b04a;margin-bottom:12px">${label||'YOU TYPE'}</div><div style="font-family:${MONO};font-size:31px;line-height:1.45;color:#f7f5ef;white-space:pre-wrap">${typ(text,u,a+.3,cps||40)}</div></div>`;}
+function perm(sel){ // segmented control: 0 always, 1 needs approval, 2 blocked
+  const opts=['Always allow','Needs approval','Blocked'];
+  return `<div style="display:flex;border:3px solid #034620;border-radius:14px;overflow:hidden">${opts.map((o,i)=>`<div style="flex:1;text-align:center;padding:14px 6px;font-size:28px;font-family:MS,MSX;font-weight:700;${i==sel?`background:${i==0?'#e2b04a':(i==1?'#9fbfab':'#f3d7cc')};color:#034620`:'background:#fff;color:#7f8f80'};${i<2?'border-right:3px solid #034620':''}">${o}</div>`).join('')}</div>`;}
+function inboxRow(from,subj,state){ // state: draft|sent|none
+  const chip=state==='sent'?`<span class="lab" style="font-size:20px;background:${G6};color:#fff;padding:6px 12px;border-radius:8px">SENT ✓</span>`:(state==='draft'?`<span class="lab" style="font-size:20px;background:#e2b04a;color:#034620;padding:6px 12px;border-radius:8px">DRAFT READY</span>`:'');
+  return `<div style="display:flex;align-items:center;gap:16px;padding:14px 0;border-bottom:2px dashed #9fbfab"><div style="flex:1"><div style="font-size:30px;color:#034620;font-weight:600">${from}</div><div style="font-size:26px;color:#3f5e4b">${subj}</div></div>${chip}</div>`;}
+function sticky(x,y,text,rot,u,a,col){const p=P(u,a,.3);
+  return T(x,y,`<div style="background:${col||'#f6e2b4'};border:3px solid #034620;padding:16px 22px;font-size:34px;color:#034620;width:380px;box-shadow:6px 6px 0 rgba(3,70,32,.15);transform:rotate(${rot}deg)">${text}</div>`,`opacity:${p}`);}
+function card4(u,a,items){ // WHO/WHAT/WHEN/HOW
+  return items.map(([t,s],i)=>{const x=80+(i%2)*470, y=480+Math.floor(i/2)*330, p=P(u,a+i*.8,.4);
+    return T(x,y,`<div style="width:450px;height:300px;box-sizing:border-box;background:${['#dfe9e2','#f6e2b4','#dfe9e2','#f6e2b4'][i]};border:4px solid #034620;border-radius:20px;padding:24px 26px;opacity:${p}"><div style="font-family:MS,MSX;font-weight:800;font-size:52px;color:#034620">${t}</div><div style="font-size:34px;color:#034620;margin-top:14px;line-height:1.25">${s}</div></div>`);}).join('');
+}
+function envelopes(u,a,n,sent){let g='';for(let i=0;i<n;i++){const c=i%4,r=Math.floor(i/4),p=P(u,a+i*.12,.25),x=110+c*220,y=520+r*170;
+  g+=`<g style="opacity:${p}"><rect x="${x}" y="${y}" width="170" height="120" rx="10" fill="#fff" stroke="${INK}" stroke-width="5"/><path d="M${x},${y} L${x+85},${y+65} L${x+170},${y}" fill="none" stroke="${INK}" stroke-width="5"/>${sent&&u>a+1.6+i*.08?`<circle cx="${x+150}" cy="${y+12}" r="24" fill="${G6}"/><path d="M${x+139},${y+12} l8,8 l16,-16" stroke="#fff" stroke-width="5" fill="none"/>`:''}</g>`;}
+  return sv(`<g filter="url(#pencil)">${g}</g>`);}
+const RULE_DONE=(t)=>`<span style="color:${G6};font-family:MS,MSX;font-weight:800">✓</span> ${t}`;
+
+// ---------- YouTube full version (23 beats) ----------
+// 1 hook
+SC.push({kick:'ACCREVISE EXPLAINS',ring:[520,700,1100],d:3.4,ev:[.2,.6,2.4],f:u=>
+  `<div class="hl" style="${ap(u,.2)}">Not a <span class="mark loss">techie?</span></div>` +
+  `<div class="hl" style="top:372px;font-size:60px;${ap(u,.9)}">Good. You don’t need to be.</div>` +
+  T(80,480,`<div style="font-family:MS,MSX;font-weight:800;font-size:56px;color:#034620;opacity:${P(u,2.4,.4)};transform:translateY(${(1-P(u,2.4,.4))*20}px)">Just <span class="mark">ask better questions.</span></div>`) +
+  sv(rohan(150,620,1.5,GJ({mood:u>2.6?'happy':'worried',crossed:u<2.6})),0,0)
+});
+// 2 what we'll build
+SC.push({kick:'TODAY',ring:[-500,1100,1000],d:3,ev:[.2,.6,1.4],f:u=>
+  hl(u,'A daily email ','assistant') +
+  win(80,480,920,'WHAT IT DOES',`<div style="font-size:40px;color:#034620;line-height:1.6"><div>${RULE_DONE('Checks your inbox on a schedule')}</div><div style="opacity:${P(u,1,.3)}">${RULE_DONE('Drafts follow-ups and replies')}</div><div style="opacity:${P(u,1.4,.3)}">${RULE_DONE('Sends, if you allow it')}</div><div style="opacity:${P(u,1.8,.3)}">${RULE_DONE('<b>No code</b>')}</div></div>`,u,.6)
+});
+// 3 meet gupta ji
+SC.push({kick:'MEET GUPTA JI',ring:[600,1250,900],d:3.4,ev:[.2,.6,1.2,1.8],f:u=>
+  hl(u,'Forgotten ','follow-ups','',' loss') +
+  `<div style="opacity:${P(u,.3,.5)}">`+sv(rohan(-10,600,.95,GJ({mood:'worried',scratch:true,sweat:true})),0,0)+`</div>` +
+  sticky(560,480,'Reply to Sharma ✗',-4,u,.6) + sticky(590,640,'Payment reminder ✗',3,u,1.2,'#f3d7cc') + sticky(560,800,'Supplier PO ✗',-2,u,1.8)
+});
+// 4 meet meera
+SC.push({kick:'MEET MEERA, HIS ACCOUNTANT',ring:[640,-300,800],d:3.4,ev:[.2,.6,1.2],f:u=>
+  hl(u,'12 clients. ','One by one.') +
+  `<div style="opacity:${P(u,.3,.5)}">`+sv(rohan(-10,1000,.85,MR({prop:'laptop',mood:'worried',sweat:u>2.4})),0,0)+`</div>` +
+  envelopes(u,.6,12,false) +
+  T(560,1080,`<div style="font-size:40px;color:#034620;width:440px;line-height:1.25">Invoices + reconciliations, <b>every month</b>.</div>`,ap(u,2))
+});
+// 5 what you need
+SC.push({kick:'WHAT YOU NEED',ring:[-400,1300,900],d:3,ev:[.2,.6,1.2,1.8],f:u=>
+  hl(u,'Just ','3 things') +
+  [['A paid Claude plan',.6],['The Claude desktop app',1.2],['Your Gmail (+ Google Drive)',1.8]].map(([t,a],i)=>T(80,490+i*170,`<div style="display:flex;gap:24px;align-items:center;width:920px;background:#fff;border:4px solid #034620;border-radius:20px;padding:26px 30px;box-sizing:border-box"><span style="width:64px;height:64px;border-radius:50%;background:#034620;color:#f7f5ef;font-family:MS,MSX;font-weight:800;font-size:34px;display:flex;align-items:center;justify-content:center;flex:none">${i+1}</span><span style="font-size:42px;color:#034620">${t}</span></div>`,ap(u,a))).join('')
+});
+// 6 step 1 connectors
+SC.push({kick:'STEP 1',ring:[600,1300,1000],d:3.4,ev:[.2,.6,1.6,2.4],f:u=>
+  hl(u,'Connect ','Gmail + Drive') +
+  win(80,480,920,'SETTINGS → CONNECTORS',connRow('Gmail','G',P(u,1.6,.4))+connRow('Google Drive','D',P(u,2.4,.4))+connRow('Calendar','C',0),u,.6) +
+  T(80,960,`<div class="foot" style="font-size:26px;width:920px">Sign in with Google and allow access.</div>`,ap(u,2.6))
+});
+// 7 step 2 scheduled
+SC.push({kick:'STEP 2',ring:[-450,-300,900],d:3.4,ev:[.2,.6,1.4,2.2],f:u=>
+  hl(u,'Schedule a ','task') +
+  win(80,480,920,'CLAUDE APP · SCHEDULED',`<div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:36px;color:#034620">Scheduled tasks</span><span style="font-family:MS,MSX;font-weight:800;font-size:30px;background:${u>1.4?'#e2b04a':'#034620'};color:${u>1.4?'#034620':'#fff'};padding:12px 20px;border-radius:12px">+ New task</span></div><div style="margin-top:22px;border:3px dashed #9fbfab;border-radius:14px;padding:18px 20px;font-size:32px;color:#034620;opacity:${P(u,2.2,.3)}">✨ <b>Create with Claude</b></div>`,u,.6) +
+  T(80,860,`<div class="foot" style="font-size:26px;width:920px">Sidebar → Scheduled → New task → Create with Claude</div>`,ap(u,2.4))
+});
+// 8 step 3 intro
+SC.push({kick:'STEP 3',ring:[560,1250,1000],d:3,ev:[.2,.6],f:u=>
+  hl(u,'Ask better ','questions') +
+  `<div style="opacity:${P(u,.4,.5)}">`+sv(rohan(150,560,1.3,GJ({mood:'neutral',look:6})),0,0)+`</div>`
+});
+// 9 vague request
+SC.push({kick:'DON’T',ring:[-500,1350,900],d:3,ev:[.2,.6,1.6],f:u=>
+  hl(u,'Vague in, ','vague out','',' loss') +
+  T(80,500,`<div style="background:#dfe9e2;border:3px solid #034620;border-radius:22px 22px 22px 4px;padding:22px 28px;font-size:46px;color:#034620;display:inline-block;position:relative">“Remind me about emails.”<span style="position:absolute;right:-30px;top:-40px;font-family:MS,MSX;font-weight:800;font-size:110px;color:${LOSS};opacity:${P(u,1.2,.3)}">✗</span></div>`,ap(u,.6)) +
+  CAP(760,`Which emails? When? Then what?`,u,1.6,52)
+});
+// 10 the formula
+SC.push({kick:'DO',ring:[600,1250,900],d:4.4,ev:[.2,.6,1.4,2.2,3],f:u=>
+  hl(u,'Who, what, ','when, how') +
+  card4(u,.6,[['WHO','The exact email addresses'],['WHAT','Follow up, reply or update'],['WHEN','Every weekday at 9 AM'],['HOW','Short, polite. Wait for my approval.']])
+});
+// 11 gupta's prompt
+SC.push({kick:'GUPTA JI’S REQUEST',ring:[640,-300,800],d:5.4,ev:[.2,.6],f:u=>
+  hl(u,'Written just ','like that') +
+  promptCard(80,480,920,'Every weekday at 9 AM, check my Gmail for unanswered mails from sharma@example.com, mehta@example.com and rao@example.com. Draft a short, polite reply or follow-up for each. Wait for my approval before sending.',u,.4,48)
+});
+// 12 claude confirms
+SC.push({kick:'CLAUDE CONFIRMS',ring:[-400,1300,900],d:3.4,ev:[.2,.6,1.4,2.4],f:u=>
+  hl(u,'Approve, and it’s ','scheduled') +
+  T(80,480,`<div style="background:#dfe9e2;border:3px solid #034620;border-radius:22px 22px 22px 4px;padding:18px 24px;font-size:36px;color:#034620;width:640px;box-sizing:border-box">Only mails from this week, or older ones too?</div>`,ap(u,.6)) +
+  T(360,640,`<div style="background:#f6e2b4;border:3px solid #034620;border-radius:22px 22px 4px 22px;padding:18px 24px;font-size:36px;color:#034620;width:640px;box-sizing:border-box">Only this week.</div>`,ap(u,1.4)) +
+  win(80,800,920,'NEW SCHEDULED TASK',`<div style="font-size:38px;color:#034620"><b>Daily client follow-ups</b></div><div style="font-size:32px;color:#3f5e4b;margin-top:8px">Weekdays · 9:00 AM</div><div class="lab" style="font-size:24px;color:${G6};margin-top:14px">✓ SCHEDULED</div>`,u,2.4)
+});
+// 13 step 4 intro
+SC.push({kick:'STEP 4',ring:[600,1300,1000],d:2.6,ev:[.2,.6],f:u=>
+  hl(u,'How much can it ','do alone?') +
+  win(80,480,920,'GMAIL CONNECTOR · SEND EMAIL',perm(-1),u,.6)
+});
+// 14 needs approval
+SC.push({kick:'OPTION A',ring:[-450,-300,900],d:3.6,ev:[.2,.6,1.4,2,2.6],f:u=>
+  hl(u,'Needs ','approval') +
+  win(80,480,920,'GMAIL CONNECTOR · SEND EMAIL',perm(1),u,.4) +
+  ['Claude drafts','You review','You hit send'].map((t,i)=>T(80+i*310,720,`<div style="width:290px;box-sizing:border-box;background:#dfe9e2;border:4px solid #034620;border-radius:18px;padding:22px 18px;text-align:center;font-family:MS,MSX;font-weight:800;font-size:34px;color:#034620">${t}</div>`,ap(u,1.4+i*.6))).join('')
+});
+// 15 always allow
+SC.push({kick:'OPTION B',ring:[560,1250,1000],d:3.6,ev:[.2,.6,1.4,2.6],f:u=>
+  hl(u,'Always ','allow') +
+  win(80,480,920,'GMAIL CONNECTOR · SEND EMAIL',perm(0),u,.4) +
+  CAP(720,`Claude <span class="mark">sends on its own.</span>`,u,1.4,52) +
+  T(80,880,`<div class="foot" style="font-size:28px;width:920px">On Team / Enterprise plans, your admin may need to allow this.</div>`,ap(u,2.6))
+});
+// 16 tip
+SC.push({kick:'OUR TIP',ring:[-500,1350,900],d:3.6,ev:[.2,.6,2],f:u=>
+  hl(u,'Start with ','approval') +
+  T(80,500,`<div style="width:920px;background:#fff;border:4px solid #034620;border-radius:20px;padding:28px 32px;box-sizing:border-box"><div style="font-size:40px;color:#034620;line-height:1.35">Go automatic only for mails that are <b>the same every time</b>:</div><div style="margin-top:20px;background:#f6e2b4;border-radius:14px;padding:18px 22px;font-size:36px;color:#034620;opacity:${P(u,2,.4)}">“Reminder: our office is closed on Sunday.”</div></div>`,ap(u,.6))
+});
+// 17 meera's drive
+SC.push({kick:'MEERA’S VERSION',ring:[600,1250,900],d:3.6,ev:[.2,.6,1.2,1.8,2.4,3],f:u=>{
+  const rows=[[0,'📁 Clients/',.6],[1,'📁 Sharma Traders/',1.2],[2,'📄 Invoice_Nov.pdf',1.6],[2,'📄 Reconciliation_Nov.xlsx',2],[1,'📁 Mehta Steel/',2.4],[1,'📁 …10 more clients',3]];
+  return hl(u,'One folder per ','client') +
+   win(80,480,920,'GOOGLE DRIVE',rows.map(([d,t,a])=>`<div style="padding:10px 0 10px ${d*48}px;font-size:36px;color:#034620;opacity:${P(u,a,.3)}">${t}</div>`).join(''),u,.4);
+}});
+// 18 meera's prompt
+SC.push({kick:'HER REQUEST',ring:[-400,1300,900],d:5.6,ev:[.2,.6],f:u=>
+  hl(u,'On the 5th, ','every month') +
+  promptCard(80,480,920,'On the 5th of every month, for each client folder in Drive › Clients, find the latest invoice and reconciliation and email the Drive links to that client with a short note. CC me. Wait for my approval.',u,.4,46)
+});
+// 19 links not attachments
+SC.push({kick:'GOOD TO KNOW',ring:[600,1300,1000],d:3.6,ev:[.2,.6,1.4,2.4],f:u=>
+  hl(u,'Links, not ','attachments') +
+  win(80,480,920,'DRAFT · TO: SHARMA TRADERS',`<div style="font-size:34px;color:#034620;line-height:1.4">Dear Sharma ji, please find November’s documents:</div><div style="margin-top:16px;display:flex;gap:14px;flex-wrap:wrap"><span style="background:#dfe9e2;border:3px solid #034620;border-radius:12px;padding:10px 16px;font-size:30px">🔗 Invoice_Nov.pdf</span><span style="background:#dfe9e2;border:3px solid #034620;border-radius:12px;padding:10px 16px;font-size:30px">🔗 Reconciliation_Nov.xlsx</span></div>`,u,.6) +
+  T(80,920,`<div style="width:920px;background:#f3d7cc;border:4px solid ${LOSS};border-radius:18px;padding:22px 26px;box-sizing:border-box;font-size:36px;color:#034620"><b>Check sharing first:</b> the client must have access to the folder.</div>`,ap(u,2.4))
+});
+// 20 meera result
+SC.push({kick:'THE RESULT',ring:[-450,-300,900],d:3.6,ev:[.2,.6,2.2],f:u=>
+  hl(u,'12 emails, ','on time') + envelopes(u,.4,12,true) +
+  `<div style="opacity:${P(u,2.2,.5)}">`+sv(rohan(340,1060,.7,MR({mood:'cheer',jump:u>2.4&&u<3.6})),0,0)+`</div>`
+});
+// 21 to be fair
+SC.push({kick:'TO BE FAIR',ring:[560,1250,1000],d:3.4,ev:[.2,.6,1.6],f:u=>
+  hl(u,'Stay in ','control') +
+  T(80,500,`<div style="font-size:44px;color:#034620;line-height:1.5;width:920px"><div style="opacity:${P(u,.6,.3)}">${RULE_DONE('Watch the first few runs closely')}</div><div style="opacity:${P(u,1.6,.3)};margin-top:18px">${RULE_DONE('Never automate a mail you wouldn’t want sent by mistake')}</div></div>`)
+});
+// 22 payoff
+SC.push({kick:'THE PAYOFF',ring:[-500,1350,900],d:2.6,ev:[.2,.6,1.4],f:u=>
+  hl(u,'10 minutes of ','setup') +
+  CAP(520,`Every follow-up, <span class="mark">on time.</span>`,u,1,64) +
+  `<div style="opacity:${P(u,1.4,.5)}">`+sv(rohan(150,700,1.1,GJ({mood:'cheer',jump:u>1.6&&u<2.6})),0,0)+`</div>`
+});
+// 23 CTA
+SC.push({kick:null,ring:[-300,150,1700],green:true,logo:false,d:3,ev:[.2,.5,1.4,2.2],f:u=>
+  T(0,330,`<div style="width:1080px;text-align:center"><img src="logo-paper.png" style="height:330px"></div>`,ap(u,.2)) +
+  `<div class="hl" style="left:0;width:1080px;top:800px;text-align:center;${ap(u,.5)}">You don’t need to code.</div>` +
+  `<div class="hl" style="left:0;width:1080px;top:900px;text-align:center;${ap(u,1.2)}">Just <span class="mark">ask clearly.</span></div>` +
+  T(110,1110,`<div class="foot" style="width:860px;text-align:center;color:#b9d0c1">Simplified screens for illustration; menu names may change. Check Claude’s help centre for your plan. Example email addresses are placeholders.</div>`,ap(u,2.2))
+});
+
+const VO=window.VO||[]; SC.forEach((s,i)=>{s.d0=s.d; s.d=Math.max(s.d,(VO[i]||0)+0.95); s.k=s.d0/s.d; s.ev=(s.ev||[]).map(t=>t/s.k);});
+let START=[],acc=0; SC.forEach(s=>{START.push(acc);acc+=s.d}); const TOTAL=acc; window.STARTS=START;
+window.TOTAL=TOTAL;
+window.EVENTS=(()=>{const e=[];SC.forEach((s,i)=>{(s.ev||[]).forEach(t=>e.push({t:START[i]+t,k:'pencil'}));if(i>0)e.push({t:START[i],k:'turn'})});return e})();
+function sceneAt(t){let i=SC.length-1;for(let k=0;k<SC.length;k++){if(t<START[k]+SC[k].d){i=k;break}}return i}
+window.render=function(t){
+  GT=t;
+  document.getElementById('turb').setAttribute('seed',String(1+Math.floor(t*6)%3));
+  const i=sceneAt(t), u=t-START[i];
+  const TR=.5;
+  let html='', k=i, uu=u, wipe='';
+  if(i>0 && u<TR){ // Accrevise green wipe: covers the old frame right-to-left, then uncovers the new one
+    const p=u/TR;
+    if(p<.5){k=i-1;uu=SC[i-1].d;const w=ease(p*2)*1080;wipe=`<div class="ab" style="right:0;top:0;width:${w}px;height:1920px;background:#034620;z-index:5"></div>`;}
+    else{const w=(1-ease((p-.5)*2))*1080;wipe=`<div class="ab" style="left:0;top:0;width:${w}px;height:1920px;background:#034620;z-index:5"></div>`;}
+  }
+  const s=SC[k], g=!!s.green;
+  html+=`<div class="layer ${g?'green':''}">${s.ring?ring(...s.ring):''}`+
+    (s.logo===false?'':`<img class="logo" src="${g?'logo-paper.png':'logo-green.png'}">`)+
+    (s.kick?`<div class="kick" style="${g?'color:#b9d0c1':''}">${s.kick}</div>`:'')+
+    `${s.f(uu*s.k)}</div>`+wipe;
+  document.getElementById('stage').innerHTML=html;
+};
+render(0);
+</script>
+</body></html>
