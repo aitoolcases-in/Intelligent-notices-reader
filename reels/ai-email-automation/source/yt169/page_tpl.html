@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<style>
+/*FONTS*/
+@font-face{font-family:JBM;src:local('JetBrains Mono')}
+html,body{margin:0;padding:0;background:#f7f5ef}
+#stage{position:relative;width:1920px;height:1080px;overflow:hidden;background:#f7f5ef;font-family:SS4,SS4X,Georgia,serif;color:#034620}
+.layer{position:absolute;inset:0;background:#f7f5ef}
+.layer.green{background:#034620;color:#f7f5ef}
+.ab{position:absolute}
+.ring{position:absolute;border:4px solid #9fbfab;border-radius:9999px;pointer-events:none}
+.green .ring{border-color:#2d7049}
+.logo{position:absolute;left:80px;top:40px;height:96px}
+.lab{font-family:MS,MSX,sans-serif;font-weight:700;letter-spacing:.06em}
+.mark{background:#e2b04a;color:#034620;border-radius:8px;padding:0 10px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.mark.loss{background:#a8452a;color:#f7f5ef}
+.step{position:absolute;left:90px;top:190px;font-family:MS,MSX;font-weight:700;font-size:24px;letter-spacing:.14em;color:#f7f5ef;background:#034620;border-radius:9999px;padding:10px 22px}
+.green .step{background:#e2b04a;color:#034620}
+.title{position:absolute;left:90px;top:262px;width:680px;font-family:MS,MSX;font-weight:800;font-size:60px;line-height:1.1;color:#034620}
+.green .title{color:#f7f5ef}
+.body{position:absolute;left:90px;width:660px;font-size:34px;line-height:1.4;color:#034620}
+.green .body{color:#f7f5ef}
+.foot{font-family:MS,MSX;font-weight:700;font-size:20px;line-height:1.4;color:#3f5e4b}
+.chapter{position:absolute;right:60px;top:52px;font-family:MS,MSX;font-weight:700;font-size:20px;letter-spacing:.12em;color:#3f5e4b}
+.green .chapter{color:#b9d0c1}
+</style></head>
+<body>
+<div id="stage"></div>
+/*DEFS*/
+<script>
+/*BASE*/
+const AR=(o)=>Object.assign({glasses:false},o);
+const MR=(o)=>Object.assign({hair:'long'},o);
+const MONO="'JetBrains Mono','DejaVu Sans Mono',monospace";
+const typ=(s,u,a,cps=40)=>{const n=Math.max(0,Math.floor((u-a)*cps));return n>=s.length?s:s.slice(0,n)+'<span style="opacity:.8">▍</span>'};
+const body=(y,html,u,a)=>`<div class="body" style="top:${y}px;${ap(u,a)}">${html}</div>`;
+const CHECK=(t)=>`<span style="color:${G6};font-family:MS,MSX;font-weight:800">✓</span> ${t}`;
+// app window with a sidebar (illustrated, not a real screenshot)
+const SIDE=['New chat','Chats','Projects','Scheduled','Customize','Settings'];
+const OUT=(on)=>on?`outline:6px solid ${LOSS};outline-offset:4px;`:'';
+const TAG=(on,t)=>on?`<span style="margin-left:10px;background:${LOSS};color:#fff;font-family:MS,MSX;font-weight:800;font-size:18px;padding:4px 10px;border-radius:8px;white-space:nowrap;vertical-align:middle">◀ ${t}</span>`:'';
+function app(x,y,w,h,active,main,u,a,hl){const p=P(u,a,.4); hl=hl||{};
+  return `<div class="ab" style="left:${x}px;top:${y}px;width:${w}px;height:${h}px;opacity:${p};transform:translateY(${(1-p)*20}px);background:#fff;border:4px solid #034620;border-radius:20px;overflow:hidden;box-shadow:0 12px 0 rgba(3,70,32,.12);display:flex;flex-direction:column">
+   <div style="background:#dfe9e2;padding:10px 16px;display:flex;gap:10px;align-items:center;border-bottom:3px solid #034620"><span style="width:14px;height:14px;border-radius:50%;background:#a8452a"></span><span style="width:14px;height:14px;border-radius:50%;background:#e2b04a"></span><span style="width:14px;height:14px;border-radius:50%;background:#9fbfab"></span><span class="lab" style="font-size:18px;color:#3f5e4b;margin-left:12px">CLAUDE APP · ILLUSTRATION</span></div>
+   <div style="flex:1;display:flex;min-height:0">
+    <div style="width:230px;background:#f7f5ef;border-right:3px solid #dfe9e2;padding:18px 12px;box-sizing:border-box">${SIDE.map(s=>`<div style="padding:12px 14px;margin-bottom:6px;border-radius:10px;font-size:24px;font-family:MS,MSX;font-weight:700;${s===active?'background:#034620;color:#f7f5ef':'color:#3f5e4b'};${OUT(hl.side===s)}">${s}</div>`).join('')}</div>
+    <div style="flex:1;padding:26px 30px;box-sizing:border-box;overflow:hidden">${main}</div></div></div>`;}
+function win(x,y,w,title,inner,u,a){const p=P(u,a,.4);
+  return `<div class="ab" style="left:${x}px;top:${y}px;width:${w}px;opacity:${p};transform:translateY(${(1-p)*20}px);background:#fff;border:4px solid #034620;border-radius:20px;overflow:hidden;box-shadow:0 12px 0 rgba(3,70,32,.12)">
+   <div style="background:#dfe9e2;padding:12px 18px;border-bottom:3px solid #034620"><span class="lab" style="font-size:20px;color:#034620">${title}</span></div><div style="padding:22px 26px">${inner}</div></div>`;}
+// highlight ring + arrow + label pointing at a target box
+function hi(x,y,w,h,u,a,label,side){const p=P(u,a,.3), pulse=1+Math.sin(u*6)*.03*p;
+  const ax=side==='left'?x-150:x+w+20, ay=y+h/2;
+  const arrow=side==='left'?`<path d="M${ax},${ay} H${x-12}" stroke="${LOSS}" stroke-width="7"/><path d="M${x-36},${ay-18} L${x-10},${ay} L${x-36},${ay+18}" fill="none" stroke="${LOSS}" stroke-width="7"/>`:`<path d="M${ax+130},${ay} H${x+w+12}" stroke="${LOSS}" stroke-width="7"/><path d="M${x+w+36},${ay-18} L${x+w+10},${ay} L${x+w+36},${ay+18}" fill="none" stroke="${LOSS}" stroke-width="7"/>`;
+  return sv(`<g style="opacity:${p}"><rect x="${x-8}" y="${y-8}" width="${w+16}" height="${h+16}" rx="14" fill="none" stroke="${LOSS}" stroke-width="6" transform="scale(${pulse})" transform-origin="${x+w/2} ${y+h/2}"/>${arrow}</g>`)+
+   (label?T(side==='left'?ax-200:ax+140,ay-24,`<span style="background:${LOSS};color:#fff;font-family:MS,MSX;font-weight:800;font-size:24px;padding:8px 14px;border-radius:10px;white-space:nowrap">${label}</span>`,`opacity:${p}`):'');}
+function tog(on){const bg=on>.5?G6:'#b9c4bd';return `<span style="display:inline-block;position:relative;width:90px;height:48px;border-radius:9999px;background:${bg};border:3px solid #034620;flex:none;vertical-align:middle"><span style="position:absolute;top:3px;left:${5+on*38}px;width:36px;height:36px;border-radius:50%;background:#fff;border:3px solid #034620"></span></span>`;}
+function connRow(name,letter,on,desc,h){return `<div style="display:flex;align-items:center;gap:18px;padding:14px 10px;border-bottom:2px dashed #dfe9e2;border-radius:10px;${OUT(h)}"><span style="width:52px;height:52px;border-radius:12px;background:#f6e2b4;border:3px solid #034620;display:flex;align-items:center;justify-content:center;font-family:MS,MSX;font-weight:800;font-size:26px;flex:none">${letter}</span><span style="flex:1"><div style="font-size:30px;color:#034620">${name}</div><div style="font-size:20px;color:#7f8f80">${desc||''}</div></span><span class="lab" style="font-size:18px;color:${on>.5?G6:'#3f5e4b'};margin-right:8px">${on>.5?'CONNECTED':'CONNECT'}</span>${tog(on)}</div>${h&&on<.5?`<div style="text-align:right;margin-top:8px">${TAG(1,'Click Connect')}</div>`:''}`;}
+function perm(sel){const opts=['Always allow','Needs approval','Blocked'];
+  return `<div style="display:flex;border:3px solid #034620;border-radius:12px;overflow:hidden">${opts.map((o,i)=>`<div style="flex:1;text-align:center;padding:12px 4px;font-size:22px;font-family:MS,MSX;font-weight:700;${i==sel?`background:${i==0?'#e2b04a':(i==1?'#9fbfab':'#f3d7cc')};color:#034620`:'background:#fff;color:#7f8f80'};${i<2?'border-right:3px solid #034620':''}">${o}</div>`).join('')}</div>`;}
+function bubble(text,side,u,a,w){const p=P(u,a,.35),me=side==='r';
+  return `<div style="display:flex;justify-content:${me?'flex-end':'flex-start'};margin:10px 0;opacity:${p}"><div style="max-width:${w||560}px;background:${me?'#f6e2b4':'#dfe9e2'};border:3px solid #034620;border-radius:${me?'20px 20px 4px 20px':'20px 20px 20px 4px'};padding:14px 18px;font-size:26px;line-height:1.35;color:#034620">${text}</div></div>`;}
+function promptBox(text,u,a,cps){return `<div style="background:#034620;border-radius:16px;padding:20px 24px;font-family:${MONO};font-size:24px;line-height:1.5;color:#f7f5ef;white-space:pre-wrap">${typ(text,u,a,cps||45)}</div>`;}
+const SC=[];
+/*SCENES*/
+let START=[],acc=0; SC.forEach(s=>{START.push(acc);acc+=s.d}); const TOTAL=acc; window.TOTAL=TOTAL; window.STARTS=START;
+window.EVENTS=[];
+function sceneAt(t){for(let k=0;k<SC.length;k++){if(t<START[k]+SC[k].d)return k}return SC.length-1}
+window.render=function(t){
+  GT=t; document.getElementById('turb').setAttribute('seed',String(1+Math.floor(t*6)%3));
+  const i=sceneAt(t), u=t-START[i]; const TR=.5; let k=i, uu=u, wipe='';
+  if(i>0&&u<TR){const p=u/TR; if(p<.5){k=i-1;uu=SC[i-1].d;const w=ease(p*2)*1920;wipe=`<div class="ab" style="right:0;top:0;width:${w}px;height:1080px;background:#034620;z-index:5"></div>`;}else{const w=(1-ease((p-.5)*2))*1920;wipe=`<div class="ab" style="left:0;top:0;width:${w}px;height:1080px;background:#034620;z-index:5"></div>`;}}
+  const s=SC[k], g=!!s.green;
+  document.getElementById('stage').innerHTML=`<div class="layer ${g?'green':''}">${s.ring?`<div class="ring" style="left:${s.ring[0]}px;top:${s.ring[1]}px;width:${s.ring[2]}px;height:${s.ring[2]}px"></div>`:''}${s.logo===false?'':`<img class="logo" src="${g?'logo-paper.png':'logo-green.png'}">`}${s.ch?`<div class="chapter">${s.ch}</div>`:''}${s.step?`<div class="step" style="${ap(uu,.1)}">${s.step}</div>`:''}${s.title?`<div class="title" style="${ap(uu,.2)}">${s.title}</div>`:''}${s.f(uu)}</div>`+wipe;
+};
+render(0);
+</script>
+</body></html>
