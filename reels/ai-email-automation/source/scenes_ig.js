@@ -5,7 +5,7 @@ SC.push({kick:'ACCREVISE EXPLAINS',ring:[520,700,1100],d:3.4,ev:[.2,.6,2.4],f:u=
   T(80,480,`<div style="font-family:MS,MSX;font-weight:800;font-size:56px;color:#034620;opacity:${P(u,2.4,.4)};transform:translateY(${(1-P(u,2.4,.4))*20}px)">Just <span class="mark">ask better questions.</span></div>`) +
   sv(rohan(150,620,1.5,GJ({mood:u>2.6?'happy':'worried',crossed:u<2.6})),0,0)
 });
-SC.push({kick:'MEET GUPTA JI',ring:[-500,1100,1000],d:3.4,ev:[.2,.6,1.2,1.8],f:u=>
+SC.push({kick:'MEET ARYAN',ring:[-500,1100,1000],d:3.4,ev:[.2,.6,1.2,1.8],f:u=>
   hl(u,'Forgotten ','follow-ups','',' loss') +
   `<div style="opacity:${P(u,.3,.5)}">`+sv(rohan(-10,600,.95,GJ({mood:'worried',scratch:true,sweat:true})),0,0)+`</div>` +
   sticky(560,480,'Reply to Sharma ✗',-4,u,.6) + sticky(590,640,'Payment reminder ✗',3,u,1.2,'#f3d7cc') + sticky(560,800,'Supplier PO ✗',-2,u,1.8)

@@ -1,5 +1,5 @@
 // ---------- shared: Gupta ji, Meera, simplified app screens ----------
-const GJ=(o)=>Object.assign({mustache:true,grey:true},o);
+const GJ=(o)=>Object.assign({glasses:false},o);
 const MR=(o)=>Object.assign({hair:'long'},o);
 const MONO="'JetBrains Mono','DejaVu Sans Mono',monospace";
 const CAP=(y,html,u,a,size=54)=>T(80,y,`<div style="width:920px;font-family:MS,MSX;font-weight:800;font-size:${size}px;line-height:1.15;color:#034620">${html}</div>`,ap(u,a));
