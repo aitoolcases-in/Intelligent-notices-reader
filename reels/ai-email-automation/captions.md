@@ -1,11 +1,13 @@
 # "Not a techie? Set up an AI email automation" — Instagram glimpse + YouTube full guide
 
-Characters: Gupta ji (shop owner, non-techie) and Meera (his accountant).
+Characters: Aryan (young shop owner, non-techie) and Meera (his accountant).
 
-## Instagram caption (glimpse reel, ~66 s)
+Both videos are silent (no voiceover): add a trending track on Instagram, or background music on YouTube.
+
+## Instagram caption (glimpse reel, ~66 s, silent)
 Not a techie? Good. You don't need to be. You just need to ask better questions 👇
 
-Gupta ji kept forgetting follow-ups. So he set up a tiny AI automation in 10 minutes. No code.
+Aryan kept forgetting follow-ups. So he set up a tiny AI automation in 10 minutes. No code.
 
 1️⃣ Claude → Settings → Connectors → connect Gmail
 2️⃣ Claude app → Scheduled → New task → describe it in plain words:
@@ -30,7 +32,7 @@ You don't need to code. You need to ask clearly.
 
 ---
 
-## YouTube (full guide, ~2:52, vertical, works as a Short)
+## YouTube (full guide, ~2:52, vertical, silent, works as a Short)
 
 **Title options**
 - Not a Techie? Set Up an AI Email Assistant in 10 Minutes (No Code)
@@ -40,7 +42,7 @@ You don't need to code. You need to ask clearly.
 **Description**
 You don't need to be a techie to automate your work. You just need to ask better questions.
 
-In this video, Gupta ji (a shop owner who always forgets follow-ups) and Meera (his accountant, who emails invoices and reconciliations to 12 clients every month) set up a simple AI automation with Claude: no code, about 10 minutes.
+In this video, Aryan (a young shop owner who always forgets follow-ups) and Meera (his accountant, who emails invoices and reconciliations to 12 clients every month) set up a simple AI automation with Claude: no code, about 10 minutes.
 
 What you need:
 • A paid Claude plan
@@ -53,7 +55,7 @@ Steps:
 3. Ask better questions: WHO (exact email addresses), WHAT (follow up / reply / update), WHEN (e.g., every weekday at 9 AM), HOW (tone, and whether to wait for your approval)
 4. In the Gmail connector's tool settings, choose "Needs approval" (Claude drafts, you send) or "Always allow" (Claude sends on its own; on Team/Enterprise plans your admin may need to enable this)
 
-Gupta ji's prompt:
+Aryan's prompt:
 "Every weekday at 9 AM, check my Gmail for unanswered mails from [client emails]. Draft a short, polite reply or follow-up for each. Wait for my approval before sending."
 
 Meera's prompt:
@@ -67,7 +69,7 @@ Screens in this video are simplified illustrations; menu names may change. Check
 
 **Chapters** (approximate; adjust after upload)
 0:00 Not a techie? Good.
-0:15 Meet Gupta ji and Meera
+0:15 Meet Aryan and Meera
 0:35 What you need
 0:42 Step 1: Connect Gmail + Drive
 0:52 Step 2: Schedule a task
