@@ -1,0 +1,233 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+@font-face{font-family:SS4;src:url(node_modules/@fontsource/source-serif-4/files/source-serif-4-latin-400-normal.woff2);font-weight:400}
+@font-face{font-family:SS4;src:url(node_modules/@fontsource/source-serif-4/files/source-serif-4-latin-600-normal.woff2);font-weight:600}
+@font-face{font-family:SS4;src:url(node_modules/@fontsource/source-serif-4/files/source-serif-4-latin-400-italic.woff2);font-weight:400;font-style:italic}
+@font-face{font-family:SS4;src:url(node_modules/@fontsource/source-serif-4/files/source-serif-4-latin-600-italic.woff2);font-weight:600;font-style:italic}
+@font-face{font-family:SS4X;src:url(node_modules/@fontsource/source-serif-4/files/source-serif-4-latin-ext-400-normal.woff2);font-weight:400}
+@font-face{font-family:SS4X;src:url(node_modules/@fontsource/source-serif-4/files/source-serif-4-latin-ext-600-normal.woff2);font-weight:600}
+@font-face{font-family:SS4X;src:url(node_modules/@fontsource/source-serif-4/files/source-serif-4-latin-ext-600-italic.woff2);font-weight:600;font-style:italic}
+@font-face{font-family:MS;src:url(node_modules/@fontsource/montserrat/files/montserrat-latin-700-normal.woff2);font-weight:700}
+@font-face{font-family:MS;src:url(node_modules/@fontsource/montserrat/files/montserrat-latin-800-normal.woff2);font-weight:800}
+@font-face{font-family:MSX;src:url(node_modules/@fontsource/montserrat/files/montserrat-latin-ext-700-normal.woff2);font-weight:700}
+@font-face{font-family:MSX;src:url(node_modules/@fontsource/montserrat/files/montserrat-latin-ext-800-normal.woff2);font-weight:800}
+@font-face{font-family:CV;src:url(node_modules/@fontsource/caveat/files/caveat-latin-600-normal.woff2);font-weight:600}
+@font-face{font-family:CVX;src:url(node_modules/@fontsource/caveat/files/caveat-latin-ext-600-normal.woff2);font-weight:600}
+html,body{margin:0;padding:0;background:#f7f5ef}
+#stage{position:relative;width:1080px;height:1920px;overflow:hidden;background:#f7f5ef;font-family:SS4,SS4X,Georgia,serif;color:#034620}
+.layer{background:#f7f5ef}
+.layer.green{background:#034620;color:#f7f5ef}
+.ring{position:absolute;border:4px solid #9fbfab;border-radius:9999px;pointer-events:none}
+.green .ring{border-color:#2d7049}
+.logo{position:absolute;left:72px;top:74px;height:118px}
+.kick{position:absolute;left:80px;top:232px;font-family:MS,MSX,sans-serif;font-weight:700;font-size:26px;letter-spacing:.14em;color:#3f5e4b}
+.mark{background:#e2b04a;color:#034620;border-radius:8px;padding:0 12px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.mark.loss{background:#a8452a;color:#f7f5ef}
+.layer{position:absolute;inset:0}
+.ab{position:absolute}
+.hl{position:absolute;left:80px;top:280px;width:900px;font-family:MS,MSX,sans-serif;font-size:72px;line-height:1.12;font-weight:800;letter-spacing:-.01em;color:#034620}
+.green .hl{color:#f7f5ef}
+.lab{font-family:MS,MSX,sans-serif;font-weight:700;letter-spacing:.06em}
+.hand{font-family:MS,MSX,sans-serif;font-weight:700;letter-spacing:-.01em}
+.foot{font-family:MS,MSX,sans-serif;font-weight:700;font-size:22px;line-height:1.4;color:#3f5e4b}
+</style></head>
+<body>
+<div id="stage"></div>
+<svg width="0" height="0" style="position:absolute">
+<defs>
+<filter id="pencil" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence id="turb" type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="1"/><feDisplacementMap in="SourceGraphic" scale="5"/></filter>
+<pattern id="hG" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="14" height="14" fill="#f7f5ef"/><line x1="0" y1="0" x2="0" y2="14" stroke="#9fbfab" stroke-width="2.6"/></pattern>
+<pattern id="hD" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(40)"><rect width="9" height="9" fill="#2d7049"/><line x1="0" y1="0" x2="0" y2="9" stroke="#034620" stroke-width="3"/></pattern>
+<pattern id="hA" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="14" height="14" fill="#f1cf86"/><line x1="0" y1="0" x2="0" y2="14" stroke="#c98f1c" stroke-width="3"/></pattern>
+<pattern id="hR" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="14" height="14" fill="#f3d7cc"/><line x1="0" y1="0" x2="0" y2="14" stroke="#a8452a" stroke-width="3.4"/></pattern>
+<pattern id="hN" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="14" height="14" fill="#dfe9e2"/><line x1="0" y1="0" x2="0" y2="14" stroke="#2d7049" stroke-width="3.4"/></pattern>
+</defs>
+</svg>
+<script>window.VO=[];</script>
+<script>
+const INK='#034620', GREEN='#034620', LOSS='#a8452a', G6='#2d7049', AMB='#e2b04a';
+const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const ease=x=>{x=clamp(x);return x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2};
+const P=(u,a,d=.5)=>ease((u-a)/d);
+// appear: fade + rise
+const ap=(u,a,d=.45)=>{const p=P(u,a,d);return `opacity:${p};transform:translateY(${(1-p)*24}px);`};
+let GT=0;
+const draw=(p)=>`pathLength="1" stroke-dasharray="1" stroke-dashoffset="${1-clamp(p)}"`;
+const EVENTS=[]; // build-step times for audio
+function hl(u,a,em,b,cls=''){return `<div class="hl" style="${ap(u,0.15,.5)}">${a}<span class="mark ${cls}">${em}</span>${b||''}</div>`}
+const kick=(u,txt)=>`<div class="kick" style="${ap(u,0,.4)}">${txt}</div>`;
+const ring=(x,y,d)=>`<div class="ring" style="left:${x}px;top:${y}px;width:${d}px;height:${d}px"></div>`;
+
+// ---------- the hero: Rohan ----------
+function rohan(x,y,s,o={}){
+  const mood=o.mood||'happy', prop=o.prop||'none', ph=x*0.0131+y*0.007;
+  const look=(o.look||0)+Math.sin(GT*0.8+ph*3)*4;
+  const bob=Math.sin(GT*2.4+ph)*4, tilt=Math.sin(GT*1.3+ph)*3 + (mood==='worried'?-4:0);
+  const jump=o.jump?-Math.abs(Math.sin(GT*5.5))*40:0;
+  const blink=((GT+ph*5)%3.3)<0.14;
+  const mouth = mood==='cheer' ? 'M172,312 Q200,356 230,312 Z' : mood==='happy' ? 'M178,318 Q200,338 224,316' : mood==='worried' ? 'M180,326 Q200,314 222,326' : 'M182,322 L220,320';
+  const eyes = blink ? `<path d="M158,270 H178 M224,270 H244" stroke-width="5"/>` : `<circle cx="168" cy="270" r="5" fill="${INK}"/><circle cx="234" cy="270" r="5" fill="${INK}"/>`;
+  const sw=Math.sin(GT*7+ph)*10;
+  let arm='';
+  if(o.scratch) arm=`<path d="M300,470 C340,420 330,330 ${300+sw*0.4},${262+sw*0.3}" stroke-width="5" fill="none"/><circle cx="${300+sw*0.4}" cy="${258+sw*0.3}" r="18" fill="#f7f5ef"/>`;
+  if(mood==='cheer') arm=`<path d="M300,470 C340,400 360,320 ${370+sw},${220}" stroke-width="5" fill="none"/><circle cx="${370+sw}" cy="210" r="20" fill="#f7f5ef"/><path d="M100,470 C60,400 40,320 ${30-sw},${220}" stroke-width="5" fill="none"/><circle cx="${30-sw}" cy="210" r="20" fill="#f7f5ef"/>`;
+  const brows = mood==='worried' ? '<path d="M146,236 L190,244 M212,244 L256,234" />' : '<path d="M146,238 Q168,228 190,236 M212,236 Q234,228 256,238" />';
+  let propS='';
+  if(prop==='phone') propS=`<g transform="translate(250,440) rotate(${-12+Math.sin(GT*1.7+ph)*5} 30 120)"><rect x="0" y="0" width="70" height="128" rx="12" fill="url(#hA)" stroke="${INK}" stroke-width="4"/><rect x="9" y="14" width="52" height="92" rx="4" fill="#fbe7b9" stroke="${INK}" stroke-width="2.5"/></g><path d="M300,600 C300,540 280,500 262,486 C250,478 246,500 258,508" fill="#f7f5ef" stroke="${INK}" stroke-width="4"/>`;
+  if(prop==='bill') propS=`<g transform="translate(230,430) rotate(8)"><path d="M0,0 L120,0 L120,150 L110,140 L100,150 L90,140 L80,150 L70,140 L60,150 L50,140 L40,150 L30,140 L20,150 L10,140 L0,150 Z" fill="#fff" stroke="${INK}" stroke-width="4"/><path d="M16,30 H100 M16,56 H90 M16,82 H70" stroke="#8a8a84" stroke-width="5"/><path d="M16,112 H100" stroke="${LOSS}" stroke-width="7"/></g>`;
+  if(prop==='calendar') propS=`<g transform="translate(240,420) rotate(6)"><rect x="0" y="0" width="140" height="130" fill="#fff" stroke="${INK}" stroke-width="4"/><rect x="0" y="0" width="140" height="34" fill="url(#hN)" stroke="${INK}" stroke-width="4"/><path d="M20,62 l12,12 l22,-24 M64,62 l12,12 l22,-24 M20,100 l12,12 l22,-24 M64,100 l12,12 l22,-24" stroke="${GREEN}" stroke-width="5" fill="none"/></g>`;
+  if(prop==='laptop') propS=`<g transform="translate(60,450) rotate(${Math.sin(GT*1.2+ph)*1.5} 140 100)"><rect x="0" y="0" width="280" height="180" rx="12" fill="#fff" stroke="${INK}" stroke-width="5"/><rect x="70" y="62" width="140" height="52" rx="26" fill="#f3d7cc" stroke="${INK}" stroke-width="3"/><text x="140" y="98" text-anchor="middle" font-family="MS,MSX,sans-serif" font-weight="800" font-size="28" fill="${INK}" stroke="none">Claude</text><path d="M-30,180 L310,180 L330,212 L-50,212 Z" fill="url(#hG)" stroke="${INK}" stroke-width="5"/></g>`;
+  const sweat = o.sweat ? `<path d="M296,200 C292,214 288,222 296,228 C304,222 300,214 296,200Z" fill="#cfe3ee" stroke="${INK}" stroke-width="3"/>` : '';
+  return `<g transform="translate(${x},${y+jump}) scale(${s})" filter="url(#pencil)" stroke="${INK}" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+   <path d="M40,640 C46,500 100,420 200,408 C300,420 354,500 360,640 Z" fill="url(#hG)"/>
+   <path d="M200,408 C186,440 176,470 170,520 M200,408 C214,440 224,470 230,520" />
+   <path d="M150,412 L200,470 L250,412" fill="#f7f5ef"/>
+   <path d="M120,440 C118,500 112,560 110,640 M282,440 C286,500 292,560 292,640" stroke-width="3.5"/>
+   <path d="M178,348 L178,412 M222,348 L222,412" />
+   <g transform="translate(0,${bob}) rotate(${tilt} 200 380)">
+   ${o.hair==='long'?`<path d="M108,250 C98,160 160,122 204,124 C252,122 312,160 298,252 C300,320 312,380 318,430 C300,446 284,440 270,452 C262,420 262,380 262,340 L146,340 C144,380 142,420 132,452 C118,440 102,446 86,430 C94,380 106,320 108,250 Z" fill="url(#hD)"/>`:`<ellipse cx="114" cy="272" rx="16" ry="26" fill="#f7f5ef"/><ellipse cx="288" cy="272" rx="16" ry="26" fill="#f7f5ef"/>`}
+   <path d="M118,250 C116,330 150,372 200,374 C252,372 286,330 284,250 C284,200 250,170 200,170 C150,170 118,200 118,250Z" fill="#f7f5ef"/>
+   ${o.hair==='long'?`<path d="M204,162 C168,164 124,196 116,262 C136,226 168,206 204,196 Z" fill="url(#hD)"/><path d="M204,162 C240,164 282,196 288,262 C268,226 238,206 204,196 Z" fill="url(#hD)"/><circle cx="112" cy="318" r="7" fill="url(#hA)"/><circle cx="290" cy="318" r="7" fill="url(#hA)"/>`:`<path d="M112,262 C96,170 160,120 214,130 C268,124 312,170 292,256 C290,222 272,200 250,196 C236,214 196,212 176,200 C160,214 136,212 124,206 C118,224 116,244 112,262Z" fill="url(${o.grey?'#hG':'#hD'})"/>`}
+   ${o.glasses===false?`<g transform="translate(${look},0)">${eyes}<path d="M154,256 L160,261 M248,256 L242,261" stroke-width="3.5"/></g>`:`<g transform="translate(${look},0)"><rect x="140" y="248" width="54" height="42" rx="12" fill="#fbfbf8"/><rect x="208" y="248" width="54" height="42" rx="12" fill="#fbfbf8"/><path d="M194,266 Q201,258 208,266 M140,264 L120,258 M262,264 L284,258"/>
+   ${eyes}</g>`}
+   ${brows}
+   <path d="M200,284 C196,298 192,304 202,306" />
+   ${o.mustache?`<path d="M166,312 C180,298 194,300 201,306 C208,300 222,298 236,312 C222,318 210,316 201,311 C192,316 180,318 166,312 Z" fill="${INK}"/>`:''}
+   <path d="${mouth}" ${mood==='cheer'?'fill="#fff"':''}/>
+   ${sweat}
+   </g>
+   ${arm}
+   ${o.crossed?`<path d="M96,500 C150,560 260,560 318,500 L312,540 C260,600 150,600 92,540 Z" fill="url(#hG)" stroke-width="5"/><path d="M110,520 C170,500 240,500 300,526" stroke-width="4"/>`:''}
+   ${propS}
+  </g>`;
+}
+function sv(inner,x=0,y=0,w=1080,h=1920){return `<svg class="ab" style="left:${x}px;top:${y}px" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}">${inner}</svg>`}
+const T=(x,y,html,style='')=>`<div class="ab" style="left:${x}px;top:${y}px;${style}">${html}</div>`;
+function tick(u,a,x,y,text,col=INK){
+  const p=P(u,a,.4);
+  return sv(`<g filter="url(#pencil)"><rect x="4" y="4" width="54" height="54" fill="none" stroke="${INK}" stroke-width="4"/><path d="M14,30 L28,46 L56,10" fill="none" stroke="${GREEN}" stroke-width="7" stroke-linecap="round" ${draw(P(u,a+.1,.35))}/></g>`,x,y,64,64)
+   + T(x+90,y+2,`<span style="font-size:46px;color:${col}">${text}</span>`,`opacity:${p}`);
+}
+
+// ---------- scenes ----------
+const SC=[];
+// ---------- Placeholder automation (silent, captions) ----------
+const MR=(o)=>Object.assign({hair:'long'},o);
+const MONO="'JetBrains Mono','DejaVu Sans Mono',monospace";
+const CAP=(y,html,u,a,size=54)=>T(80,y,`<div style="width:920px;font-family:MS,MSX;font-weight:800;font-size:${size}px;line-height:1.15;color:#034620">${html}</div>`,ap(u,a));
+const typ=(s,u,a,cps=40)=>{const n=Math.max(0,Math.floor((u-a)*cps));return n>=s.length?s:s.slice(0,n)+'<span style="opacity:.8">▍</span>'};
+const PH=(t)=>`<span style="background:#e2b04a;border-radius:6px;padding:0 6px;font-family:${MONO};font-weight:700">{{${t}}}</span>`;
+function doc(x,y,w,inner,u,a,rot){const p=P(u,a,.4);
+  return T(x,y,`<div style="width:${w}px;box-sizing:border-box;background:#fff;border:4px solid #034620;padding:34px 36px;font-size:34px;line-height:1.55;color:#034620;box-shadow:10px 10px 0 rgba(3,70,32,.12);transform:rotate(${rot||0}deg)">${inner}</div>`,`opacity:${p};transform:translateY(${(1-p)*20}px)`);}
+function win(x,y,w,title,inner,u,a,dark){const p=P(u,a,.4);
+  return `<div class="ab" style="left:${x}px;top:${y}px;width:${w}px;opacity:${p};transform:translateY(${(1-p)*20}px);background:${dark?'#034620':'#fff'};border:4px solid #034620;border-radius:20px;overflow:hidden;box-shadow:0 10px 0 rgba(3,70,32,.12)"><div style="background:${dark?'#0b5a2e':'#dfe9e2'};padding:12px 18px;display:flex;gap:10px;align-items:center"><span style="width:14px;height:14px;border-radius:50%;background:#e2b04a"></span><span style="width:14px;height:14px;border-radius:50%;background:#9fbfab"></span><span class="lab" style="font-size:22px;color:${dark?'#b9d0c1':'#034620'};margin-left:10px">${title}</span></div><div style="padding:22px 26px">${inner}</div></div>`;}
+function sheet(rows,u,a,hdr){return `<table style="border-collapse:collapse;width:100%;font-size:32px;color:#034620">${`<tr>${hdr.map(h=>`<th style="text-align:left;padding:10px 12px;background:#dfe9e2;border:2px solid #034620;font-family:MS,MSX;font-weight:800;font-size:26px">${h}</th>`).join('')}</tr>`}${rows.map((r,i)=>`<tr style="opacity:${P(u,a+i*.3,.25)}">${r.map(c=>`<td style="padding:10px 12px;border:2px solid #9fbfab">${c}</td>`).join('')}</tr>`).join('')}</table>`;}
+function files(u,a,names,cols){let h='';names.forEach((n,i)=>{const p=P(u,a+i*.12,.2);h+=`<div style="display:flex;flex-direction:column;align-items:center;width:200px;opacity:${p};transform:scale(${.7+.3*p})"><svg width="80" height="96" viewBox="0 0 80 96"><path d="M6,4 H52 L74,26 V92 H6 Z" fill="#fff" stroke="#034620" stroke-width="5"/><path d="M52,4 V26 H74" fill="none" stroke="#034620" stroke-width="5"/><path d="M18,48 H60 M18,62 H54 M18,76 H46" stroke="#9fbfab" stroke-width="5"/></svg><span style="font-size:22px;color:#034620;text-align:center;margin-top:4px">${n}</span></div>`;});
+  return `<div style="display:flex;flex-wrap:wrap;gap:14px 18px;width:${cols*218}px">${h}</div>`;}
+function stack(x,y,n,u,a){let g='';for(let i=0;i<n;i++){const p=P(u,a+i*.05,.2);g+=`<g transform="translate(${(i%2?8:-8)+Math.sin(i)*6},${-i*16}) rotate(${Math.sin(i*2.1)*4} 110 70)" style="opacity:${p}"><rect width="220" height="150" fill="#fff" stroke="${INK}" stroke-width="4"/><path d="M20,34 H150 M20,62 H180 M20,90 H120" stroke="#9fbfab" stroke-width="7"/></g>`;}
+  return sv(`<g filter="url(#pencil)" transform="translate(${x},${y})">${g}</g>`);}
+
+// 1 hook
+SC.push({kick:'ACCREVISE EXPLAINS',ring:[520,700,1100],d:5,f:u=>
+  `<div class="hl" style="${ap(u,.2)}">Editing names on the</div>` +
+  `<div class="hl" style="top:372px;${ap(u,.6)}"><span class="mark loss">same file, again?</span></div>` +
+  T(80,500,`<div style="font-family:MS,MSX;font-weight:800;font-size:54px;color:#034620;opacity:${P(u,2.4,.4)};transform:translateY(${(1-P(u,2.4,.4))*20}px)">Automate it. <span class="mark">No coding needed.</span></div>`) +
+  sv(rohan(60,700,1.3,MR({prop:'laptop',mood:u>2.6?'happy':'worried',sweat:u<2.6}))) + stack(660,1180,10,u,.6)
+});
+// 2 meera's monthly grind
+SC.push({kick:'MEET MEERA',ring:[-500,1100,1000],d:6,f:u=>{
+  const n=Math.min(40,Math.round(clamp((u-1.2)/3)*40));
+  return hl(u,'40 clients. ','Same letter.') +
+   doc(80,480,560,`Dear <b style="color:${LOSS}">Sharma ji</b>,<br>Your fees for <b style="color:${LOSS}">November</b> are <b style="color:${LOSS}">₹12,000</b>.<br>Regards, Meera`,u,.6,-2) +
+   T(680,500,`<div style="width:320px;font-family:MS,MSX;font-weight:800;font-size:110px;color:${LOSS};line-height:1">${n}<span style="font-size:44px">/40</span></div><div class="lab" style="font-size:24px;color:#034620;margin-top:8px">EDITED BY HAND</div>`,ap(u,1.2)) +
+   CAP(960,`Open. Change name, month, amount. Save. <span class="mark loss">40 times.</span>`,u,2.4,46) +
+   `<div style="opacity:${P(u,1,.5)}">`+sv(rohan(340,1140,.6,MR({mood:'worried',scratch:true,sweat:u>3})))+`</div>`;
+}});
+// 3 the idea: placeholder
+SC.push({kick:'THE IDEA',ring:[600,1250,900],d:6,f:u=>
+  hl(u,'It’s called a ','placeholder') +
+  doc(80,490,920,`Dear ${PH('Name')},<br>Your fees for ${PH('Month')} are ${PH('Amount')}.<br>Regards, Meera`,u,.6) +
+  CAP(860,`Write the letter <span class="mark">once</span>. Leave blanks in <span style="font-family:${MONO}">{{ }}</span>.`,u,2,48) +
+  T(80,1010,`<div style="font-size:36px;color:#3f5e4b;width:920px">Save it as <b>template.docx</b></div>`,ap(u,3))
+});
+// 4 the list
+SC.push({kick:'THE LIST',ring:[640,-300,800],d:5.4,f:u=>
+  hl(u,'One row per ','client') +
+  win(80,490,920,'clients.xlsx',sheet([['Sharma ji','November','₹12,000'],['Mehta Steel','November','₹8,500'],['Rao & Co','November','₹15,000'],['…37 more','','']],u,1,['Name','Month','Amount']),u,.6) +
+  CAP(960,`Column names = <span class="mark">placeholder names.</span>`,u,2.6,48)
+});
+// 5 ask claude
+SC.push({kick:'STEP 1 · ASK CLAUDE',ring:[-400,1300,900],d:8,f:u=>
+  hl(u,'Ask for the ','code') +
+  win(80,480,920,'CLAUDE · YOU TYPE',`<div style="font-family:${MONO};font-size:29px;line-height:1.45;color:#f7f5ef;white-space:pre-wrap">${typ('Write a Python script that fills template.docx using clients.xlsx. Replace {{Name}}, {{Month}} and {{Amount}} for each row, and save one file per client in a folder called Letters.\n\nI’m not a coder: explain step by step how to run it on Windows.',u,.8,42)}</div>`,u,.4,true) +
+  T(80,1180,`<div class="foot" style="font-size:26px;width:920px">You share only the column names, not your client data.</div>`,ap(u,6))
+});
+// 6 claude replies
+SC.push({kick:'STEP 1 · ASK CLAUDE',ring:[600,1300,1000],d:6,f:u=>
+  hl(u,'Claude writes it ','for you') +
+  win(80,480,920,'CLAUDE · REPLY',`<div style="font-size:30px;color:#034620;margin-bottom:14px">Here’s your script. Save it as <b>make_letters.py</b>:</div><div style="background:#034620;border-radius:14px;padding:18px 22px;font-family:${MONO};font-size:25px;line-height:1.5;color:#f7f5ef;white-space:pre">${['from docx import Document','import openpyxl, os','','rows = openpyxl.load_workbook(','    "clients.xlsx").active','for row in rows.iter_rows(...):','    doc = Document("template.docx")','    # replace {{Name}}, {{Month}}…','    doc.save(f"Letters/{name}.docx")'].map((l,i)=>`<div style="opacity:${P(u,.8+i*.25,.2)}">${l.replace(/</g,'&lt;')||'&nbsp;'}</div>`).join('')}</div><div style="font-size:28px;color:#3f5e4b;margin-top:14px;opacity:${P(u,3.6,.3)}">…plus step-by-step instructions to run it.</div>`,u,.4) +
+  CAP(1170,`You don’t need to read it. <span class="mark">Just save it.</span>`,u,4.2,46)
+});
+// 7 run offline: set up
+SC.push({kick:'STEP 2 · RUN IT OFFLINE',ring:[-450,-300,900],d:7,f:u=>
+  hl(u,'One-time ','setup') +
+  [['Install Python','Free, from python.org. Tick “Add Python to PATH”.'],['One folder, 3 files','template.docx · clients.xlsx · make_letters.py']].map(([t,s],i)=>T(80,490+i*250,`<div style="display:flex;gap:24px;align-items:flex-start;width:920px;background:#fff;border:4px solid #034620;border-radius:20px;padding:26px 30px;box-sizing:border-box"><span style="width:64px;height:64px;border-radius:50%;background:#034620;color:#f7f5ef;font-family:MS,MSX;font-weight:800;font-size:34px;display:flex;align-items:center;justify-content:center;flex:none">${i+1}</span><span><div style="font-family:MS,MSX;font-weight:800;font-size:40px;color:#034620">${t}</div><div style="font-size:32px;color:#3f5e4b;margin-top:6px;line-height:1.3">${s}</div></span></div>`,ap(u,.6+i*1.6))).join('') +
+  T(80,1010,`<div style="width:920px">${files(u,3.6,['template.docx','clients.xlsx','make_letters.py'],4)}</div>`)
+});
+// 8 run: two commands
+SC.push({kick:'STEP 2 · RUN IT OFFLINE',ring:[600,1250,900],d:8,f:u=>
+  hl(u,'Two ','commands') +
+  T(80,470,`<div style="font-size:34px;color:#034620;width:920px;line-height:1.35">In the folder’s address bar, type <b style="font-family:${MONO}">cmd</b> and press Enter.</div>`,ap(u,.4)) +
+  win(80,620,920,'COMMAND PROMPT',`<div style="font-family:${MONO};font-size:30px;line-height:1.6;color:#f7f5ef"><div style="color:#9fbfab;opacity:${P(u,1.4,.2)}"># first time only</div><div>${u>1.6?'<span style="color:#e2b04a">&gt; </span>'+typ('pip install python-docx openpyxl',u,1.6,30):''}</div><div style="color:#9fbfab;margin-top:12px;opacity:${P(u,3.4,.2)}"># every month</div><div>${u>3.6?'<span style="color:#e2b04a">&gt; </span>'+typ('python make_letters.py',u,3.6,24):''}</div><div style="color:#9fbfab;margin-top:12px;opacity:${P(u,5.2,.2)}">✓ 40 letters saved in Letters/</div></div>`,u,.8,true) +
+  T(80,1150,`<div class="foot" style="font-size:24px;width:920px">On a Mac: open Terminal in the folder and use python3.</div>`,ap(u,6))
+});
+// 9 result
+SC.push({kick:'THE RESULT',ring:[-400,1300,900],d:5.6,f:u=>
+  hl(u,'40 letters in ','seconds') +
+  win(80,480,920,'Letters/',files(u,.6,['Sharma ji.docx','Mehta Steel.docx','Rao & Co.docx','Gupta Traders.docx','Iyer Foods.docx','Khan Motors.docx','Patel Agro.docx','+33 more'],4),u,.4) +
+  `<div style="opacity:${P(u,2.4,.5)}">`+sv(rohan(340,1000,.8,MR({mood:'cheer',jump:u>2.6&&u<4.4})))+`</div>`
+});
+// 10 privacy
+SC.push({kick:'GOOD TO KNOW',ring:[600,1300,1000],d:5.6,f:u=>
+  hl(u,'Your data stays ','with you') +
+  T(80,500,`<div style="font-size:44px;color:#034620;line-height:1.5;width:920px"><div style="opacity:${P(u,.6,.3)}"><span style="color:${G6};font-family:MS,MSX;font-weight:800">✓</span> The script runs <b>on your computer</b>, offline.</div><div style="opacity:${P(u,1.8,.3)};margin-top:18px"><span style="color:${G6};font-family:MS,MSX;font-weight:800">✓</span> Claude only needs your <b>column names</b>, not your client list.</div><div style="opacity:${P(u,3,.3)};margin-top:18px"><span style="color:${G6};font-family:MS,MSX;font-weight:800">✓</span> Check the first few letters before sending.</div></div>`)
+});
+// 11 not a coder
+SC.push({kick:'THE POINT',ring:[350,500,1300],green:true,d:4.6,f:u=>
+  `<div class="hl" style="top:740px;text-align:center;${ap(u,.2)}">You didn’t write code.</div><div class="hl" style="top:850px;text-align:center;${ap(u,1.2)}">You <span class="mark">asked clearly.</span></div>`
+});
+// 12 CTA
+SC.push({kick:null,ring:[-300,150,1700],green:true,logo:false,d:5,f:u=>
+  T(0,330,`<div style="width:1080px;text-align:center"><img src="logo-paper.png" style="height:330px"></div>`,ap(u,.2)) +
+  `<div class="hl" style="left:0;width:1080px;top:780px;text-align:center;font-size:62px;${ap(u,.5)}">Want the full guide + prompt?</div>` +
+  `<div class="hl" style="left:0;width:1080px;top:880px;text-align:center;${ap(u,1.2)}">Comment <span class="mark">TEMPLATE</span></div>` +
+  T(110,1100,`<div class="foot" style="width:860px;text-align:center;color:#b9d0c1">Example names and amounts are illustrative. Always check generated files before sending.</div>`,ap(u,2.2))
+});
+
+const VO=window.VO||[]; SC.forEach((s,i)=>{s.d0=s.d; s.d=Math.max(s.d,(VO[i]||0)+0.95); s.k=s.d0/s.d; s.ev=(s.ev||[]).map(t=>t/s.k);});
+let START=[],acc=0; SC.forEach(s=>{START.push(acc);acc+=s.d}); const TOTAL=acc; window.STARTS=START;
+window.TOTAL=TOTAL;
+window.EVENTS=(()=>{const e=[];SC.forEach((s,i)=>{(s.ev||[]).forEach(t=>e.push({t:START[i]+t,k:'pencil'}));if(i>0)e.push({t:START[i],k:'turn'})});return e})();
+function sceneAt(t){let i=SC.length-1;for(let k=0;k<SC.length;k++){if(t<START[k]+SC[k].d){i=k;break}}return i}
+window.render=function(t){
+  GT=t;
+  document.getElementById('turb').setAttribute('seed',String(1+Math.floor(t*6)%3));
+  const i=sceneAt(t), u=t-START[i];
+  const TR=.5;
+  let html='', k=i, uu=u, wipe='';
+  if(i>0 && u<TR){ // Accrevise green wipe: covers the old frame right-to-left, then uncovers the new one
+    const p=u/TR;
+    if(p<.5){k=i-1;uu=SC[i-1].d;const w=ease(p*2)*1080;wipe=`<div class="ab" style="right:0;top:0;width:${w}px;height:1920px;background:#034620;z-index:5"></div>`;}
+    else{const w=(1-ease((p-.5)*2))*1080;wipe=`<div class="ab" style="left:0;top:0;width:${w}px;height:1920px;background:#034620;z-index:5"></div>`;}
+  }
+  const s=SC[k], g=!!s.green;
+  html+=`<div class="layer ${g?'green':''}">${s.ring?ring(...s.ring):''}`+
+    (s.logo===false?'':`<img class="logo" src="${g?'logo-paper.png':'logo-green.png'}">`)+
+    (s.kick?`<div class="kick" style="${g?'color:#b9d0c1':''}">${s.kick}</div>`:'')+
+    `${s.f(uu*s.k)}</div>`+wipe;
+  document.getElementById('stage').innerHTML=html;
+};
+render(0);
+</script>
+</body></html>
