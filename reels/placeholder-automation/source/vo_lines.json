@@ -1,0 +1,14 @@
+[
+ "Tired of editing names on the same file, again and again? Automate it. No coding needed.",
+ "Meera sends the same fee letter to forty clients every month. Change the name, month and amount. Forty times.",
+ "Here's the trick. It's called a placeholder. Write the letter once, and leave blanks in curly brackets. Name, month, amount.",
+ "Then make one Excel sheet, one row per client. The column names match the placeholders.",
+ "Now ask Claude for a script that fills your template from the list. And ask it to explain, step by step, how to run it.",
+ "Claude writes the code for you. You don't need to read it. Just save it.",
+ "To run it offline, install Python once. It's free. Then put the three files in one folder.",
+ "In the folder's address bar, type C M D. Run the install line once, then python make letters dot p y.",
+ "Forty letters, in seconds.",
+ "It runs on your own computer, and Claude only needs your column names. Just check the first few letters.",
+ "You didn't write code. You just asked clearly.",
+ "Want the full guide, with the prompt? Comment, template."
+]
