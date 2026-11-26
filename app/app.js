@@ -22,6 +22,7 @@
     cal: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/><path d="M8 14h2M14 14h2M8 17.5h2"/></svg>',
     team: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7.5" r="3.5"/><path d="M5 21c.6-4 3.4-6.5 7-6.5s6.4 2.5 7 6.5"/></svg>',
     home: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11 12 4l9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-5h4v5"/></svg>',
+    install: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>',
     receipt: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6"/></svg>'
   };
 
@@ -240,6 +241,39 @@
   }
   function bindTaskClicks(root) { $$("[data-task]", root).forEach((el) => el.addEventListener("click", () => openTask(el.dataset.task))); }
 
+  // ---------------------------------------------------------------- install as an app (PWA)
+  let installPrompt = null;
+  const isStandalone = () => window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true;
+  const isIOS = () => /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  window.addEventListener("beforeinstallprompt", (e) => { e.preventDefault(); installPrompt = e; refreshInstallButtons(); });
+  window.addEventListener("appinstalled", () => { installPrompt = null; toast("Accrevise is installed. Open it from your home screen or apps."); refreshInstallButtons(); });
+  function refreshInstallButtons() { $$("[data-install]").forEach((b) => b.classList.toggle("hidden", isStandalone())); }
+  function installButton(cls) { return isStandalone() ? "" : '<button type="button" class="install-btn ' + (cls || "") + '" data-install>' + ICONS.install + '<span class="lbl">Install app</span></button>'; }
+  function bindInstall(root) { $$("[data-install]", root).forEach((b) => b.addEventListener("click", installApp)); }
+  async function installApp() {
+    if (installPrompt) {
+      installPrompt.prompt();
+      const choice = await installPrompt.userChoice;
+      installPrompt = null;
+      if (choice.outcome !== "accepted") toast("No problem. You can install it any time.");
+      return;
+    }
+    const ua = navigator.userAgent;
+    let steps;
+    if (isIOS()) steps = ["Open this page in <b>Safari</b>.", "Tap the <b>Share</b> button (the square with an arrow).", "Scroll down and tap <b>Add to Home Screen</b>.", "Tap <b>Add</b>. Accrevise now opens like an app from your home screen."];
+    else if (/android/i.test(ua)) steps = ["Open this page in <b>Chrome</b>.", "Tap the <b>⋮</b> menu at the top right.", "Tap <b>Install app</b> (or <b>Add to Home screen</b>).", "Tap <b>Install</b>."];
+    else if (/safari/i.test(ua) && !/chrome|chromium|edg/i.test(ua)) steps = ["In Safari’s menu bar, choose <b>File → Add to Dock</b>.", "Click <b>Add</b>. Accrevise opens in its own window from the Dock."];
+    else steps = ["Look for the <b>install icon</b> at the right end of the address bar (a screen with a down arrow), or open the browser menu <b>⋮</b>.", "Choose <b>Install Accrevise Workspace</b> (in Edge: <b>Apps → Install this site as an app</b>).", "Click <b>Install</b>. It opens in its own window and appears with your other apps."];
+    const secure = window.isSecureContext;
+    openModal(
+      '<p class="kicker">Install as an app</p><h2 style="margin-bottom:6px">Put Accrevise on your <span class="mark">home screen</span></h2>' +
+      '<p class="muted" style="margin:0 0 14px">It opens full-screen in its own window, with the Accrevise icon, and keeps working offline.</p>' +
+      '<ol class="install-steps">' + steps.map((x) => "<li>" + x + "</li>").join("") + "</ol>" +
+      (secure ? "" : '<p class="error" style="margin-top:12px">Installing needs a secure address (https:// or localhost). Open the app from its https link and try again.</p>') +
+      '<div class="foot"><button type="button" class="btn" id="ok">Got it</button></div>',
+      (m) => $("#ok", m).addEventListener("click", closeModal));
+  }
+
   // ---------------------------------------------------------------- router
   function route() {
     const app = $("#app");
@@ -272,9 +306,10 @@
     const roleLbl = me.role === "client" ? (client(me.clientId) || {}).name || "Client" : me.title || (me.role === "admin" ? "Admin" : "Staff");
     app.innerHTML =
       '<div class="shell"><aside class="sidebar"><span class="ring"></span><img class="logo" src="assets/logo-paper.png" alt="Accrevise">' +
-      '<nav class="nav">' + nav + "</nav>" +
+      '<nav class="nav">' + nav + "</nav>" + installButton("side") +
       '<div class="me">' + avatar(me) + '<div class="who"><b>' + esc(me.name) + "</b><span>" + esc(roleLbl) + '</span></div><button id="logout">Log out</button></div></aside>' +
       '<main class="main" tabindex="-1"></main></div>';
+    bindInstall(app);
     $("#logout").addEventListener("click", () => { sessionStorage.removeItem(SESSION_KEY); me = null; location.hash = ""; route(); });
   }
 
@@ -295,7 +330,9 @@
       '<label class="field"><span>Password</span><input class="input" name="password" type="password" autocomplete="current-password" required></label>' +
       '<div class="error" id="login-error"></div><button class="btn" style="width:100%" type="submit">Sign in</button></form>' +
       '<div class="demo-creds" id="demo"></div>' +
+      installButton("wide") +
       '<p class="footnote">Demo workspace: data is stored only in this browser.</p></div></section></div>';
+    bindInstall(app);
     const demo = () => {
       $("#demo").innerHTML = mode === "firm"
         ? '<b>Demo firm login</b><br><code>admin@accrevise.demo</code> / <code>accrevise123</code><br><button type="button" id="fill">Fill it in</button>'
@@ -815,6 +852,10 @@
   }
 
   // ---------------------------------------------------------------- boot
+  if ("serviceWorker" in navigator && window.isSecureContext && location.protocol !== "file:") {
+    window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
+  }
+
   (async function boot() {
     await load();
     const sid = sessionStorage.getItem(SESSION_KEY);

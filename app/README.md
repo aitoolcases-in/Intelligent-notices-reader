@@ -11,6 +11,15 @@ A practice-management web app in the Accrevise look (ledger green `#034620`, pap
 - **Team**: workload per person, add team members, reset passwords, reset demo data.
 - **Client portal**: what needs the client's action (they reply "Mark as sent"), what's in progress, what's completed, upcoming deadlines and their manager's contact.
 
+## Install as an app
+The workspace is a Progressive Web App (PWA). Click **Install app** on the sign-in page or in the sidebar (the download icon on phones):
+- **Chrome / Edge (Windows, Mac, Android):** the browser's own install prompt opens; it then runs in its own window with the Accrevise icon.
+- **iPhone / iPad:** a short guide shows the steps: Safari → Share → Add to Home Screen.
+- **Safari on Mac:** File → Add to Dock.
+
+Once installed it opens full-screen, has shortcuts to Dashboard, Schedule and Clients (right-click / long-press the icon), and keeps working offline. The button hides itself inside the installed app.
+Installing needs the app to be served over **https** (or localhost). Any static host works: GitHub Pages, Netlify, Vercel or Cloudflare Pages.
+
 ## Run it
 No build step. Serve the folder and open it:
 
